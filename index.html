@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Personal Information</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- keep your original stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="page">
+        <div class="layout">
+
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div id="step1" class="step active">
+                    Personal Information
+                    <div class="complete-circle">
+                        <img src="assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step2" class="step">
+                    Social Media
+                    <div class="complete-circle">
+                        <img src="assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step3" class="step">
+                    Educational Background
+                    <div class="complete-circle">
+                        <img src="assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step4" class="step">
+                    Work Experience
+                    <div class="complete-circle">
+                        <img src="assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step5" class="step">
+                    Training
+                    <div class="complete-circle">
+                        <img src="assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step6" class="step">
+                    Job Expectations
+                    <div class="complete-circle">
+                        <img src="assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step7" class="step">
+                    Health Information
+                    <div class="complete-circle">
+                        <img src="assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step8" class="step">
+                    Quick Question
+                    <div class="complete-circle">
+                        <img src="assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step9" class="step">
+                    Attachment
+                    <div class="complete-circle">
+                        <img src="assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step10" class="step">
+                    Preview Application
+                    <div class="complete-circle">
+                        <img src="assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main panel -->
+            <!-- <div id="main-panel" class="main-panel"></div> -->
+            <form id="application-form">
+                <div class="panel">
+                    <!-- personal information -->
+                    <div class="form-section active" id="section1">
+                        <div class="row spaced">
+                            <div class="panel-title">
+                                <h2>Personal Information</h2>
+                                <p>
+                                    Please fill in your personal details accurately. This information
+                                    will be used for your employment record and recruitment process.
+                                </p>
+                            </div>
+                            <img src="assets/icons/company-icon.svg" alt="logo">
+                        </div>
+
+                        <div class="panel-body">
+
+                            <div class="row spaced">
+                                <div class="field">
+                                    <label for="fullName">Full Name</label>
+                                    <input type="text" id="fullName" name="fullName" placeholder="Input here..." required>
+                                </div>
+                                <div class="field">
+                                    <label for="fullName">Gender</label>
+                                    <select name="gender" id="gender">
+                                        <option value="">Select</option>
+                                        <option value="M">Male</option>
+                                        <option value="F">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+    
+                            <div class="row spaced">
+                                <div class="field">
+                                    <label for="email">Email</label>
+                                    <input type="email" name="email" id="email" placeholder="Input here..." required>
+                                </div>
+                                <div class="field">
+                                    <label for="phone">WhatsApp Number</label>
+                                    <div class="phone">
+                                        <select name="countryCode" id="countryCode" required>
+                                            <option value="">Code</option>
+                                            <option value="+1">🇺🇸 +1 (USA)</option>
+                                            <option value="+44">🇬🇧 +44 (UK)</option>
+                                            <option value="+62">🇮🇩 +62 (Indonesia)</option>
+                                            <option value="+91">🇮🇳 +91 (India)</option>
+                                            <option value="+86">🇨🇳 +86 (China)</option>
+                                            <option value="+81">🇯🇵 +81 (Japan)</option>
+                                            <option value="+82">🇰🇷 +82 (South Korea)</option>
+                                            <option value="+65">🇸🇬 +65 (Singapore)</option>
+                                            <option value="+60">🇲🇾 +60 (Malaysia)</option>
+                                            <option value="+63">🇵🇭 +63 (Philippines)</option>
+                                            <option value="+66">🇹🇭 +66 (Thailand)</option>
+                                            <option value="+84">🇻🇳 +84 (Vietnam)</option>
+                                            <option value="+61">🇦🇺 +61 (Australia)</option>
+                                            <option value="+49">🇩🇪 +49 (Germany)</option>
+                                            <option value="+33">🇫🇷 +33 (France)</option>
+                                            <option value="+39">🇮🇹 +39 (Italy)</option>
+                                            <option value="+34">🇪🇸 +34 (Spain)</option>
+                                            <option value="+7">🇷🇺 +7 (Russia)</option>
+                                            <option value="+55">🇧🇷 +55 (Brazil)</option>
+                                            <option value="+52">🇲🇽 +52 (Mexico)</option>
+                                            <option value="+27">🇿🇦 +27 (South Africa)</option>
+                                        </select>
+                                        <input type="tel" id="phone" name="phone" placeholder="Input here..." required />
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <div class="row spaced">
+                                <div class="field">
+                                    <label for="birthPlace">Place Birth</label>
+                                    <input type="text" id="birthPlace" name="birthPlace" placeholder="Input here..."
+                                        required />
+                                </div>
+    
+                                <div class="field">
+                                    <label for="dob">Date of Birth</label>
+                                    <input type="date" id="dob" name="dob" required />
+                                </div>
+                            </div>
+    
+                            <div class="row spaced narrow">
+                                <div class="field">
+                                    <label for="nationality">Nationality</label>
+                                    <select name="nationality" id="nationality" required>
+                                        <option value="">Select your nationality</option>
+                                        <option value="USA">United States</option>
+                                        <option value="UK">United Kingdom</option>
+                                        <option value="Indonesia">Indonesia</option>
+                                        <option value="India">India</option>
+                                        <option value="China">China</option>
+                                        <option value="Japan">Japan</option>
+                                        <option value="South Korea">South Korea</option>
+                                        <option value="Singapore">Singapore</option>
+                                        <option value="Malaysia">Malaysia</option>
+                                        <option value="Philippines">Philippines</option>
+                                        <option value="Thailand">Thailand</option>
+                                        <option value="Vietnam">Vietnam</option>
+                                        <option value="Australia">Australia</option>
+                                        <option value="Canada">Canada</option>
+                                        <option value="Germany">Germany</option>
+                                        <option value="France">France</option>
+                                        <option value="Italy">Italy</option>
+                                        <option value="Spain">Spain</option>
+                                        <option value="Russia">Russia</option>
+                                        <option value="Brazil">Brazil</option>
+                                        <option value="Mexico">Mexico</option>
+                                        <option value="South Africa">South Africa</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Social Media -->
+                    <div class="form-section" id="section2">
+                        <div class="row">
+                            <div class="panel-title">
+                                <h2>Social Media</h2>
+                                <p>
+                                    Please provide your social media account details for professional and administrative
+                                    purposes.
+                                </p>
+                            </div>
+                            <img src="assets/icons/company-icon.svg" alt="logo">
+                        </div>
+
+                        <div class="row narrow">
+                            <input type="checkbox" name="socialMedia" id="hasSocialMedia" checked>
+                            <div>I have a social media account</div>
+                        </div>
+
+                        <div class="table-wrapper" id="socialContent">
+                            <div class="table-scroll-x">
+                                <table id="socialTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Platform</th>
+                                            <th>Link Platform</th>
+                                            <th class="table-action"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr id="social-row-1">
+                                            <td>
+                                                <select id="socialplatform-1">
+                                                    <option value="">Choose Platform</option>
+                                                    <option value="LinkedIn">LinkedIn</option>
+                                                    <option value="Twitter">Twitter/X</option>
+                                                    <option value="Instagram">Instagram</option>
+                                                    <option value="Facebook">Facebook</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input id="sociallink-1" type="text" required
+                                                    placeholder="Input here..." />
+                                            </td>
+                                            <td class="table-action">
+                                                <button type="button" onclick="removeTableRow('socialTable', this)"
+                                                    class="table-add-btn"><img src="assets/icons/trash-icon.svg"
+                                                        alt="X"></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3">
+                                                <button type="button" id="addSocialRow" class="table-add-btn"
+                                                    onclick="addTableRow('socialTable', 'social-row-1', 'addSocialRow')">
+                                                    <img src="assets/icons/plus-icon.svg" alt="+">
+                                                    New Item
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- educational background -->
+                    <div class="form-section" id="section3">
+                        <div class="row">
+                            <div class="panel-title">
+                                <h2>Educational Background</h2>
+                                <p>
+                                    Please provide details of your educational history, starting from your most recent
+                                    degree or qualification. Include the school name, study period, and any relevant
+                                    notes.
+                                </p>
+                            </div>
+                            <div data-svg-wrapper style="position: relative">
+                                <img src="assets/icons/company-icon.svg" alt="logo">
+                            </div>
+                        </div>
+
+                        <div class="row narrow">
+                            <input type="checkbox" name="educationalBackground" id="hasEduBackground" checked>
+                            <div>I have a previous educational background</div>
+                        </div>
+
+                        <div class="table-wrapper" id="eduContent">
+                            <div class="table-scroll-x">
+                                <table id="eduTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Level</th>
+                                            <th>School Name</th>
+                                            <th>Study Period</th>
+                                            <th>Remarks</th>
+                                            <th>Upload Document</th>
+                                            <th class="table-action"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr id="edu-row-1">
+                                            <td>
+                                                <select id="level-1">
+                                                    <option value="">Choose level</option>
+                                                    <option value="Elementary">Elementary School</option>
+                                                    <option value="Middle">Middle School</option>
+                                                    <option value="High">High School</option>
+                                                    <option value="Diploma">Diploma</option>
+                                                    <option value="Bachelor">Bachelor</option>
+                                                    <option value="Master">Master</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" placeholder="Input name here..." id="schoolname-1" />
+                                            </td>
+                                            <td>
+                                                <input type="month" name="" id="startperiod-1">
+                                                <span>-</span>
+                                                <input type="month" name="" id="endperiod-1">
+                                            </td>
+                                            <td>
+                                                <input type="number" min="0" placeholder="0" id="remark-1">
+                                                <span>/</span>
+                                                <input type="number" min="0" placeholder="0" id="totalremark-1">
+                                            </td>
+                                            <td>
+                                                <label for="">
+                                                    <input type="file" id="edudocument-1" accept="application/pdf">
+                                                </label>
+                                            </td>
+                                            <td class="table-action">
+                                                <button type="button" class="table-add-btn"
+                                                    onclick="removeTableRow('eduTable', this)">
+                                                    <img src="assets/icons/trash-icon.svg" alt="X">
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6">
+                                                <button type="button" id="addEduRow" class="table-add-btn"
+                                                    onclick="addTableRow('eduTable', 'edu-row-1', 'addEduRow')">
+                                                    <img src="assets/icons/plus-icon.svg" alt="+">
+                                                    New Item
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Work Experience -->
+                    <div class="form-section" id="section4">
+                        <div class="row">
+                            <div class="panel-title">
+                                <h2>Work Experience</h2>
+                                <p>
+                                    Please provide details of your previous work experience. Include your job title, company name, employment period, take-home pay, and key job responsibilities.
+                                </p>
+                            </div>
+                            <img src="assets/icons/company-icon.svg" alt="logo">
+                        </div>
+
+                        <div class="row narrow">
+                            <input type="checkbox" name="workExperience" id="hasWorkExp" checked>
+                            <div>I have a previous work experience</div>
+                        </div>
+
+                        <div class="table-wrapper" id="workExpContent">
+                            <div class="table-scroll-x">
+                                <table id="workExpTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Working Period</th>
+                                            <th>Company Name</th>
+                                            <th>Job Title</th>
+                                            <th>Take Home Pay</th>
+                                            <th>Job Description</th>
+                                            <th class="table-action"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr id="work-row-1">
+                                            <td>
+                                                <input type="month" name="" id="startperiod-1" placeholder="Start">
+                                                <span>-</span>
+                                                <input type="month" name="" id="endperiod-1" placeholder="Now">
+                                            </td>
+                                            <td>
+                                                <input id="company-1" type="text" required
+                                                    placeholder="Input here..." />
+                                            </td>
+                                            <td>
+                                                <input id="jobtitle-1" type="text" required
+                                                    placeholder="Input here..." />
+                                            </td>
+                                            <td>
+                                                Rp <input id="takehomepay-1" type="number" required
+                                                    placeholder="Input here..." />
+                                            </td>
+                                            <td>
+                                                <input id="jobdesc-1" type="text" required
+                                                    placeholder="Input here..." />
+                                            </td>
+                                            <td class="table-action">
+                                                <button type="button" onclick="removeTableRow('workExpTable', this)"
+                                                    class="table-add-btn"><img src="assets/icons/trash-icon.svg"
+                                                        alt="X"></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6">
+                                                <button type="button" id="addWorkRow" class="table-add-btn"
+                                                    onclick="addTableRow('workExpTable', 'work-row-1', 'addWorkRow')">
+                                                    <img src="assets/icons/plus-icon.svg" alt="+">
+                                                    New Item
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Training -->
+                    <div class="form-section" id="section5">
+                        <div class="row">
+                            <div class="panel-title">
+                                <h2>Training</h2>
+                                <p>
+                                    Please list any training or certification programs you have attended. Include the training period, institution name, training scope, and a short description.
+                                </p>
+                            </div>
+                            <img src="assets/icons/company-icon.svg" alt="logo">
+                        </div>
+
+                        <div class="row narrow">
+                            <input type="checkbox" name="training" id="hasTraining" checked>
+                            <div>I have a previous training</div>
+                        </div>
+
+                        <div class="table-wrapper" id="trainingContent">
+                            <div class="table-scroll-x">
+                                <table id="trainingTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Training Period</th>
+                                            <th>Institute Name Name</th>
+                                            <th>Scope Training</th>
+                                            <th>Description</th>
+                                            <th>Upload Document</th>
+                                            <th class="table-action"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr id="training-row-1">
+                                            <td>
+                                                <input type="month" name="" id="trainingstartperiod-1" placeholder="Start">
+                                                <span>-</span>
+                                                <input type="month" name="" id="trainingendperiod-1" placeholder="Now">
+                                            </td>
+                                            <td>
+                                                <input id="institute-1" type="text" required
+                                                    placeholder="Input here..." />
+                                            </td>
+                                            <td>
+                                                <input id="scope-1" type="text" required
+                                                    placeholder="Input here..." />
+                                            </td>
+                                            <td>
+                                                <input id="trainingdesc-1" type="text" required
+                                                    placeholder="Input here..." />
+                                            </td>
+                                            <td>
+                                                <input id="trainingdoc-1" type="file" required
+                                                    placeholder="Input here..." />
+                                            </td>
+                                            <td class="table-action">
+                                                <button type="button" onclick="removeTableRow('trainingTable', this)"
+                                                    class="table-add-btn"><img src="assets/icons/trash-icon.svg"
+                                                        alt="X"></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6">
+                                                <button type="button" id="addTrainingRow" class="table-add-btn"
+                                                    onclick="addTableRow('trainingTable', 'training-row-1', 'addTrainingRow')">
+                                                    <img src="assets/icons/plus-icon.svg" alt="+">
+                                                    New Item
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Job Expectations -->
+                    <div class="form-section" id="section6">
+                        <div class="row spaced">
+                            <div class="panel-title">
+                                <h2>Job Expectations</h2>
+                                <p>
+                                    Please share your job preferences, including your expected salary, available starting date, and willingness to work outside your current location.
+                                </p>
+                            </div>
+                            <img src="assets/icons/company-icon.svg" alt="logo">
+                        </div>
+
+                        <div class="row spaced">
+                            <div class="field">
+                                <label for="expectedSalary">Expected Salary</label>
+                                <div class="row narrow">
+                                    Rp 
+                                    <input type="number" id="expectedSalary" name="expectedSalary" placeholder="0" required>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="availableDate">Available Starting Date</label>
+                                <input type="date" name="availableDate" id="availableDate">
+                            </div>
+                        </div>
+
+                        <div class="row spaced">
+                            <div class="field">
+                                <label for="cityAssignedConsent">Are you willing to be assigned outside of the city?</label>
+                                <select name="cityAssignedConsent" id="cityAssignedConsent">
+                                    <option value="">Select</option>
+                                    <option value="Y">Yes</option>
+                                    <option value="N">No</option>
+                                </select>
+                            </div>
+                            <div class="field">
+                                <label for="countryAssignedConsent">Are you willing to be assigned outside of the country?</label>
+                                <select name="countryAssignedConsent" id="countryAssignedConsent">
+                                    <option value="">Select</option>
+                                    <option value="Y">Yes</option>
+                                    <option value="N">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Health Information -->
+                    <div class="form-section" id="section7">
+                        <div class="row">
+                            <div class="panel-title">
+                                <h2>Health Information</h2>
+                                <p>
+                                    Please provide information about any illnesses, medical conditions, or health history that may affect your work performance.
+                                </p>
+                            </div>
+                            <img src="assets/icons/company-icon.svg" alt="logo">
+                        </div>
+
+                        <div class="row narrow">
+                            <input type="checkbox" name="health" id="hasHealth" checked>
+                            <div>I have a previous health information</div>
+                        </div>
+
+                        <div class="table-wrapper" id="healthContent">
+                            <div class="table-scroll-x">
+                                <table id="healthTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Sickness</th>
+                                            <th>Description</th>
+                                            <th class="table-action"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr id="health-row-1">
+                                            <td>
+                                                <input id="sick-1" type="text" required
+                                                    placeholder="Input here..." />
+                                            </td>
+                                            <td>
+                                                <input id="healthdescription-1" type="text" required
+                                                    placeholder="Input here..." />
+                                            </td>
+                                            <td class="table-action">
+                                                <button type="button" onclick="removeTableRow('healthTable', this)"
+                                                    class="table-add-btn"><img src="assets/icons/trash-icon.svg"
+                                                        alt="X"></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6">
+                                                <button type="button" id="addHealthRow" class="table-add-btn"
+                                                    onclick="addTableRow('healthTable', 'health-row-1', 'addHealthRow')">
+                                                    <img src="assets/icons/plus-icon.svg" alt="+">
+                                                    New Item
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Question -->
+                    <div class="form-section" id="section8">
+                        <div class="row">
+                            <div class="panel-title">
+                                <h2>Quick Question</h2>
+                                <p>
+                                    Please answer a few short questions to help us better understand your background and application history with PT Kapit Mas.
+                                </p>
+                            </div>
+                            <img src="assets/icons/company-icon.svg" alt="logo">
+                        </div>
+
+                        <div class="row narrow">
+                            <div class="field">
+                                <label for="Qq1">Are you willing to let us contact your previous employer for reference?</label>
+                                <select name="Qq1" id="Qq1">
+                                    <option value="">Choose an option</option>
+                                    <option value="Y">Yes</option>
+                                    <option value="N">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row narrow">
+                            <div class="field">
+                                <label for="Qq2">Have you ever been involved in any legal case?</label>
+                                <select name="Qq2" id="Qq2">
+                                    <option value="">Choose an option</option>
+                                    <option value="Y">Yes</option>
+                                    <option value="N">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row narrow">
+                            <div class="field">
+                                <label for="Qq2details">Please provide details.</label>
+                                <textarea name="Qq2details" id="Qq2details"></textarea>
+                            </div>
+                        </div>
+                        <div class="row narrow">
+                            <div class="field">
+                                <label for="Qq3">Have you previously applied to PT Kapit Mas?</label>
+                                <select name="Qq3" id="Qq3">
+                                    <option value="">Choose an option</option>
+                                    <option value="Y">Yes</option>
+                                    <option value="N">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row narrow">
+                            <div class="field">
+                                <label for="Qq4">Where did you first learn about the job vacancy at PT Kapit Mas?</label>
+                                <select name="Qq4" id="Qq4">
+                                    <option value="">Choose an option</option>
+                                    <option value="LinkedIn">LinkedIn</option>
+                                    <option value="Job Street">JobStreet</option>
+                                    <option value="Others">Others</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row narrow">
+                            <div class="field">
+                                <label for="Qq4details">Please provide details.</label>
+                                <textarea name="Qq4details" id="Qq2details" cols="1"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- buttons -->
+                    <div class="row" id="buttonGroup">
+                        <div class="btn-outline" type="button" id="prevBtn" onclick="changeStep(-1)"
+                            style="display: none;">Previous</div>
+                        <div class="btn" type="button" id="nextBtn" onclick="changeStep(1)">Next</div>
+                        <div class="btn" type="submit" style="display: none;" id="submitBtn">Submit Application</div>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+    <!-- <script src="form-loader.js"></script> -->
+    <script>
+        let currentStep = 1;
+        const totalSteps = 10;
+        const formData = {};
+
+        document.getElementById('hasSocialMedia').addEventListener('change', function () {            
+            if (this.checked) {
+                document.getElementById('socialContent').style.display = 'block';
+            } else {
+                document.getElementById('socialContent').style.display = 'none';
+            }
+        })
+
+        document.getElementById('hasEduBackground').addEventListener('change', function () {
+            if (this.checked) {
+                document.getElementById('eduContent').style.display = 'block';
+            } else {
+                document.getElementById('eduContent').style.display = 'none';
+            }
+        })
+
+        document.getElementById('hasWorkExp').addEventListener('change', function () {
+            if (this.checked) {
+                document.getElementById('workExpContent').style.display = 'block';
+            } else {
+                document.getElementById('workExpContent').style.display = 'none';
+            }
+        })
+
+        document.getElementById('hasTraining').addEventListener('change', function () {
+            if (this.checked) {
+                document.getElementById('trainingContent').style.display = 'block';
+            } else {
+                document.getElementById('trainingContent').style.display = 'none';
+            }
+        })
+
+        document.getElementById('hasHealth').addEventListener('change', function () {
+            if (this.checked) {
+                document.getElementById('healthContent').style.display = 'block';
+            } else {
+                document.getElementById('healthContent').style.display = 'none';
+            }
+        })
+
+        function updateProgress() {
+            for (let i = 1; i <= totalSteps; i++) {
+                const step = document.getElementById(`step${i}`);
+                const circle = step.firstElementChild;
+
+                step.classList.remove('active', 'completed', 'row');
+                circle.classList.remove('completed');
+
+                if (i < currentStep) {
+                    step.classList.add('completed', 'row');
+                    circle.classList.add('completed');
+                } else if (i === currentStep) {
+                    step.classList.remove('completed');
+                    step.classList.add('active');
+                }
+            }
+        }
+
+        function validateCurrentStep() {
+            const currentSection = document.getElementById(`section${currentStep}`);
+            const requiredInputs = currentSection.querySelectorAll('[required]');
+
+            for (let input of requiredInputs) {
+                if (!input.value.trim()) {
+                    input.focus();
+                    alert('Please fill in all required fields.');
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function saveFormData() {
+            const currentSection = document.getElementById(`section${currentStep}`);
+            const inputs = currentSection.querySelectorAll('input, select');
+
+            inputs.forEach(input => {
+                if (input.name) {
+                    formData[input.name] = input.value;
+                }
+            })
+        }
+
+        function loadFormData() {
+            const currentSection = document.getElementById(`section${currentStep}`);
+            const inputs = currentSection.querySelectorAll('input, select');
+
+            inputs.forEach(input => {
+                if (input.name && formData[input.name]) {
+                    input.value = formData[input.name];
+                }
+            })
+        }
+
+        function changeStep(direction) {
+            // if (direction === 1 && !validateCurrentStep()) {
+            //     return;
+            // }
+
+            document.getElementById(`section${currentStep}`).classList.remove('active')
+
+            currentStep += direction;
+            document.getElementById(`section${currentStep}`).classList.add('active')
+
+            loadFormData();
+
+            document.getElementById('prevBtn').style.display = currentStep === 1 ? 'none' : 'flex';
+            document.getElementById('nextBtn').style.display = currentStep === totalSteps ? 'none' : 'flex';
+            document.getElementById('submitBtn').style.display = currentStep === totalSteps ? 'flex' : 'none';
+
+            updateProgress();
+        }
+
+        document.getElementById('applicationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            saveFormData();
+
+            console.log('form data:', formData);
+        })
+
+        function addTableRow(tableId, tableRow, button) {
+            const table = document.getElementById(tableId);
+            const row = document.getElementById(tableRow);
+            const addRowButton = document.getElementById(button).parentElement.cloneNode(true);
+            const newRow = row.cloneNode(true);
+            const tbody = table.lastElementChild;
+
+
+            const rowId = row.id.replace('-1', '');
+            const rowCount = document.querySelectorAll(`[id*="${rowId}"]`).length;
+
+            newRow.id = row.id.replace('-1', '') + `-${rowCount + 1}`;
+            const content = [...newRow.children];
+            content.forEach(row => {
+                let elements = [...row.children];
+                elements.forEach(element => {
+                    if (element.hasAttribute('id')) {
+                        element.id = element.id.replace('-1', `-${rowCount + 1}`);
+                    }
+                })
+            })
+
+            newRow.querySelectorAll('input').forEach(i => {
+                i.value = '';
+            });
+
+            newRow.querySelectorAll('input').forEach(i => {
+                i.selectedIndex = '';
+            })
+
+            tbody.removeChild(tbody.lastElementChild);
+
+            tbody.appendChild(newRow);
+            tbody.appendChild(addRowButton);
+        }
+
+        function removeTableRow(tableId, obj) {
+            const table = document.getElementById(tableId).lastElementChild;
+            const selectedRow = obj.parentNode.parentNode;
+            const rowIdHeader = table.firstElementChild.id.replace('-1', '');
+            const rows = table.querySelectorAll(`[id*="${rowIdHeader}"]`);
+            const selectedRowId = selectedRow.id.split('-')[2];
+
+            // const content = [...rows.children];
+
+            if (rows.length <= 1) {
+                alert('Cannot delete the only entry');
+                return;
+            }
+            selectedRow.remove();
+
+            rows.forEach(row => {
+                const thisRowNumber = row.id.split('-')[2];
+                if (thisRowNumber > selectedRowId) {
+                    row.id = rowIdHeader + '-' + (thisRowNumber - 1);
+                    let cells = [...row.children];
+                    cells.forEach(cell => {
+                        let elements = [...cell.children];
+                        elements.forEach(element => {
+                            if (element.hasAttribute('id')) {
+                                let elementNumber = element.id.split('-')[1];
+                                element.id = element.id.replace(`-${elementNumber}`, `-${thisRowNumber - 1}`)
+                            }
+                        })
+                    })
+                }
+            })
+        }
+
+        updateProgress();
+    </script>
+
+</body>
+
+</html>
