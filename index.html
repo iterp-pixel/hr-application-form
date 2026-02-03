@@ -15,6 +15,19 @@
 <body>
     <div class="page">
         <div class="layout">
+            <!-- Success Screen -->
+            <div class="panel" style="display: none;">
+                <div class="panel-center">
+                    <img src="assets/icons/form-success-icon.svg" alt="Success">
+                    <div>
+                        <h2 style="text-align: center;">Success! Your Submission</h2>
+                        <p style="text-align: center;">
+                            Your application has been successfully submitted. Our team will review your information and
+                            contact you if further action is required.
+                        </p>
+                    </div>
+                </div>
+            </div>
 
             <!-- Sidebar -->
             <aside class="sidebar">
@@ -81,12 +94,11 @@
             </aside>
 
             <!-- Main panel -->
-            <!-- <div id="main-panel" class="main-panel"></div> -->
-            <form id="application-form">
+            <form id="applicationForm">
                 <div class="panel">
                     <!-- personal information -->
                     <div class="form-section active" id="section1">
-                        <div class="row spaced">
+                        <div class="row">
                             <div class="panel-title">
                                 <h2>Personal Information</h2>
                                 <p>
@@ -99,10 +111,11 @@
 
                         <div class="panel-body">
 
-                            <div class="row spaced">
+                            <div class="row">
                                 <div class="field">
                                     <label for="fullName">Full Name</label>
-                                    <input type="text" id="fullName" name="fullName" placeholder="Input here..." required>
+                                    <input type="text" id="fullName" name="fullName" placeholder="Input here..."
+                                        required>
                                 </div>
                                 <div class="field">
                                     <label for="fullName">Gender</label>
@@ -113,8 +126,8 @@
                                     </select>
                                 </div>
                             </div>
-    
-                            <div class="row spaced">
+
+                            <div class="row">
                                 <div class="field">
                                     <label for="email">Email</label>
                                     <input type="email" name="email" id="email" placeholder="Input here..." required>
@@ -122,7 +135,7 @@
                                 <div class="field">
                                     <label for="phone">WhatsApp Number</label>
                                     <div class="phone">
-                                        <select name="countryCode" id="countryCode" required>
+                                        <select name="countryCode" id="countryCode" style="width: 200px;" required>
                                             <option value="">Code</option>
                                             <option value="+1">🇺🇸 +1 (USA)</option>
                                             <option value="+44">🇬🇧 +44 (UK)</option>
@@ -146,25 +159,26 @@
                                             <option value="+52">🇲🇽 +52 (Mexico)</option>
                                             <option value="+27">🇿🇦 +27 (South Africa)</option>
                                         </select>
-                                        <input type="tel" id="phone" name="phone" placeholder="Input here..." required />
+                                        <input type="tel" id="phone" name="phone" placeholder="Input here..."
+                                            required />
                                     </div>
                                 </div>
                             </div>
-    
-                            <div class="row spaced">
+
+                            <div class="row">
                                 <div class="field">
                                     <label for="birthPlace">Place Birth</label>
                                     <input type="text" id="birthPlace" name="birthPlace" placeholder="Input here..."
                                         required />
                                 </div>
-    
+
                                 <div class="field">
                                     <label for="dob">Date of Birth</label>
                                     <input type="date" id="dob" name="dob" required />
                                 </div>
                             </div>
-    
-                            <div class="row spaced narrow">
+
+                            <div class="row narrow">
                                 <div class="field">
                                     <label for="nationality">Nationality</label>
                                     <select name="nationality" id="nationality" required>
@@ -212,56 +226,59 @@
                             <img src="assets/icons/company-icon.svg" alt="logo">
                         </div>
 
-                        <div class="row narrow">
-                            <input type="checkbox" name="socialMedia" id="hasSocialMedia" checked>
-                            <div>I have a social media account</div>
-                        </div>
 
-                        <div class="table-wrapper" id="socialContent">
-                            <div class="table-scroll-x">
-                                <table id="socialTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Platform</th>
-                                            <th>Link Platform</th>
-                                            <th class="table-action"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr id="social-row-1">
-                                            <td>
-                                                <select id="socialplatform-1">
-                                                    <option value="">Choose Platform</option>
-                                                    <option value="LinkedIn">LinkedIn</option>
-                                                    <option value="Twitter">Twitter/X</option>
-                                                    <option value="Instagram">Instagram</option>
-                                                    <option value="Facebook">Facebook</option>
-                                                    <option value="Other">Other</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <input id="sociallink-1" type="text" required
-                                                    placeholder="Input here..." />
-                                            </td>
-                                            <td class="table-action">
-                                                <button type="button" onclick="removeTableRow('socialTable', this)"
-                                                    class="table-add-btn"><img src="assets/icons/trash-icon.svg"
-                                                        alt="X"></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3">
-                                                <button type="button" id="addSocialRow" class="table-add-btn"
-                                                    onclick="addTableRow('socialTable', 'social-row-1', 'addSocialRow')">
-                                                    <img src="assets/icons/plus-icon.svg" alt="+">
-                                                    New Item
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        <div class="panel-body">
+                            <div class="row narrow">
+                                <input type="checkbox" name="socialMedia" id="hasSocialMedia" checked>
+                                <div>I have a social media account</div>
+                            </div>
+                            <div class="table-wrapper" id="socialContent">
+                                <div class="table-scroll-x">
+                                    <table id="socialTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Platform</th>
+                                                <th>Link Platform</th>
+                                                <th class="table-action"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr id="social-row-1">
+                                                <td>
+                                                    <select id="socialplatform-1">
+                                                        <option value="">Choose Platform</option>
+                                                        <option value="LinkedIn">LinkedIn</option>
+                                                        <option value="Twitter">Twitter/X</option>
+                                                        <option value="Instagram">Instagram</option>
+                                                        <option value="Facebook">Facebook</option>
+                                                        <option value="Other">Other</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input id="sociallink-1" type="text" required
+                                                        placeholder="Input here..." />
+                                                </td>
+                                                <td class="table-action">
+                                                    <button type="button" onclick="removeTableRow('socialTable', this)"
+                                                        class="table-add-btn"><img src="assets/icons/trash-icon.svg"
+                                                            alt="X"></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <button type="button" id="addSocialRow" class="table-add-btn"
+                                                        onclick="addTableRow('socialTable', 'social-row-1', 'addSocialRow')">
+                                                        <img src="assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
+
                     </div>
 
                     <!-- educational background -->
@@ -280,78 +297,92 @@
                             </div>
                         </div>
 
-                        <div class="row narrow">
-                            <input type="checkbox" name="educationalBackground" id="hasEduBackground" checked>
-                            <div>I have a previous educational background</div>
+                        <div class="panel-body">
+                            <div class="row narrow">
+                                <input type="checkbox" name="educationalBackground" id="hasEduBackground" checked>
+                                <div>I have a previous educational background</div>
+                            </div>
+                            <div class="table-wrapper" id="eduContent">
+                                <div class="table-scroll-x">
+                                    <table id="eduTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Level</th>
+                                                <th>School Name</th>
+                                                <th>Study Period</th>
+                                                <th>Remarks</th>
+                                                <th>Upload Document</th>
+                                                <th class="table-action"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr id="edu-row-1">
+                                                <td>
+                                                    <select id="level-1">
+                                                        <option value="">Choose level</option>
+                                                        <option value="Elementary">Elementary School</option>
+                                                        <option value="Middle">Middle School</option>
+                                                        <option value="High">High School</option>
+                                                        <option value="Diploma">Diploma</option>
+                                                        <option value="Bachelor">Bachelor</option>
+                                                        <option value="Master">Master</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" placeholder="Input name here..."
+                                                        id="schoolname-1" />
+                                                </td>
+                                                <td>
+                                                    <input type="month" name="" id="startperiod-1">
+                                                    <span>-</span>
+                                                    <input type="month" name="" id="endperiod-1">
+                                                </td>
+                                                <td>
+                                                    <input type="number" min="0" placeholder="0" id="remark-1">
+                                                    <span>/</span>
+                                                    <input type="number" min="0" placeholder="0" id="totalremark-1">
+                                                </td>
+                                                <td>
+                                                    <div class="file-input-wrapper">
+                                                        <span class="file-name" id="edudocument-name-1">No file
+                                                            chosen</span>
+                                                        <button type="button" class="file-btn" id="edudocument-btn-1"
+                                                            onclick="fileUploadHandler(this)">
+                                                            <img src="assets/icons/upload-icon.svg" alt="Upload">
+                                                        </button>
+                                                        <input type="file" name="edudocument-1" id="edudocument-1"
+                                                            onchange="fileOnChanged(this)" required
+                                                            accept="application/pdf">
+                                                    </div>
+                                                    <!-- <label for="">
+                                                        <input type="file" id="edudocument-1" accept="application/pdf">
+                                                    </label> -->
+                                                </td>
+                                                <td class="table-action">
+                                                    <button type="button" class="table-add-btn"
+                                                        onclick="removeTableRow('eduTable', this)">
+                                                        <img src="assets/icons/trash-icon.svg" alt="X">
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6">
+                                                    <button type="button" id="addEduRow" class="table-add-btn"
+                                                        onclick="addTableRow('eduTable', 'edu-row-1', 'addEduRow')">
+                                                        <img src="assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div>
+
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="table-wrapper" id="eduContent">
-                            <div class="table-scroll-x">
-                                <table id="eduTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Level</th>
-                                            <th>School Name</th>
-                                            <th>Study Period</th>
-                                            <th>Remarks</th>
-                                            <th>Upload Document</th>
-                                            <th class="table-action"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr id="edu-row-1">
-                                            <td>
-                                                <select id="level-1">
-                                                    <option value="">Choose level</option>
-                                                    <option value="Elementary">Elementary School</option>
-                                                    <option value="Middle">Middle School</option>
-                                                    <option value="High">High School</option>
-                                                    <option value="Diploma">Diploma</option>
-                                                    <option value="Bachelor">Bachelor</option>
-                                                    <option value="Master">Master</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <input type="text" placeholder="Input name here..." id="schoolname-1" />
-                                            </td>
-                                            <td>
-                                                <input type="month" name="" id="startperiod-1">
-                                                <span>-</span>
-                                                <input type="month" name="" id="endperiod-1">
-                                            </td>
-                                            <td>
-                                                <input type="number" min="0" placeholder="0" id="remark-1">
-                                                <span>/</span>
-                                                <input type="number" min="0" placeholder="0" id="totalremark-1">
-                                            </td>
-                                            <td>
-                                                <label for="">
-                                                    <input type="file" id="edudocument-1" accept="application/pdf">
-                                                </label>
-                                            </td>
-                                            <td class="table-action">
-                                                <button type="button" class="table-add-btn"
-                                                    onclick="removeTableRow('eduTable', this)">
-                                                    <img src="assets/icons/trash-icon.svg" alt="X">
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6">
-                                                <button type="button" id="addEduRow" class="table-add-btn"
-                                                    onclick="addTableRow('eduTable', 'edu-row-1', 'addEduRow')">
-                                                    <img src="assets/icons/plus-icon.svg" alt="+">
-                                                    New Item
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div>
-
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Work Experience -->
@@ -360,72 +391,75 @@
                             <div class="panel-title">
                                 <h2>Work Experience</h2>
                                 <p>
-                                    Please provide details of your previous work experience. Include your job title, company name, employment period, take-home pay, and key job responsibilities.
+                                    Please provide details of your previous work experience. Include your job title,
+                                    company name, employment period, take-home pay, and key job responsibilities.
                                 </p>
                             </div>
                             <img src="assets/icons/company-icon.svg" alt="logo">
                         </div>
 
-                        <div class="row narrow">
-                            <input type="checkbox" name="workExperience" id="hasWorkExp" checked>
-                            <div>I have a previous work experience</div>
-                        </div>
-
-                        <div class="table-wrapper" id="workExpContent">
-                            <div class="table-scroll-x">
-                                <table id="workExpTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Working Period</th>
-                                            <th>Company Name</th>
-                                            <th>Job Title</th>
-                                            <th>Take Home Pay</th>
-                                            <th>Job Description</th>
-                                            <th class="table-action"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr id="work-row-1">
-                                            <td>
-                                                <input type="month" name="" id="startperiod-1" placeholder="Start">
-                                                <span>-</span>
-                                                <input type="month" name="" id="endperiod-1" placeholder="Now">
-                                            </td>
-                                            <td>
-                                                <input id="company-1" type="text" required
-                                                    placeholder="Input here..." />
-                                            </td>
-                                            <td>
-                                                <input id="jobtitle-1" type="text" required
-                                                    placeholder="Input here..." />
-                                            </td>
-                                            <td>
-                                                Rp <input id="takehomepay-1" type="number" required
-                                                    placeholder="Input here..." />
-                                            </td>
-                                            <td>
-                                                <input id="jobdesc-1" type="text" required
-                                                    placeholder="Input here..." />
-                                            </td>
-                                            <td class="table-action">
-                                                <button type="button" onclick="removeTableRow('workExpTable', this)"
-                                                    class="table-add-btn"><img src="assets/icons/trash-icon.svg"
-                                                        alt="X"></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6">
-                                                <button type="button" id="addWorkRow" class="table-add-btn"
-                                                    onclick="addTableRow('workExpTable', 'work-row-1', 'addWorkRow')">
-                                                    <img src="assets/icons/plus-icon.svg" alt="+">
-                                                    New Item
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        <div class="panel-body">
+                            <div class="row narrow">
+                                <input type="checkbox" name="workExperience" id="hasWorkExp" checked>
+                                <div>I have a previous work experience</div>
+                            </div>
+                            <div class="table-wrapper" id="workExpContent">
+                                <div class="table-scroll-x">
+                                    <table id="workExpTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Working Period</th>
+                                                <th>Company Name</th>
+                                                <th>Job Title</th>
+                                                <th>Take Home Pay</th>
+                                                <th>Job Description</th>
+                                                <th class="table-action"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr id="work-row-1">
+                                                <td>
+                                                    <input type="month" name="" id="startperiod-1" placeholder="Start">
+                                                    <span>-</span>
+                                                    <input type="month" name="" id="endperiod-1" placeholder="Now">
+                                                </td>
+                                                <td>
+                                                    <input id="company-1" type="text" required
+                                                        placeholder="Input here..." />
+                                                </td>
+                                                <td>
+                                                    <input id="jobtitle-1" type="text" required
+                                                        placeholder="Input here..." />
+                                                </td>
+                                                <td>
+                                                    Rp <input id="takehomepay-1" type="number" required
+                                                        placeholder="Input here..." />
+                                                </td>
+                                                <td>
+                                                    <input id="jobdesc-1" type="text" required
+                                                        placeholder="Input here..." />
+                                                </td>
+                                                <td class="table-action">
+                                                    <button type="button" onclick="removeTableRow('workExpTable', this)"
+                                                        class="table-add-btn"><img src="assets/icons/trash-icon.svg"
+                                                            alt="X"></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6">
+                                                    <button type="button" id="addWorkRow" class="table-add-btn"
+                                                        onclick="addTableRow('workExpTable', 'work-row-1', 'addWorkRow')">
+                                                        <img src="assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
+
                     </div>
 
                     <!-- Training -->
@@ -434,116 +468,143 @@
                             <div class="panel-title">
                                 <h2>Training</h2>
                                 <p>
-                                    Please list any training or certification programs you have attended. Include the training period, institution name, training scope, and a short description.
+                                    Please list any training or certification programs you have attended. Include the
+                                    training period, institution name, training scope, and a short description.
                                 </p>
                             </div>
                             <img src="assets/icons/company-icon.svg" alt="logo">
                         </div>
 
-                        <div class="row narrow">
-                            <input type="checkbox" name="training" id="hasTraining" checked>
-                            <div>I have a previous training</div>
-                        </div>
 
-                        <div class="table-wrapper" id="trainingContent">
-                            <div class="table-scroll-x">
-                                <table id="trainingTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Training Period</th>
-                                            <th>Institute Name Name</th>
-                                            <th>Scope Training</th>
-                                            <th>Description</th>
-                                            <th>Upload Document</th>
-                                            <th class="table-action"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr id="training-row-1">
-                                            <td>
-                                                <input type="month" name="" id="trainingstartperiod-1" placeholder="Start">
-                                                <span>-</span>
-                                                <input type="month" name="" id="trainingendperiod-1" placeholder="Now">
-                                            </td>
-                                            <td>
-                                                <input id="institute-1" type="text" required
-                                                    placeholder="Input here..." />
-                                            </td>
-                                            <td>
-                                                <input id="scope-1" type="text" required
-                                                    placeholder="Input here..." />
-                                            </td>
-                                            <td>
-                                                <input id="trainingdesc-1" type="text" required
-                                                    placeholder="Input here..." />
-                                            </td>
-                                            <td>
-                                                <input id="trainingdoc-1" type="file" required
-                                                    placeholder="Input here..." />
-                                            </td>
-                                            <td class="table-action">
-                                                <button type="button" onclick="removeTableRow('trainingTable', this)"
-                                                    class="table-add-btn"><img src="assets/icons/trash-icon.svg"
-                                                        alt="X"></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6">
-                                                <button type="button" id="addTrainingRow" class="table-add-btn"
-                                                    onclick="addTableRow('trainingTable', 'training-row-1', 'addTrainingRow')">
-                                                    <img src="assets/icons/plus-icon.svg" alt="+">
-                                                    New Item
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        <div class="panel-body">
+                            <div class="row narrow">
+                                <input type="checkbox" name="training" id="hasTraining" checked>
+                                <div>I have a previous training</div>
+                            </div>
+
+                            <div class="table-wrapper" id="trainingContent">
+                                <div class="table-scroll-x">
+                                    <table id="trainingTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Training Period</th>
+                                                <th>Institute Name Name</th>
+                                                <th>Scope Training</th>
+                                                <th>Description</th>
+                                                <th>Upload Document</th>
+                                                <th class="table-action"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr id="training-row-1">
+                                                <td>
+                                                    <input type="month" name="" id="trainingstartperiod-1"
+                                                        placeholder="Start">
+                                                    <span>-</span>
+                                                    <input type="month" name="" id="trainingendperiod-1"
+                                                        placeholder="Now">
+                                                </td>
+                                                <td>
+                                                    <input id="institute-1" type="text" required
+                                                        placeholder="Input here..." />
+                                                </td>
+                                                <td>
+                                                    <input id="scope-1" type="text" required
+                                                        placeholder="Input here..." />
+                                                </td>
+                                                <td>
+                                                    <input id="trainingdesc-1" type="text" required
+                                                        placeholder="Input here..." />
+                                                </td>
+                                                <td>
+                                                    <div class="file-input-wrapper">
+                                                        <span class="file-name" id="trainingdoc-name-1">No file
+                                                            chosen</span>
+                                                        <button type="button" class="file-btn" id="trainingdoc-btn-1"
+                                                            onclick="fileUploadHandler(this)">
+                                                            <img src="assets/icons/upload-icon.svg" alt="Upload">
+                                                        </button>
+                                                        <input type="file" name="trainingdoc-1" id="trainingdoc-1"
+                                                            onchange="fileOnChanged(this)" required
+                                                            accept="application/pdf">
+                                                    </div>
+                                                    <!-- <input id="trainingdoc-1" type="file" required
+                                                        placeholder="Input here..." /> -->
+                                                </td>
+                                                <td class="table-action">
+                                                    <button type="button"
+                                                        onclick="removeTableRow('trainingTable', this)"
+                                                        class="table-add-btn"><img src="assets/icons/trash-icon.svg"
+                                                            alt="X"></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6">
+                                                    <button type="button" id="addTrainingRow" class="table-add-btn"
+                                                        onclick="addTableRow('trainingTable', 'training-row-1', 'addTrainingRow')">
+                                                        <img src="assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
+
                     </div>
 
                     <!-- Job Expectations -->
                     <div class="form-section" id="section6">
-                        <div class="row spaced">
+                        <div class="row">
                             <div class="panel-title">
                                 <h2>Job Expectations</h2>
                                 <p>
-                                    Please share your job preferences, including your expected salary, available starting date, and willingness to work outside your current location.
+                                    Please share your job preferences, including your expected salary, available
+                                    starting date, and willingness to work outside your current location.
                                 </p>
                             </div>
                             <img src="assets/icons/company-icon.svg" alt="logo">
                         </div>
 
-                        <div class="row spaced">
-                            <div class="field">
-                                <label for="expectedSalary">Expected Salary</label>
-                                <div class="row narrow">
-                                    Rp 
-                                    <input type="number" id="expectedSalary" name="expectedSalary" placeholder="0" required>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="field">
+                                    <label for="expectedSalary">Expected Salary</label>
+                                    <div class="phone">
+                                        <div
+                                            style="margin:0px; padding: 10px; border-right: 1px solid #e5e7eb; font-weight: 500;">
+                                            Rp</div>
+                                        <input type="number" id="expectedSalary" name="expectedSalary" placeholder="0"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="availableDate">Available Starting Date</label>
+                                    <input type="date" name="availableDate" id="availableDate">
                                 </div>
                             </div>
-                            <div class="field">
-                                <label for="availableDate">Available Starting Date</label>
-                                <input type="date" name="availableDate" id="availableDate">
-                            </div>
-                        </div>
 
-                        <div class="row spaced">
-                            <div class="field">
-                                <label for="cityAssignedConsent">Are you willing to be assigned outside of the city?</label>
-                                <select name="cityAssignedConsent" id="cityAssignedConsent">
-                                    <option value="">Select</option>
-                                    <option value="Y">Yes</option>
-                                    <option value="N">No</option>
-                                </select>
-                            </div>
-                            <div class="field">
-                                <label for="countryAssignedConsent">Are you willing to be assigned outside of the country?</label>
-                                <select name="countryAssignedConsent" id="countryAssignedConsent">
-                                    <option value="">Select</option>
-                                    <option value="Y">Yes</option>
-                                    <option value="N">No</option>
-                                </select>
+                            <div class="row">
+                                <div class="field">
+                                    <label for="cityAssignedConsent">Are you willing to be assigned outside of the
+                                        city?</label>
+                                    <select name="cityAssignedConsent" id="cityAssignedConsent">
+                                        <option value="">Select</option>
+                                        <option value="Y">Yes</option>
+                                        <option value="N">No</option>
+                                    </select>
+                                </div>
+                                <div class="field">
+                                    <label for="countryAssignedConsent">Are you willing to be assigned outside of the
+                                        country?</label>
+                                    <select name="countryAssignedConsent" id="countryAssignedConsent">
+                                        <option value="">Select</option>
+                                        <option value="Y">Yes</option>
+                                        <option value="N">No</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -554,54 +615,56 @@
                             <div class="panel-title">
                                 <h2>Health Information</h2>
                                 <p>
-                                    Please provide information about any illnesses, medical conditions, or health history that may affect your work performance.
+                                    Please provide information about any illnesses, medical conditions, or health
+                                    history that may affect your work performance.
                                 </p>
                             </div>
                             <img src="assets/icons/company-icon.svg" alt="logo">
                         </div>
 
-                        <div class="row narrow">
-                            <input type="checkbox" name="health" id="hasHealth" checked>
-                            <div>I have a previous health information</div>
-                        </div>
-
-                        <div class="table-wrapper" id="healthContent">
-                            <div class="table-scroll-x">
-                                <table id="healthTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Sickness</th>
-                                            <th>Description</th>
-                                            <th class="table-action"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr id="health-row-1">
-                                            <td>
-                                                <input id="sick-1" type="text" required
-                                                    placeholder="Input here..." />
-                                            </td>
-                                            <td>
-                                                <input id="healthdescription-1" type="text" required
-                                                    placeholder="Input here..." />
-                                            </td>
-                                            <td class="table-action">
-                                                <button type="button" onclick="removeTableRow('healthTable', this)"
-                                                    class="table-add-btn"><img src="assets/icons/trash-icon.svg"
-                                                        alt="X"></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6">
-                                                <button type="button" id="addHealthRow" class="table-add-btn"
-                                                    onclick="addTableRow('healthTable', 'health-row-1', 'addHealthRow')">
-                                                    <img src="assets/icons/plus-icon.svg" alt="+">
-                                                    New Item
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        <div class="panel-body">
+                            <div class="row narrow">
+                                <input type="checkbox" name="health" id="hasHealth" checked>
+                                <div>I have a previous health information</div>
+                            </div>
+                            <div class="table-wrapper" id="healthContent">
+                                <div class="table-scroll-x">
+                                    <table id="healthTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Sickness</th>
+                                                <th>Description</th>
+                                                <th class="table-action"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr id="health-row-1">
+                                                <td>
+                                                    <input id="sick-1" type="text" required
+                                                        placeholder="Input here..." />
+                                                </td>
+                                                <td>
+                                                    <input id="healthdescription-1" type="text" required
+                                                        placeholder="Input here..." />
+                                                </td>
+                                                <td class="table-action">
+                                                    <button type="button" onclick="removeTableRow('healthTable', this)"
+                                                        class="table-add-btn"><img src="assets/icons/trash-icon.svg"
+                                                            alt="X"></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6">
+                                                    <button type="button" id="addHealthRow" class="table-add-btn"
+                                                        onclick="addTableRow('healthTable', 'health-row-1', 'addHealthRow')">
+                                                        <img src="assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -612,73 +675,155 @@
                             <div class="panel-title">
                                 <h2>Quick Question</h2>
                                 <p>
-                                    Please answer a few short questions to help us better understand your background and application history with PT Kapit Mas.
+                                    Please answer a few short questions to help us better understand your background and
+                                    application history with PT Kapit Mas.
                                 </p>
                             </div>
                             <img src="assets/icons/company-icon.svg" alt="logo">
                         </div>
 
-                        <div class="row narrow">
-                            <div class="field">
-                                <label for="Qq1">Are you willing to let us contact your previous employer for reference?</label>
-                                <select name="Qq1" id="Qq1">
-                                    <option value="">Choose an option</option>
-                                    <option value="Y">Yes</option>
-                                    <option value="N">No</option>
-                                </select>
+                        <div class="panel-body">
+                            <div class="row narrow">
+                                <div class="field">
+                                    <label for="Qq1">Are you willing to let us contact your previous employer for
+                                        reference?</label>
+                                    <select name="Qq1" id="Qq1">
+                                        <option value="">Choose an option</option>
+                                        <option value="Y">Yes</option>
+                                        <option value="N">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row narrow">
+                                <div class="field">
+                                    <label for="Qq2">Have you ever been involved in any legal case?</label>
+                                    <select name="Qq2" id="Qq2" onchange="toggleField(this, 'Qq2details')">
+                                        <option value="">Choose an option</option>
+                                        <option value="Y">Yes</option>
+                                        <option value="N">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row narrow" style="display: none">
+                                <div class="field">
+                                    <label for="Qq2details">Please provide details.</label>
+                                    <textarea name="Qq2details" id="Qq2details"></textarea>
+                                </div>
+                            </div>
+                            <div class="row narrow">
+                                <div class="field">
+                                    <label for="Qq3">Have you previously applied to PT Kapit Mas?</label>
+                                    <select name="Qq3" id="Qq3">
+                                        <option value="">Choose an option</option>
+                                        <option value="Y">Yes</option>
+                                        <option value="N">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row narrow">
+                                <div class="field">
+                                    <label for="Qq4">Where did you first learn about the job vacancy at PT Kapit
+                                        Mas?</label>
+                                    <select name="Qq4" id="Qq4" onchange="toggleField(this, 'Qq4details')">
+                                        <option value="">Choose an option</option>
+                                        <option value="LinkedIn">LinkedIn</option>
+                                        <option value="Job Street">JobStreet</option>
+                                        <option value="Others">Others</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row narrow" style="display: none;">
+                                <div class="field">
+                                    <label for="Qq4details">Please provide details.</label>
+                                    <textarea name="Qq4details" id="Qq4details"></textarea>
+                                </div>
                             </div>
                         </div>
-                        <div class="row narrow">
-                            <div class="field">
-                                <label for="Qq2">Have you ever been involved in any legal case?</label>
-                                <select name="Qq2" id="Qq2">
-                                    <option value="">Choose an option</option>
-                                    <option value="Y">Yes</option>
-                                    <option value="N">No</option>
-                                </select>
+
+                    </div>
+
+                    <!-- Attachment -->
+                    <div class="form-section" id="section9">
+                        <div class="row">
+                            <div class="panel-title">
+                                <h2>Attachment</h2>
+                                <p>
+                                    Upload your required documents to complete your application. Please include your
+                                    latest CV, academic certificates, and any relevant supporting files.
+                                </p>
+                            </div>
+                            <img src="assets/icons/company-icon.svg" alt="logo">
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="row narrow">
+                                <div class="field">
+                                    <label for="recentPhoto">Recent Photo</label>
+                                    <div class="file-input-wrapper">
+                                        <span class="file-name" id="recentPhoto-name">No file chosen</span>
+                                        <button type="button" class="file-btn" id="recentPhoto-btn"
+                                            onclick="fileUploadHandler(this, 'recentPhoto-name', 'recentPhoto')">
+                                            <img src="assets/icons/upload-icon.svg" alt="Upload">
+                                        </button>
+                                        <input type="file" name="recentPhoto" id="recentPhoto"
+                                            onchange="fileOnChanged(this, 'recentPhoto-name', 'recentPhoto-btn')"
+                                            required accept="application/jpg, application/png">
+                                    </div>
+                                    <p class="text-secondary">Max. Size 1MB with format .JPG / .PNG</p>
+                                </div>
+                            </div>
+                            <div class="row narrow">
+                                <div class="field">
+                                    <label for="resume">Curriculum Vitae (CV) / Resume</label>
+                                    <div class="file-input-wrapper">
+                                        <span class="file-name" id="resume-name">No file chosen</span>
+                                        <button type="button" class="file-btn" id="resume-btn"
+                                            onclick="fileUploadHandler(this, 'resume-name', 'resume')">
+                                            <img src="assets/icons/upload-icon.svg" alt="Upload">
+                                        </button>
+                                        <input type="file" name="resume" id="resume"
+                                            onchange="fileOnChanged(this, 'resume-name', 'resume-btn')" required
+                                            accept=".pdf">
+                                    </div>
+                                    <p class="text-secondary">Max. Size 2MB with format .PDF</p>
+                                </div>
+                            </div>
+                            <div class="row narrow">
+                                <div class="field">
+                                    <div class="row narrow">
+                                        <label for="portofolio">Portofolio</label>
+                                        <p class="text-secondary">(Optional)</p>
+                                    </div>
+                                    <input type="text" id="portofolio" placeholder="Input Link Portofolio" required>
+                                </div>
                             </div>
                         </div>
-                        <div class="row narrow">
-                            <div class="field">
-                                <label for="Qq2details">Please provide details.</label>
-                                <textarea name="Qq2details" id="Qq2details"></textarea>
+                    </div>
+
+                    <!-- Preview Application -->
+                    <div class="form-section" id="section10">
+                        <div class="row">
+                            <div class="panel-title">
+                                <h2>Preview Application</h2>
+                                <p>
+                                    Please review all the information you have provided below to ensure its accuracy
+                                    before submitting your application.
+                                </p>
                             </div>
+                            <img src="assets/icons/company-icon.svg" alt="logo">
                         </div>
-                        <div class="row narrow">
-                            <div class="field">
-                                <label for="Qq3">Have you previously applied to PT Kapit Mas?</label>
-                                <select name="Qq3" id="Qq3">
-                                    <option value="">Choose an option</option>
-                                    <option value="Y">Yes</option>
-                                    <option value="N">No</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row narrow">
-                            <div class="field">
-                                <label for="Qq4">Where did you first learn about the job vacancy at PT Kapit Mas?</label>
-                                <select name="Qq4" id="Qq4">
-                                    <option value="">Choose an option</option>
-                                    <option value="LinkedIn">LinkedIn</option>
-                                    <option value="Job Street">JobStreet</option>
-                                    <option value="Others">Others</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row narrow">
-                            <div class="field">
-                                <label for="Qq4details">Please provide details.</label>
-                                <textarea name="Qq4details" id="Qq2details" cols="1"></textarea>
-                            </div>
+
+                        <div class="panel-body" id="preview-test">
+                            Lorem Ipsum
                         </div>
                     </div>
 
                     <!-- buttons -->
                     <div class="row" id="buttonGroup">
-                        <div class="btn-outline" type="button" id="prevBtn" onclick="changeStep(-1)"
-                            style="display: none;">Previous</div>
-                        <div class="btn" type="button" id="nextBtn" onclick="changeStep(1)">Next</div>
-                        <div class="btn" type="submit" style="display: none;" id="submitBtn">Submit Application</div>
+                        <button class="btn-outline" type="button" id="prevBtn" onclick="changeStep(-1)"
+                            style="display: none;">Previous</button>
+                        <button class="btn" type="button" id="nextBtn" onclick="changeStep(1)">Next</button>
+                        <button class="btn" type="submit" style="display: none;" id="submitBtn">Submit</button>
                     </div>
                 </div>
 
@@ -692,7 +837,8 @@
         const totalSteps = 10;
         const formData = {};
 
-        document.getElementById('hasSocialMedia').addEventListener('change', function () {            
+        // section checkboxes
+        document.getElementById('hasSocialMedia').addEventListener('change', function () {
             if (this.checked) {
                 document.getElementById('socialContent').style.display = 'block';
             } else {
@@ -732,6 +878,55 @@
             }
         })
 
+        // file upload handler
+        function fileUploadHandler(self) {
+            // get parent and then children list
+            var parent = self.parentElement;
+            var elements = [...parent.children];
+
+            var input = elements[2];
+            var label = elements[0];
+
+            if (input.files.length) {
+                input.value = '';
+                label.textContent = "No file chosen";
+                self.innerHTML = "<img src='assets/icons/upload-icon.svg' alt='Upload'>"
+            } else {
+                input.click();
+            }
+        }
+
+        function fileOnChanged(self) {
+            var parent = self.parentElement;
+            var elements = [...parent.children];
+
+            var button = elements[1];
+            var label = elements[0];
+
+            if (self.files.length) {
+                label.textContent = self.files[0].name;
+                button.innerHTML = "<img src='assets/icons/cancel-icon.svg' alt='x'>"
+            } else {
+                label.textContent = 'No file chosen';
+                button.innerHTML = "<img src='assets/icons/upload-icon.svg' alt='x'>"
+            }
+        }
+
+        // quick question field toggler
+        function toggleField(self, id) {
+            var value = self.value;
+            var field = document.getElementById(id);
+            var fieldRow = field.parentElement.parentElement;
+            if (value == 'Y' || value == 'Others') {
+                fieldRow.style.display = 'block';
+                fieldRow.required = true;
+            } else {
+                fieldRow.style.display = 'none';
+                field.value = '';
+                fieldRow.required = false;
+            }
+        }
+
         function updateProgress() {
             for (let i = 1; i <= totalSteps; i++) {
                 const step = document.getElementById(`step${i}`);
@@ -769,8 +964,8 @@
             const inputs = currentSection.querySelectorAll('input, select');
 
             inputs.forEach(input => {
-                if (input.name) {
-                    formData[input.name] = input.value;
+                if (input.id) {
+                    formData[input.id] = input.value;
                 }
             })
         }
@@ -791,18 +986,35 @@
             //     return;
             // }
 
+            saveFormData();
+
+
             document.getElementById(`section${currentStep}`).classList.remove('active')
 
             currentStep += direction;
+
+            if (document.getElementById(`section${currentStep}`) == null) {
+                currentStep -= direction;
+            }
             document.getElementById(`section${currentStep}`).classList.add('active')
 
             loadFormData();
+
+            if (currentStep === 10) {
+                showPreview();
+            }
 
             document.getElementById('prevBtn').style.display = currentStep === 1 ? 'none' : 'flex';
             document.getElementById('nextBtn').style.display = currentStep === totalSteps ? 'none' : 'flex';
             document.getElementById('submitBtn').style.display = currentStep === totalSteps ? 'flex' : 'none';
 
             updateProgress();
+        }
+
+        function showPreview() {
+            const test = document.getElementById('preview-test');
+            console.log(formData);
+            test.innerHTML = formData;
         }
 
         document.getElementById('applicationForm').addEventListener('submit', function (e) {
@@ -821,6 +1033,7 @@
             const tbody = table.lastElementChild;
 
 
+            // increment id per new row
             const rowId = row.id.replace('-1', '');
             const rowCount = document.querySelectorAll(`[id*="${rowId}"]`).length;
 
@@ -832,15 +1045,35 @@
                     if (element.hasAttribute('id')) {
                         element.id = element.id.replace('-1', `-${rowCount + 1}`);
                     }
+
+                    // special condition for the custom file input
+                    if (element.classList.contains('file-input-wrapper')) {
+                        let inputElements = [...element.children];
+                        inputElements.forEach(e => {
+                            if (e.hasAttribute('id')) {
+                                e.id = e.id.replace('-1', `-${rowCount + 1}`);
+                            }
+                            if (e.hasAttribute('name')) {
+                                e.name = e.name.replace('-1', `-${rowCount + 1}`);
+                            };
+                        })
+                    }
                 })
             })
 
+            // clearing input values
             newRow.querySelectorAll('input').forEach(i => {
                 i.value = '';
             });
 
             newRow.querySelectorAll('input').forEach(i => {
                 i.selectedIndex = '';
+            })
+
+            newRow.querySelectorAll('span').forEach(i => {
+                if (i.classList.contains('file-name')) {
+                    i.textContent = 'No file chosen';
+                }
             })
 
             tbody.removeChild(tbody.lastElementChild);
