@@ -16,7 +16,7 @@
     <div class="page">
         <div class="layout">
             <!-- Success Screen -->
-            <div class="panel" style="display: none;">
+            <div class="panel" style="display: none;" id="success-panel">
                 <div class="panel-center">
                     <img src="assets/icons/form-success-icon.svg" alt="Success">
                     <div>
@@ -30,7 +30,7 @@
             </div>
 
             <!-- Sidebar -->
-            <aside class="sidebar">
+            <aside class="sidebar" id="sidebar">
                 <div id="step1" class="step active">
                     Personal Information
                     <div class="complete-circle">
@@ -229,7 +229,7 @@
 
                         <div class="panel-body">
                             <div class="row narrow">
-                                <input type="checkbox" name="socialMedia" id="hasSocialMedia" checked>
+                                <input type="checkbox" name="socialMedia" id="hasSocialMedia" onchange="toggleSection(this, 'socialContent', 'socialTable')" checked>
                                 <div>I have a social media account</div>
                             </div>
                             <div class="table-wrapper" id="socialContent">
@@ -245,7 +245,7 @@
                                         <tbody>
                                             <tr id="social-row-1">
                                                 <td>
-                                                    <select id="socialplatform-1">
+                                                    <select id="socialplatform-1" required>
                                                         <option value="">Choose Platform</option>
                                                         <option value="LinkedIn">LinkedIn</option>
                                                         <option value="Twitter">Twitter/X</option>
@@ -299,7 +299,7 @@
 
                         <div class="panel-body">
                             <div class="row narrow">
-                                <input type="checkbox" name="educationalBackground" id="hasEduBackground" checked>
+                                <input type="checkbox" name="educationalBackground" id="hasEduBackground" onchange="toggleSection(this, 'eduContent', 'eduTable')" checked>
                                 <div>I have a previous educational background</div>
                             </div>
                             <div class="table-wrapper" id="eduContent">
@@ -318,7 +318,7 @@
                                         <tbody>
                                             <tr id="edu-row-1">
                                                 <td>
-                                                    <select id="level-1">
+                                                    <select id="level-1" required>
                                                         <option value="">Choose level</option>
                                                         <option value="Elementary">Elementary School</option>
                                                         <option value="Middle">Middle School</option>
@@ -330,17 +330,17 @@
                                                 </td>
                                                 <td>
                                                     <input type="text" placeholder="Input name here..."
-                                                        id="schoolname-1" />
+                                                        id="schoolname-1" required />
                                                 </td>
                                                 <td>
-                                                    <input type="month" name="" id="startperiod-1">
+                                                    <input type="month" name="" id="startperiod-1" required>
                                                     <span>-</span>
-                                                    <input type="month" name="" id="endperiod-1">
+                                                    <input type="month" name="" id="endperiod-1" required>
                                                 </td>
                                                 <td>
-                                                    <input type="number" min="0" placeholder="0" id="remark-1">
+                                                    <input type="number" min="0" placeholder="0" id="remark-1" required>
                                                     <span>/</span>
-                                                    <input type="number" min="0" placeholder="0" id="totalremark-1">
+                                                    <input type="number" min="0" placeholder="0" id="totalremark-1" required>
                                                 </td>
                                                 <td>
                                                     <div class="file-input-wrapper">
@@ -400,7 +400,7 @@
 
                         <div class="panel-body">
                             <div class="row narrow">
-                                <input type="checkbox" name="workExperience" id="hasWorkExp" checked>
+                                <input type="checkbox" name="workExperience" id="hasWorkExp" onchange="toggleSection(this, 'workExpContent', 'workExpTable')" checked>
                                 <div>I have a previous work experience</div>
                             </div>
                             <div class="table-wrapper" id="workExpContent">
@@ -419,9 +419,9 @@
                                         <tbody>
                                             <tr id="work-row-1">
                                                 <td>
-                                                    <input type="month" name="" id="startperiod-1" placeholder="Start">
+                                                    <input type="month" name="" id="startperiod-1" placeholder="Start" required>
                                                     <span>-</span>
-                                                    <input type="month" name="" id="endperiod-1" placeholder="Now">
+                                                    <input type="month" name="" id="endperiod-1" placeholder="Now" required>
                                                 </td>
                                                 <td>
                                                     <input id="company-1" type="text" required
@@ -478,7 +478,7 @@
 
                         <div class="panel-body">
                             <div class="row narrow">
-                                <input type="checkbox" name="training" id="hasTraining" checked>
+                                <input type="checkbox" name="training" id="hasTraining" onchange="toggleSection(this, 'trainingContent', 'trainingTable')" checked>
                                 <div>I have a previous training</div>
                             </div>
 
@@ -499,10 +499,10 @@
                                             <tr id="training-row-1">
                                                 <td>
                                                     <input type="month" name="" id="trainingstartperiod-1"
-                                                        placeholder="Start">
+                                                        placeholder="Start" required>
                                                     <span>-</span>
                                                     <input type="month" name="" id="trainingendperiod-1"
-                                                        placeholder="Now">
+                                                        placeholder="Now" required>
                                                 </td>
                                                 <td>
                                                     <input id="institute-1" type="text" required
@@ -582,7 +582,7 @@
                                 </div>
                                 <div class="field">
                                     <label for="availableDate">Available Starting Date</label>
-                                    <input type="date" name="availableDate" id="availableDate">
+                                    <input type="date" name="availableDate" id="availableDate" required>
                                 </div>
                             </div>
 
@@ -590,7 +590,7 @@
                                 <div class="field">
                                     <label for="cityAssignedConsent">Are you willing to be assigned outside of the
                                         city?</label>
-                                    <select name="cityAssignedConsent" id="cityAssignedConsent">
+                                    <select name="cityAssignedConsent" id="cityAssignedConsent" required>
                                         <option value="">Select</option>
                                         <option value="Y">Yes</option>
                                         <option value="N">No</option>
@@ -599,7 +599,7 @@
                                 <div class="field">
                                     <label for="countryAssignedConsent">Are you willing to be assigned outside of the
                                         country?</label>
-                                    <select name="countryAssignedConsent" id="countryAssignedConsent">
+                                    <select name="countryAssignedConsent" id="countryAssignedConsent" required>
                                         <option value="">Select</option>
                                         <option value="Y">Yes</option>
                                         <option value="N">No</option>
@@ -624,7 +624,7 @@
 
                         <div class="panel-body">
                             <div class="row narrow">
-                                <input type="checkbox" name="health" id="hasHealth" checked>
+                                <input type="checkbox" name="health" id="hasHealth" onchange="toggleSection(this, 'healthContent', 'healthTable')" checked>
                                 <div>I have a previous health information</div>
                             </div>
                             <div class="table-wrapper" id="healthContent">
@@ -687,7 +687,7 @@
                                 <div class="field">
                                     <label for="Qq1">Are you willing to let us contact your previous employer for
                                         reference?</label>
-                                    <select name="Qq1" id="Qq1">
+                                    <select name="Qq1" id="Qq1" required>
                                         <option value="">Choose an option</option>
                                         <option value="Y">Yes</option>
                                         <option value="N">No</option>
@@ -697,7 +697,7 @@
                             <div class="row narrow">
                                 <div class="field">
                                     <label for="Qq2">Have you ever been involved in any legal case?</label>
-                                    <select name="Qq2" id="Qq2" onchange="toggleField(this, 'Qq2details')">
+                                    <select name="Qq2" id="Qq2" onchange="toggleField(this, 'Qq2details')" required>
                                         <option value="">Choose an option</option>
                                         <option value="Y">Yes</option>
                                         <option value="N">No</option>
@@ -713,7 +713,7 @@
                             <div class="row narrow">
                                 <div class="field">
                                     <label for="Qq3">Have you previously applied to PT Kapit Mas?</label>
-                                    <select name="Qq3" id="Qq3">
+                                    <select name="Qq3" id="Qq3" required>
                                         <option value="">Choose an option</option>
                                         <option value="Y">Yes</option>
                                         <option value="N">No</option>
@@ -724,7 +724,7 @@
                                 <div class="field">
                                     <label for="Qq4">Where did you first learn about the job vacancy at PT Kapit
                                         Mas?</label>
-                                    <select name="Qq4" id="Qq4" onchange="toggleField(this, 'Qq4details')">
+                                    <select name="Qq4" id="Qq4" onchange="toggleField(this, 'Qq4details')" required>
                                         <option value="">Choose an option</option>
                                         <option value="LinkedIn">LinkedIn</option>
                                         <option value="Job Street">JobStreet</option>
@@ -794,7 +794,7 @@
                                         <label for="portofolio">Portofolio</label>
                                         <p class="text-secondary">(Optional)</p>
                                     </div>
-                                    <input type="text" id="portofolio" placeholder="Input Link Portofolio" required>
+                                    <input type="text" id="portofolio" placeholder="Input Link Portofolio">
                                 </div>
                             </div>
                         </div>
@@ -838,45 +838,25 @@
         const formData = {};
 
         // section checkboxes
-        document.getElementById('hasSocialMedia').addEventListener('change', function () {
-            if (this.checked) {
-                document.getElementById('socialContent').style.display = 'block';
+        function toggleSection(self, content, id) {
+            const table = document.getElementById(id);
+            const inputs = table.querySelectorAll('input, select');
+            if (self.checked) {
+                document.getElementById(content).style.display = 'block';
+                inputs.forEach(input => {
+                    input.required = true;
+                })
             } else {
-                document.getElementById('socialContent').style.display = 'none';
+                document.getElementById(content).style.display = 'none';
+                inputs.forEach(input => {
+                    if (!input.id.includes('-1')) {
+                        input.parentElement.parentElement.remove();
+                    }
+                    input.value = '';
+                    input.required = false;
+                })
             }
-        })
-
-        document.getElementById('hasEduBackground').addEventListener('change', function () {
-            if (this.checked) {
-                document.getElementById('eduContent').style.display = 'block';
-            } else {
-                document.getElementById('eduContent').style.display = 'none';
-            }
-        })
-
-        document.getElementById('hasWorkExp').addEventListener('change', function () {
-            if (this.checked) {
-                document.getElementById('workExpContent').style.display = 'block';
-            } else {
-                document.getElementById('workExpContent').style.display = 'none';
-            }
-        })
-
-        document.getElementById('hasTraining').addEventListener('change', function () {
-            if (this.checked) {
-                document.getElementById('trainingContent').style.display = 'block';
-            } else {
-                document.getElementById('trainingContent').style.display = 'none';
-            }
-        })
-
-        document.getElementById('hasHealth').addEventListener('change', function () {
-            if (this.checked) {
-                document.getElementById('healthContent').style.display = 'block';
-            } else {
-                document.getElementById('healthContent').style.display = 'none';
-            }
-        })
+        }
 
         // file upload handler
         function fileUploadHandler(self) {
@@ -917,13 +897,14 @@
             var value = self.value;
             var field = document.getElementById(id);
             var fieldRow = field.parentElement.parentElement;
+            console.log(field);
             if (value == 'Y' || value == 'Others') {
                 fieldRow.style.display = 'block';
-                fieldRow.required = true;
+                field.required = true;
             } else {
                 fieldRow.style.display = 'none';
                 field.value = '';
-                fieldRow.required = false;
+                field.required = false;
             }
         }
 
@@ -1022,8 +1003,19 @@
 
             saveFormData();
 
+            
             console.log('form data:', formData);
+
+            document.getElementById('success-panel').style.display = 'block';
+            document.getElementById('sidebar').style.display = 'none';
+            document.getElementById('applicationForm').style.display = 'none';
         })
+
+        function submitForm() {
+            document.getElementById('success-panel').style.display = 'block';
+            document.getElementById('sidebar').style.display = 'none';
+            document.getElementById('applicationForm').style.display = 'none';
+        }
 
         function addTableRow(tableId, tableRow, button) {
             const table = document.getElementById(tableId);
