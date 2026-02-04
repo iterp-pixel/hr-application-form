@@ -877,7 +877,7 @@
                                                         <div id="sociallink-1Prev"></div>
                                                     </td>
                                                     <td class="table-action">
-                                                        <button type="button" class="btn-link">
+                                                        <button type="button" class="btn-link" onclick="openTab(formData[`sociallink-${this.parentElement.parentElement.id.split('-')[1]}`])">
                                                             <img src="assets/icons/new-tab-icon.svg" alt="View">
                                                         </button>
                                                     </td>
@@ -924,7 +924,7 @@
                                                         <div id="edudocument-1Prev"></div>
                                                     </td>
                                                     <td class="table-action">
-                                                        <button type="button" class="btn-link">
+                                                        <button type="button" class="btn-link" onclick="openTab(formData[`edudocument-${this.parentElement.parentElement.id.split('-')[1]}`])">
                                                             <img src="assets/icons/new-tab-icon.svg" alt="View">
                                                         </button>
                                                     </td>
@@ -994,7 +994,7 @@
                                                     <td style="width: 400px;"><div id="trainingdesc-1Prev"></div></td>
                                                     <td style="width: 100px;"><div id="trainingdoc-1Prev"></div></td>
                                                     <td class="table-action">
-                                                        <button type="button" class="btn-link">
+                                                        <button type="button" class="btn-link" onclick="openTab(formData[`trainingdoc-${this.parentElement.parentElement.id.split('-')[1]}`])">
                                                             <img src="assets/icons/new-tab-icon.svg" alt="View">
                                                         </button>
                                                     </td>
@@ -1097,7 +1097,7 @@
                                         <label>Recent Photo</label>
                                         <div class="input-readonly row">
                                             <div id="recentPhotoPrev"></div>
-                                            <button type="button" class="btn-link">
+                                            <button type="button" class="btn-link" onclick="openTab(formData['recentPhoto'])">
                                                 <img src="assets/icons/new-tab-icon.svg" alt="View">
                                             </button>
                                         </div>
@@ -1109,7 +1109,7 @@
                                         <label>Curriculum Vitae (CV) / Resume</label>
                                         <div class="input-readonly row">
                                             <div id="resumePrev"></div>
-                                            <button type="button" class="btn-link">
+                                            <button type="button" class="btn-link" onclick="openTab(formData['resume'])">
                                                 <img src="assets/icons/new-tab-icon.svg" alt="View">
                                             </button>
                                         </div>
@@ -1124,7 +1124,7 @@
                                         </div>
                                         <div class="input-readonly row">
                                             <div id="portofolioPrev"></div>
-                                            <button type="button" class="btn-link">
+                                            <button type="button" class="btn-link" onclick="openTab(formData['portofolio'])">
                                                 <img src="assets/icons/new-tab-icon.svg" alt="View">
                                             </button>
                                         </div>
@@ -1194,6 +1194,7 @@
             }
         }
 
+        // custom input type file logic
         function fileOnChanged(self) {
             var parent = self.parentElement;
             var elements = [...parent.children];
@@ -1215,7 +1216,6 @@
             var value = self.value;
             var field = document.getElementById(id);
             var fieldRow = field.parentElement.parentElement;
-            console.log(field);
             if (value == 'Yes' || value == 'Others') {
                 fieldRow.style.display = 'block';
                 field.required = true;
@@ -1264,6 +1264,10 @@
 
             inputs.forEach(input => {
                 if (input.id) {
+                    if (input.type == 'file') {
+                        formData[input.id] = input.files[0];
+                        return;
+                    }
                     formData[input.id] = input.value;
                 }
             })
@@ -1317,6 +1321,12 @@
             Object.entries(formData).forEach(data => {
                 var targetElement = document.getElementById(`${data[0]}Prev`);
 
+                // show file name for input type file
+                if (data[1] instanceof File) {
+                    targetElement.innerHTML = data[1].name ?? '';
+                    return;
+                }
+
                 if (targetElement != null) {
                     // toggle section preview
                     if (data[0].includes('has')) {
@@ -1339,14 +1349,14 @@
                     }
 
                     // show value to target element
-                    targetElement.innerHTML = data[1];
+                    targetElement.innerHTML = data[1] ?? '';
                 }
 
                 // showing data from table inputs
                 if (data[0].includes('-')) {
                     var firstRow = document.getElementById(`${data[0].split('-')[0]}-1Prev`);
                     if (firstRow == null) {
-                        test.innerHTML += `<div>${data[0]} : ${data[1]}</div>`;
+                        // test.innerHTML += `<div>${data[0]} : ${data[1]}</div>`;
                         return;
                     }
                     var tableRow = firstRow.parentElement.parentElement;
@@ -1372,7 +1382,7 @@
 
                             table.appendChild(newElement);
                         } else {
-                            targetElement.innerHTML = data[1];
+                            targetElement.innerHTML = data[1] ?? '';
                         }
                     }
                 }
@@ -1380,6 +1390,28 @@
                 // show data debug
                 // test.innerHTML += `<div>${data[0]} : ${data[1]}</div>`;
             })
+        }
+
+        function openTab(content) {
+            if (!content) return;
+
+            let url;
+
+            if (content instanceof File) {
+                url = URL.createObjectURL(content);
+            } else if (content instanceof URL) {
+                url = content.href;
+            } else if (typeof content === "string") {
+                let value = content.trim();
+                if (!/^[a-zA-Z][a-zA-Z\d+.-]*:/.test(value)) {
+                    value = 'https://' + value;
+                }
+                url = value;
+            } else {
+                return;
+            }
+            window.open(url, "_blank");
+
         }
 
         function checkForm(form) {
@@ -1455,6 +1487,12 @@
             // clearing input values
             newRow.querySelectorAll('input').forEach(i => {
                 i.value = '';
+
+                // special logic for custom input file reset
+                if (i.parentElement.classList.contains('file-input-wrapper')) {
+                    let button = [...i.parentElement.children][1];
+                    button.innerHTML = "<img src='assets/icons/upload-icon.svg' alt='x'>";
+                }
             });
 
             newRow.querySelectorAll('input').forEach(i => {
@@ -1486,8 +1524,18 @@
                 alert('Cannot delete the only entry');
                 return;
             }
+
+            // deleting related data in formData before deleting the row
+            [...selectedRow.children].forEach(td => {
+                [...td.children].forEach(e => {
+                    if (e.hasAttribute('id')) {
+                        delete formData[e.id];
+                    }
+                })
+            })
             selectedRow.remove();
 
+            // fix table row numbering
             rows.forEach(row => {
                 const thisRowNumber = row.id.split('-')[2];
                 if (thisRowNumber > selectedRowId) {
@@ -1497,8 +1545,11 @@
                         let elements = [...cell.children];
                         elements.forEach(element => {
                             if (element.hasAttribute('id')) {
+                                // update element and formData numbering
+                                delete formData[element.id];
                                 let elementNumber = element.id.split('-')[1];
                                 element.id = element.id.replace(`-${elementNumber}`, `-${thisRowNumber - 1}`)
+                                formData[element.id] = element.value;
                             }
                         })
                     })
