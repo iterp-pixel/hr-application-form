@@ -443,7 +443,6 @@ thead th {
   font-weight: 600;
   border-bottom: 1px solid #eee;
   border-left: 1px solid #eee;
-  white-space: nowrap;
 }
 
 td {
@@ -451,7 +450,7 @@ td {
   border-left: 1px solid #f0f0f0;
   border-bottom: 1px solid #f0f0f0;
   vertical-align: middle;
-  white-space: nowrap;
+  font-size: 14px;
 }
 
 table select,
@@ -588,4 +587,53 @@ table select {
 .file-btn:hover {
   background-color: var(--border);
   transition: all 0.1s ease;
+}
+
+/* preview application */
+div.input-readonly {
+  width: 100%;
+  height: 48px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 24px;
+  color: var(--text-primary);
+  background: #F5F5F5;
+  outline: none;
+}
+
+div.section-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px 0px 30px 0px;
+  border-bottom: 1px solid var(--border);
+}
+
+div.section-preview:last-child {
+  padding-bottom: 10px;
+  border-bottom: none;
+}
+
+h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 14px;
+}
+
+.btn-link {
+  background-color: transparent;
+  align-items: center;
+}
+
+.btn-link:hover {
+  background-color: #e7e7e7;
+}
+
+.btn-link:focus {
+  background-color: #c2c2c2;
 }

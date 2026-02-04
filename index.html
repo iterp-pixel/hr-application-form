@@ -114,8 +114,7 @@
                             <div class="row">
                                 <div class="field">
                                     <label for="fullName">Full Name</label>
-                                    <input type="text" id="fullName" name="fullName" placeholder="Input here..."
-                                        required>
+                                    <input type="text" id="fullName" name="fullName" placeholder="Input here..." required>
                                 </div>
                                 <div class="field">
                                     <label for="fullName">Gender</label>
@@ -208,6 +207,7 @@
                                         <option value="Other">Other</option>
                                     </select>
                                 </div>
+                                <div class="field"></div>
                             </div>
                         </div>
 
@@ -333,14 +333,14 @@
                                                         id="schoolname-1" required />
                                                 </td>
                                                 <td>
-                                                    <input type="month" name="" id="startperiod-1" required>
+                                                    <input type="month" name="" id="edustartperiod-1" required>
                                                     <span>-</span>
-                                                    <input type="month" name="" id="endperiod-1" required>
+                                                    <input type="month" name="" id="eduendperiod-1" required>
                                                 </td>
                                                 <td>
-                                                    <input type="number" min="0" placeholder="0" id="remark-1" required>
+                                                    <input type="number" min="0" placeholder="0" id="remark-1" style="width: 80px;" required>
                                                     <span>/</span>
-                                                    <input type="number" min="0" placeholder="0" id="totalremark-1" required>
+                                                    <input type="number" min="0" placeholder="0" id="totalremark-1" style="width: 80px;" required>
                                                 </td>
                                                 <td>
                                                     <div class="file-input-wrapper">
@@ -419,9 +419,9 @@
                                         <tbody>
                                             <tr id="work-row-1">
                                                 <td>
-                                                    <input type="month" name="" id="startperiod-1" placeholder="Start" required>
+                                                    <input type="month" name="" id="workstartperiod-1" placeholder="Start" required>
                                                     <span>-</span>
-                                                    <input type="month" name="" id="endperiod-1" placeholder="Now" required>
+                                                    <input type="month" name="" id="workendperiod-1" placeholder="Now" required>
                                                 </td>
                                                 <td>
                                                     <input id="company-1" type="text" required
@@ -499,10 +499,10 @@
                                             <tr id="training-row-1">
                                                 <td>
                                                     <input type="month" name="" id="trainingstartperiod-1"
-                                                        placeholder="Start" required>
+                                                        placeholder="Start" style="width: 150px;" required>
                                                     <span>-</span>
                                                     <input type="month" name="" id="trainingendperiod-1"
-                                                        placeholder="Now" required>
+                                                        placeholder="Now" style="width: 150px;" required>
                                                 </td>
                                                 <td>
                                                     <input id="institute-1" type="text" required
@@ -588,12 +588,11 @@
 
                             <div class="row">
                                 <div class="field">
-                                    <label for="cityAssignedConsent">Are you willing to be assigned outside of the
-                                        city?</label>
+                                    <label for="cityAssignedConsent">Are you willing to be assigned outside of the city?</label>
                                     <select name="cityAssignedConsent" id="cityAssignedConsent" required>
                                         <option value="">Select</option>
-                                        <option value="Y">Yes</option>
-                                        <option value="N">No</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
                                     </select>
                                 </div>
                                 <div class="field">
@@ -601,8 +600,8 @@
                                         country?</label>
                                     <select name="countryAssignedConsent" id="countryAssignedConsent" required>
                                         <option value="">Select</option>
-                                        <option value="Y">Yes</option>
-                                        <option value="N">No</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
                                     </select>
                                 </div>
                             </div>
@@ -689,8 +688,8 @@
                                         reference?</label>
                                     <select name="Qq1" id="Qq1" required>
                                         <option value="">Choose an option</option>
-                                        <option value="Y">Yes</option>
-                                        <option value="N">No</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
                                     </select>
                                 </div>
                             </div>
@@ -699,8 +698,8 @@
                                     <label for="Qq2">Have you ever been involved in any legal case?</label>
                                     <select name="Qq2" id="Qq2" onchange="toggleField(this, 'Qq2details')" required>
                                         <option value="">Choose an option</option>
-                                        <option value="Y">Yes</option>
-                                        <option value="N">No</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
                                     </select>
                                 </div>
                             </div>
@@ -715,8 +714,8 @@
                                     <label for="Qq3">Have you previously applied to PT Kapit Mas?</label>
                                     <select name="Qq3" id="Qq3" required>
                                         <option value="">Choose an option</option>
-                                        <option value="Y">Yes</option>
-                                        <option value="N">No</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
                                     </select>
                                 </div>
                             </div>
@@ -814,7 +813,324 @@
                         </div>
 
                         <div class="panel-body" id="preview-test">
-                            Lorem Ipsum
+                            <div class="section-preview" id="personalInformationPrev">
+                                <h3>Personal Information</h3>
+                                <div class="row">
+                                    <div class="field">
+                                        <label>Full Name</label>
+                                        <div class="input-readonly" id="fullNamePrev"></div>
+                                    </div>
+                                    <div class="field">
+                                        <label>Gender</label>
+                                        <div class="input-readonly" id="genderPrev"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <label>Email</label>
+                                        <div class="input-readonly" id="emailPrev"></div>
+                                    </div>
+                                    <div class="field">
+                                        <label>WhatsApp Number</label>
+                                        <div class="phone input-readonly">
+                                            <div style="display: flex; align-items: center; padding-right: 10px; height:inherit; width: 100px; margin:0px; border-right: 1px solid var(--border); text-align: center; justify-content: center;" id="countryCodePrev"></div>
+                                            <div style="padding-left: 20px;" id="phonePrev"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <label>Place Birth</label>
+                                        <div class="input-readonly" id="birthPlacePrev"></div>
+                                    </div>
+                                    <div class="field">
+                                        <label>Date of Birth</label>
+                                        <div class="input-readonly" id="dobPrev"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <label>Nationality</label>
+                                        <div class="input-readonly" id="nationalityPrev"></div>
+                                    </div>
+                                    <div class="field"></div>
+                                </div>
+                            </div>
+                            <div class="section-preview" id="hasSocialMediaPrev">
+                                <h3>Social Media</h3>
+                                <div class="table-wrapper">
+                                    <div class="table-scroll-x">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Level</th>
+                                                    <th>Link</th>
+                                                    <th class="table-action"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr id="socialPrev-1">
+                                                    <td>
+                                                        <div id="socialplatform-1Prev"></div>
+                                                    </td>
+                                                    <td>
+                                                        <div id="sociallink-1Prev"></div>
+                                                    </td>
+                                                    <td class="table-action">
+                                                        <button type="button" class="btn-link">
+                                                            <img src="assets/icons/new-tab-icon.svg" alt="View">
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-preview" id="hasEduBackgroundPrev">
+                                <h3>Educational Background</h3>
+                                <div class="table-wrapper">
+                                    <div class="table-scroll-x">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Level</th>
+                                                    <th>School Name</th>
+                                                    <th>Periode Study</th>
+                                                    <th>Remarks</th>
+                                                    <th>Document</th>
+                                                    <th class="table-action"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr id="eduPrev-1">
+                                                    <td>
+                                                        <div id="level-1Prev"></div>
+                                                    </td>
+                                                    <td>
+                                                        <div id="schoolname-1Prev"></div>
+                                                    </td>
+                                                    <td>
+                                                        <div id="edustartperiod-1Prev"></div>
+                                                        <span>-</span>
+                                                        <div id="eduendperiod-1Prev"></div>
+                                                    </td>
+                                                    <td>
+                                                        <div id="remark-1Prev"></div>
+                                                        <span>/</span>
+                                                        <div id="totalremark-1Prev"></div>
+                                                    </td>
+                                                    <td>
+                                                        <div id="edudocument-1Prev"></div>
+                                                    </td>
+                                                    <td class="table-action">
+                                                        <button type="button" class="btn-link">
+                                                            <img src="assets/icons/new-tab-icon.svg" alt="View">
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-preview" id="hasWorkExpPrev">
+                                <h3>Work Experience</h3>
+                                <div class="table-wrapper">
+                                    <div class="table-scroll-x">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Working Period</th>
+                                                    <th>Company Name</th>
+                                                    <th>Job Title</th>
+                                                    <th>Take Home Pay</th>
+                                                    <th>Job Description</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr id="workPrev-1">
+                                                    <td>
+                                                        <div id="workstartperiod-1Prev"></div>
+                                                        <span>-</span>
+                                                        <div id="workendperiod-1Prev"></div>
+                                                    </td>
+                                                    <td>
+                                                        <div id="company-1Prev"></div>
+                                                    </td>
+                                                    <td>
+                                                        <div id="jobtitle-1Prev"></div>
+                                                    </td>
+                                                    <td>Rp <div id="takehomepay-1Prev"></div></td>
+                                                    <td style="max-width:200px;">
+                                                        <div id="jobdesc-1Prev"></div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-preview" id="hasTrainingPrev">
+                                <h3>Training</h3>
+                                <div class="table-wrapper">
+                                    <div class="table-scroll-x">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Training Period</th>
+                                                    <th>Institute Name</th>
+                                                    <th>Scope Training</th>
+                                                    <th>Description</th>
+                                                    <th>Document</th>
+                                                    <th class="table-action"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr id="trainingPrev-1">
+                                                    <td style="width: 100px;"><div id="trainingstartperiod-1Prev"></div> - <div id="trainingendperiod-1Prev"></div></td>
+                                                    <td style="width: 100px;"><div id="institute-1Prev"></div></td>
+                                                    <td style="width: 100px;"><div id="scope-1Prev"></div></td>
+                                                    <td style="width: 400px;"><div id="trainingdesc-1Prev"></div></td>
+                                                    <td style="width: 100px;"><div id="trainingdoc-1Prev"></div></td>
+                                                    <td class="table-action">
+                                                        <button type="button" class="btn-link">
+                                                            <img src="assets/icons/new-tab-icon.svg" alt="View">
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-preview" id="jobExpectationPrev">
+                                <h3>Job Expectations</h3>
+                                <div class="row">
+                                    <div class="field">
+                                        <label>Expected Salary</label>
+                                        <div class="phone input-readonly">
+                                            <div style="display: flex; align-items: center; padding-right: 10px; height:inherit; width: 70px; margin:0px; border-right: 1px solid var(--border); text-align: center; justify-content: center;">Rp</div>
+                                            <div style="padding-left: 20px;" id="expectedSalaryPrev">15.000.000</div>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <label>Available Starting Date</label>
+                                        <div class="input-readonly" id="availableDatePrev"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <label>Are you willing to be assigned outside the city?</label>
+                                        <div class="input-readonly" id="cityAssignedConsentPrev"></div>
+                                    </div>
+                                    <div class="field">
+                                        <label>Are you willing to be assigned outside the country?</label>
+                                        <div class="input-readonly" id="countryAssignedConsentPrev"></div>                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-preview" id="hasHealthPrev">
+                                <h3>Health Information</h3>
+                                <div class="table-wrapper">
+                                    <div class="table-scroll-x">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Sick</th>
+                                                    <th>Description</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr id="healthPrev-1">
+                                                    <td><div id="sick-1Prev"></div></td>
+                                                    <td><div id="healthdescription-1Prev"></div></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-preview" id="quickQuestionPrev">
+                                <h3>Quick Question</h3>
+                                <div class="row">
+                                    <div class="field">
+                                        <label>Are you willing to let us contact your previous epmloyer for reference?</label>
+                                        <div class="input-readonly" id="Qq1Prev"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <label>Have you ever been involved in any legal case?</label>
+                                        <div class="input-readonly" id="Qq2Prev"></div>
+                                    </div>
+                                </div>
+                                <div class="row" style="display: none;">
+                                    <div class="field">
+                                        <label>Please provide details.</label>
+                                        <div class="input-readonly" id="Qq2detailsPrev" style="height: 100px; overflow-y: scroll;"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <label>Have you previously applied to PT Kapit Mas?</label>
+                                        <div class="input-readonly" id="Qq3Prev"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <label>Where did you first learn about the job vacancy at PT Kapit Mas?</label>
+                                        <div class="input-readonly" id="Qq4Prev"></div>
+                                    </div>
+                                </div>
+                                <div class="row" style="display:none;">
+                                    <div class="field">
+                                        <label>Please provide details.</label>
+                                        <div class="input-readonly" style="height: 100px; overflow-y: scroll;" id="Qq4detailsPrev"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-preview" id="attachmentsPrev">
+                                <h3>Attachments</h3>
+                                <div class="row">
+                                    <div class="field">
+                                        <label>Recent Photo</label>
+                                        <div class="input-readonly row">
+                                            <div id="recentPhotoPrev"></div>
+                                            <button type="button" class="btn-link">
+                                                <img src="assets/icons/new-tab-icon.svg" alt="View">
+                                            </button>
+                                        </div>
+                                        <p class="text-secondary">Max. Size 1MB with format .JPG / .PNG</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <label>Curriculum Vitae (CV) / Resume</label>
+                                        <div class="input-readonly row">
+                                            <div id="resumePrev"></div>
+                                            <button type="button" class="btn-link">
+                                                <img src="assets/icons/new-tab-icon.svg" alt="View">
+                                            </button>
+                                        </div>
+                                        <p class="text-secondary">Max. Size 2MB with format .PDF</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <div class="row narrow">
+                                            <label>Portofolio</label>
+                                            <p class="text-secondary">(Optional)</p>
+                                        </div>
+                                        <div class="input-readonly row">
+                                            <div id="portofolioPrev"></div>
+                                            <button type="button" class="btn-link">
+                                                <img src="assets/icons/new-tab-icon.svg" alt="View">
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -846,6 +1162,7 @@
                 inputs.forEach(input => {
                     input.required = true;
                 })
+                self.value = 'on';
             } else {
                 document.getElementById(content).style.display = 'none';
                 inputs.forEach(input => {
@@ -855,6 +1172,7 @@
                     input.value = '';
                     input.required = false;
                 })
+                self.value = 'off';
             }
         }
 
@@ -898,7 +1216,7 @@
             var field = document.getElementById(id);
             var fieldRow = field.parentElement.parentElement;
             console.log(field);
-            if (value == 'Y' || value == 'Others') {
+            if (value == 'Yes' || value == 'Others') {
                 fieldRow.style.display = 'block';
                 field.required = true;
             } else {
@@ -942,7 +1260,7 @@
 
         function saveFormData() {
             const currentSection = document.getElementById(`section${currentStep}`);
-            const inputs = currentSection.querySelectorAll('input, select');
+            const inputs = currentSection.querySelectorAll('input, select, textarea');
 
             inputs.forEach(input => {
                 if (input.id) {
@@ -995,7 +1313,73 @@
         function showPreview() {
             const test = document.getElementById('preview-test');
             console.log(formData);
-            test.innerHTML = formData;
+            // makes it into a map where each entry is a list of [0] for label and [1] for value
+            Object.entries(formData).forEach(data => {
+                var targetElement = document.getElementById(`${data[0]}Prev`);
+
+                if (targetElement != null) {
+                    // toggle section preview
+                    if (data[0].includes('has')) {
+                        if (data[1] == 'on') {
+                            targetElement.style.display = 'flex';
+                        } else {
+                            targetElement.style.display = 'none';
+                        }
+                        return;
+                    }
+
+                    // possibly temporary
+                    // toggle quick question details in preview section
+                    if (targetElement.id == 'Qq2detailsPrev' || targetElement.id == 'Qq4detailsPrev') {
+                        if (data[1] != '') {
+                            targetElement.parentElement.parentElement.style.display = 'flex';
+                        } else {
+                            targetElement.parentElement.parentElement.style.display = 'none';
+                        }
+                    }
+
+                    // show value to target element
+                    targetElement.innerHTML = data[1];
+                }
+
+                // showing data from table inputs
+                if (data[0].includes('-')) {
+                    var firstRow = document.getElementById(`${data[0].split('-')[0]}-1Prev`);
+                    if (firstRow == null) {
+                        test.innerHTML += `<div>${data[0]} : ${data[1]}</div>`;
+                        return;
+                    }
+                    var tableRow = firstRow.parentElement.parentElement;
+                    var table = tableRow.parentElement;
+                    var tableIndex = tableRow.id.split('-')[1];
+                    var cellIndex = data[0].split('-')[1];
+                    if (cellIndex != 1) {
+                        // if there is no table row for the cell, create a new one
+                        if (targetElement == null) {
+                            var newElement = tableRow.cloneNode(true);
+                            var newElementChildren = [...newElement.children];
+
+                            // populate input preview elements
+                            newElementChildren.forEach(cellElement => {
+                                [...cellElement.children].forEach(inputPrev => {
+                                    if (inputPrev.hasAttribute('id')) {
+                                        inputPrev.id = inputPrev.id.replace('-1', `-${cellIndex}`);
+                                        inputPrev.innerHTML = data[1];
+                                    }
+                                })
+                            })
+                            newElement.id = newElement.id.replace('-1', `-${cellIndex}`);
+
+                            table.appendChild(newElement);
+                        } else {
+                            targetElement.innerHTML = data[1];
+                        }
+                    }
+                }
+
+                // show data debug
+                // test.innerHTML += `<div>${data[0]} : ${data[1]}</div>`;
+            })
         }
 
         document.getElementById('applicationForm').addEventListener('submit', function (e) {
