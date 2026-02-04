@@ -120,8 +120,8 @@
                                     <label for="fullName">Gender</label>
                                     <select name="gender" id="gender">
                                         <option value="">Select</option>
-                                        <option value="M">Male</option>
-                                        <option value="F">Female</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
                                     </select>
                                 </div>
                             </div>
@@ -1139,7 +1139,7 @@
                         <button class="btn-outline" type="button" id="prevBtn" onclick="changeStep(-1)"
                             style="display: none;">Previous</button>
                         <button class="btn" type="button" id="nextBtn" onclick="changeStep(1)">Next</button>
-                        <button class="btn" type="submit" style="display: none;" id="submitBtn">Submit</button>
+                        <button class="btn" type="button" style="display: none;" onclick="checkForm(this.parentElement.parentElement)" id="submitBtn">Submit</button>
                     </div>
                 </div>
 
@@ -1297,7 +1297,7 @@
             }
             document.getElementById(`section${currentStep}`).classList.add('active')
 
-            loadFormData();
+            // loadFormData();
 
             if (currentStep === 10) {
                 showPreview();
@@ -1380,6 +1380,21 @@
                 // show data debug
                 // test.innerHTML += `<div>${data[0]} : ${data[1]}</div>`;
             })
+        }
+
+        function checkForm(form) {
+            var inputs = form.querySelectorAll('input, select, textarea');
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].hasAttribute('required')) {
+                    if (inputs[i].value == '') {
+                        alert('Please fill all required fields');
+                        return false;
+                    }
+                }
+            }
+            console.log('form data:', formData);
+            submitForm();
+            return true;
         }
 
         document.getElementById('applicationForm').addEventListener('submit', function (e) {
