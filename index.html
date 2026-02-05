@@ -16,9 +16,11 @@
     <div class="page">
         <div class="layout">
             <!-- Success Screen -->
-            <div class="panel" style="display: none;" id="success-panel">
+            <div class="panel complete" style="display: none; overflow: hidden;" id="success-panel">
                 <div class="panel-center">
-                    <img src="assets/icons/form-success-icon.svg" alt="Success">
+                    <div style="display: flex; width: 100%; justify-content: center;">
+                        <img src="assets/icons/form-success-icon.svg" alt="Success">
+                    </div>
                     <div>
                         <h2 style="text-align: center;">Success! Your Submission</h2>
                         <p style="text-align: center;">
@@ -133,31 +135,10 @@
                                 </div>
                                 <div class="field">
                                     <label for="phone">WhatsApp Number</label>
-                                    <div class="phone" onfocus="this.classList.remove('missing')">
+                                    <div class="phone hover" onfocus="this.classList.remove('missing')">
                                         <div id="countryIcon" style="width: 50px; height: 100%; padding-left: 10px; align-items: center; display: flex;"></div>
                                         <select name="countryCode" id="countryCode" style="width: 100px; border-left: none; border-top: none; border-bottom: none;" required onfocus="this.classList.remove('missing')" onchange="changeCountryIcon()">
                                             <option value="">#</option>
-                                            <!-- <option value="+1">🇺🇸 +1 (USA)</option>
-                                            <option value="+44">🇬🇧 +44 (UK)</option>
-                                            <option value="+62">🇮🇩 +62 (Indonesia)</option>
-                                            <option value="+91">🇮🇳 +91 (India)</option>
-                                            <option value="+86">🇨🇳 +86 (China)</option>
-                                            <option value="+81">🇯🇵 +81 (Japan)</option>
-                                            <option value="+82">🇰🇷 +82 (South Korea)</option>
-                                            <option value="+65">🇸🇬 +65 (Singapore)</option>
-                                            <option value="+60">🇲🇾 +60 (Malaysia)</option>
-                                            <option value="+63">🇵🇭 +63 (Philippines)</option>
-                                            <option value="+66">🇹🇭 +66 (Thailand)</option>
-                                            <option value="+84">🇻🇳 +84 (Vietnam)</option>
-                                            <option value="+61">🇦🇺 +61 (Australia)</option>
-                                            <option value="+49">🇩🇪 +49 (Germany)</option>
-                                            <option value="+33">🇫🇷 +33 (France)</option>
-                                            <option value="+39">🇮🇹 +39 (Italy)</option>
-                                            <option value="+34">🇪🇸 +34 (Spain)</option>
-                                            <option value="+7">🇷🇺 +7 (Russia)</option>
-                                            <option value="+55">🇧🇷 +55 (Brazil)</option>
-                                            <option value="+52">🇲🇽 +52 (Mexico)</option>
-                                            <option value="+27">🇿🇦 +27 (South Africa)</option> -->
                                         </select>
                                         <input type="tel" id="phone" name="phone" placeholder="Input here..."
                                             required onfocus="this.classList.remove('missing')" />
@@ -183,29 +164,6 @@
                                     <label for="nationality">Nationality</label>
                                     <select name="nationality" id="nationality" required onfocus="this.classList.remove('missing')">
                                         <option value="">Select your nationality</option>
-                                        <option value="USA">United States</option>
-                                        <option value="UK">United Kingdom</option>
-                                        <option value="Indonesia">Indonesia</option>
-                                        <option value="India">India</option>
-                                        <option value="China">China</option>
-                                        <option value="Japan">Japan</option>
-                                        <option value="South Korea">South Korea</option>
-                                        <option value="Singapore">Singapore</option>
-                                        <option value="Malaysia">Malaysia</option>
-                                        <option value="Philippines">Philippines</option>
-                                        <option value="Thailand">Thailand</option>
-                                        <option value="Vietnam">Vietnam</option>
-                                        <option value="Australia">Australia</option>
-                                        <option value="Canada">Canada</option>
-                                        <option value="Germany">Germany</option>
-                                        <option value="France">France</option>
-                                        <option value="Italy">Italy</option>
-                                        <option value="Spain">Spain</option>
-                                        <option value="Russia">Russia</option>
-                                        <option value="Brazil">Brazil</option>
-                                        <option value="Mexico">Mexico</option>
-                                        <option value="South Africa">South Africa</option>
-                                        <option value="Other">Other</option>
                                     </select>
                                 </div>
                                 <div class="field"></div>
@@ -230,7 +188,7 @@
 
                         <div class="panel-body">
                             <div class="row narrow">
-                                <input type="checkbox" name="socialMedia" id="hasSocialMedia" checked>
+                                <input type="checkbox" name="socialMedia" id="hasSocialMedia" onchange="toggleSection(this, 'socialContent', 'socialContent')" checked>
                                 <div>I have a social media account</div>
                             </div>
                             <div class="table-wrapper" id="socialContent">
@@ -319,7 +277,7 @@
                                         <tbody>
                                             <tr id="edu-row-1">
                                                 <td>
-                                                    <select id="level-1" required>
+                                                    <select id="level-1" onfocus="this.classList.remove('missing')" required>
                                                         <option value="">Choose level</option>
                                                         <option value="Elementary">Elementary School</option>
                                                         <option value="Middle">Middle School</option>
@@ -331,20 +289,20 @@
                                                 </td>
                                                 <td>
                                                     <input type="text" placeholder="Input name here..."
-                                                        id="schoolname-1" required />
+                                                        id="schoolname-1" onfocus="this.classList.remove('missing')" required />
                                                 </td>
                                                 <td>
-                                                    <input type="month" name="" id="edustartperiod-1" required>
+                                                    <input type="month" name="" id="edustartperiod-1" onfocus="this.classList.remove('missing')" required>
                                                     <span>-</span>
-                                                    <input type="month" name="" id="eduendperiod-1" required>
+                                                    <input type="month" name="" id="eduendperiod-1" onfocus="this.classList.remove('missing')" required>
                                                 </td>
-                                                <td>
-                                                    <input type="number" min="0" placeholder="0" id="remark-1" style="width: 80px;" required>
+                                                <td style="width: 200px;">
+                                                    <input type="number" min="0" placeholder="0" id="remark-1" style="width: 80px;" onfocus="this.classList.remove('missing')" required>
                                                     <span>/</span>
-                                                    <input type="number" min="0" placeholder="0" id="totalremark-1" style="width: 80px;" required>
+                                                    <input type="number" min="0" placeholder="0" id="totalscore-1" style="width: 80px;" onfocus="this.classList.remove('missing')" required>
                                                 </td>
                                                 <td>
-                                                    <div class="file-input-wrapper">
+                                                    <div class="file-input-wrapper" onfocus="this.classList.remove('missing')">
                                                         <span class="file-name" id="edudocument-name-1">No file
                                                             chosen</span>
                                                         <button type="button" class="file-btn" id="edudocument-btn-1"
@@ -353,7 +311,7 @@
                                                         </button>
                                                         <input type="file" name="edudocument-1" id="edudocument-1"
                                                             onchange="fileOnChanged(this)" required
-                                                            accept="application/pdf">
+                                                            accept="image/*" onchange="this.classList.remove('missing')">
                                                     </div>
                                                     <!-- <label for="">
                                                         <input type="file" id="edudocument-1" accept="application/pdf">
@@ -420,24 +378,24 @@
                                         <tbody>
                                             <tr id="work-row-1">
                                                 <td>
-                                                    <input type="month" name="" id="workstartperiod-1" placeholder="Start" required>
+                                                    <input type="month" name="" id="workstartperiod-1" placeholder="Start" required onfocus="this.classList.remove('missing')">
                                                     <span>-</span>
-                                                    <input type="month" name="" id="workendperiod-1" placeholder="Now" required>
+                                                    <input type="month" name="" id="workendperiod-1" placeholder="Now" required onfocus="this.classList.remove('missing')">
                                                 </td>
                                                 <td>
-                                                    <input id="company-1" type="text" required
+                                                    <input id="company-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
                                                 <td>
-                                                    <input id="jobtitle-1" type="text" required
+                                                    <input id="jobtitle-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
                                                 <td>
-                                                    Rp <input id="takehomepay-1" type="number" required
+                                                    Rp <input id="takehomepay-1" type="number" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
                                                 <td>
-                                                    <input id="jobdesc-1" type="text" required
+                                                    <input id="jobdesc-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
                                                 <td class="table-action">
@@ -489,7 +447,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Training Period</th>
-                                                <th>Institute Name Name</th>
+                                                <th>Institute Name</th>
                                                 <th>Scope Training</th>
                                                 <th>Description</th>
                                                 <th>Upload Document</th>
@@ -500,25 +458,25 @@
                                             <tr id="training-row-1">
                                                 <td>
                                                     <input type="month" name="" id="trainingstartperiod-1"
-                                                        placeholder="Start" style="width: 150px;" required>
+                                                        placeholder="Start" style="width: 150px;" required onfocus="this.classList.remove('missing')">
                                                     <span>-</span>
                                                     <input type="month" name="" id="trainingendperiod-1"
-                                                        placeholder="Now" style="width: 150px;" required>
+                                                        placeholder="Now" style="width: 150px;" required onfocus="this.classList.remove('missing')">
                                                 </td>
                                                 <td>
-                                                    <input id="institute-1" type="text" required
+                                                    <input id="institute-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
                                                 <td>
-                                                    <input id="scope-1" type="text" required
+                                                    <input id="scope-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
                                                 <td>
-                                                    <input id="trainingdesc-1" type="text" required
+                                                    <input id="trainingdesc-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
                                                 <td>
-                                                    <div class="file-input-wrapper">
+                                                    <div class="file-input-wrapper" onfocus="this.classList.remove('missing')">
                                                         <span class="file-name" id="trainingdoc-name-1">No file
                                                             chosen</span>
                                                         <button type="button" class="file-btn" id="trainingdoc-btn-1"
@@ -527,7 +485,7 @@
                                                         </button>
                                                         <input type="file" name="trainingdoc-1" id="trainingdoc-1"
                                                             onchange="fileOnChanged(this)" required
-                                                            accept="application/pdf">
+                                                            accept="application/pdf" onfocus="this.classList.remove('missing')">
                                                     </div>
                                                     <!-- <input id="trainingdoc-1" type="file" required
                                                         placeholder="Input here..." /> -->
@@ -573,24 +531,24 @@
                             <div class="row">
                                 <div class="field">
                                     <label for="expectedSalary">Expected Salary</label>
-                                    <div class="phone">
+                                    <div class="phone hover">
                                         <div
                                             style="margin:0px; padding: 10px; border-right: 1px solid #e5e7eb; font-weight: 500;">
                                             Rp</div>
                                         <input type="number" id="expectedSalary" name="expectedSalary" placeholder="0"
-                                            required>
+                                            required onfocus="this.classList.remove('missing')">
                                     </div>
                                 </div>
                                 <div class="field">
                                     <label for="availableDate">Available Starting Date</label>
-                                    <input type="date" name="availableDate" id="availableDate" required>
+                                    <input type="date" name="availableDate" id="availableDate" required onfocus="this.classList.remove('missing')">
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="field">
                                     <label for="cityAssignedConsent">Are you willing to be assigned outside of the city?</label>
-                                    <select name="cityAssignedConsent" id="cityAssignedConsent" required>
+                                    <select name="cityAssignedConsent" id="cityAssignedConsent" required onfocus="this.classList.remove('missing')">
                                         <option value="">Select</option>
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
@@ -599,7 +557,7 @@
                                 <div class="field">
                                     <label for="countryAssignedConsent">Are you willing to be assigned outside of the
                                         country?</label>
-                                    <select name="countryAssignedConsent" id="countryAssignedConsent" required>
+                                    <select name="countryAssignedConsent" id="countryAssignedConsent" required onfocus="this.classList.remove('missing')">
                                         <option value="">Select</option>
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
@@ -640,11 +598,11 @@
                                         <tbody>
                                             <tr id="health-row-1">
                                                 <td>
-                                                    <input id="sick-1" type="text" required
+                                                    <input id="sick-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
                                                 <td>
-                                                    <input id="healthdescription-1" type="text" required
+                                                    <input id="healthdescription-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
                                                 <td class="table-action">
@@ -687,7 +645,7 @@
                                 <div class="field">
                                     <label for="Qq1">Are you willing to let us contact your previous employer for
                                         reference?</label>
-                                    <select name="Qq1" id="Qq1" required>
+                                    <select name="Qq1" id="Qq1" required onfocus="this.classList.remove('missing')">
                                         <option value="">Choose an option</option>
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
@@ -697,7 +655,7 @@
                             <div class="row narrow">
                                 <div class="field">
                                     <label for="Qq2">Have you ever been involved in any legal case?</label>
-                                    <select name="Qq2" id="Qq2" onchange="toggleField(this, 'Qq2details')" required>
+                                    <select name="Qq2" id="Qq2" onchange="toggleField(this, 'Qq2details')" required onfocus="this.classList.remove('missing')">
                                         <option value="">Choose an option</option>
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
@@ -707,13 +665,13 @@
                             <div class="row narrow" style="display: none">
                                 <div class="field">
                                     <label for="Qq2details">Please provide details.</label>
-                                    <textarea name="Qq2details" id="Qq2details"></textarea>
+                                    <textarea name="Qq2details" id="Qq2details" onfocus="this.classList.remove('missing')"></textarea>
                                 </div>
                             </div>
                             <div class="row narrow">
                                 <div class="field">
                                     <label for="Qq3">Have you previously applied to PT Kapit Mas?</label>
-                                    <select name="Qq3" id="Qq3" required>
+                                    <select name="Qq3" id="Qq3" required onfocus="this.classList.remove('missing')">
                                         <option value="">Choose an option</option>
                                         <option value="Yes">Yes</option>
                                         <option value="No">No</option>
@@ -724,7 +682,7 @@
                                 <div class="field">
                                     <label for="Qq4">Where did you first learn about the job vacancy at PT Kapit
                                         Mas?</label>
-                                    <select name="Qq4" id="Qq4" onchange="toggleField(this, 'Qq4details')" required>
+                                    <select name="Qq4" id="Qq4" onchange="toggleField(this, 'Qq4details')" required onfocus="this.classList.remove('missing')">
                                         <option value="">Choose an option</option>
                                         <option value="LinkedIn">LinkedIn</option>
                                         <option value="Job Street">JobStreet</option>
@@ -735,7 +693,7 @@
                             <div class="row narrow" style="display: none;">
                                 <div class="field">
                                     <label for="Qq4details">Please provide details.</label>
-                                    <textarea name="Qq4details" id="Qq4details"></textarea>
+                                    <textarea name="Qq4details" id="Qq4details" onfocus="this.classList.remove('missing')"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -759,7 +717,7 @@
                             <div class="row narrow">
                                 <div class="field">
                                     <label for="recentPhoto">Recent Photo</label>
-                                    <div class="file-input-wrapper">
+                                    <div class="file-input-wrapper" onfocus="this.classList.remove('missing')">
                                         <span class="file-name" id="recentPhoto-name">No file chosen</span>
                                         <button type="button" class="file-btn" id="recentPhoto-btn"
                                             onclick="fileUploadHandler(this, 'recentPhoto-name', 'recentPhoto')">
@@ -767,7 +725,7 @@
                                         </button>
                                         <input type="file" name="recentPhoto" id="recentPhoto"
                                             onchange="fileOnChanged(this, 'recentPhoto-name', 'recentPhoto-btn')"
-                                            required accept="application/jpg, application/png">
+                                            required accept="image/jpg, image/png" onfocus="this.classList.remove('missing')">
                                     </div>
                                     <p class="text-secondary">Max. Size 1MB with format .JPG / .PNG</p>
                                 </div>
@@ -775,7 +733,7 @@
                             <div class="row narrow">
                                 <div class="field">
                                     <label for="resume">Curriculum Vitae (CV) / Resume</label>
-                                    <div class="file-input-wrapper">
+                                    <div class="file-input-wrapper" onfocus="this.classList.remove('missing')">
                                         <span class="file-name" id="resume-name">No file chosen</span>
                                         <button type="button" class="file-btn" id="resume-btn"
                                             onclick="fileUploadHandler(this, 'resume-name', 'resume')">
@@ -783,7 +741,7 @@
                                         </button>
                                         <input type="file" name="resume" id="resume"
                                             onchange="fileOnChanged(this, 'resume-name', 'resume-btn')" required
-                                            accept=".pdf">
+                                            accept=".pdf" onfocus="this.classList.remove('missing')">
                                     </div>
                                     <p class="text-secondary">Max. Size 2MB with format .PDF</p>
                                 </div>
@@ -802,7 +760,7 @@
 
                     <!-- Preview Application -->
                     <div class="form-section" id="section10">
-                        <div class="row">
+                        <div class="row" style="position: sticky; top: 0; background-color: #fff; padding-bottom: 4px;">
                             <div class="panel-title">
                                 <h2>Preview Application</h2>
                                 <p>
@@ -813,45 +771,46 @@
                             <img src="assets/icons/company-icon.svg" alt="logo">
                         </div>
 
-                        <div class="panel-body" id="preview-test">
+                        <div class="panel-body" id="preview-screen">
                             <div class="section-preview" id="personalInformationPrev">
                                 <h3>Personal Information</h3>
                                 <div class="row">
                                     <div class="field">
-                                        <label>Full Name</label>
+                                        <div class="label">Full Name</div>
                                         <div class="input-readonly" id="fullNamePrev"></div>
                                     </div>
                                     <div class="field">
-                                        <label>Gender</label>
+                                        <div class="label">Gender</div>
                                         <div class="input-readonly" id="genderPrev"></div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="field">
-                                        <label>Email</label>
+                                        <div class="label">Email</div>
                                         <div class="input-readonly" id="emailPrev"></div>
                                     </div>
                                     <div class="field">
-                                        <label>WhatsApp Number</label>
+                                        <div class="label">WhatsApp Number</div>
                                         <div class="phone input-readonly">
-                                            <div style="display: flex; align-items: center; padding-right: 10px; height:inherit; width: 100px; margin:0px; border-right: 1px solid var(--border); text-align: center; justify-content: center;" id="countryCodePrev"></div>
+                                            <div id="countryIconPrev" style="width: 50px; height: 100%; padding-left: 10px; align-items: center; display: flex;"></div>
+                                            <div style="display: flex; align-items: center; padding-right: 10px; height:inherit; width: 80px; margin:0px; border-right: 1px solid var(--border); text-align: center; justify-content: center;" id="countryCodePrev"></div>
                                             <div style="padding-left: 20px;" id="phonePrev"></div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="field">
-                                        <label>Place Birth</label>
+                                        <div class="label">Place Birth</div>
                                         <div class="input-readonly" id="birthPlacePrev"></div>
                                     </div>
                                     <div class="field">
-                                        <label>Date of Birth</label>
+                                        <div class="label">Date of Birth</div>
                                         <div class="input-readonly" id="dobPrev"></div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="field">
-                                        <label>Nationality</label>
+                                        <div class="label">Nationality</div>
                                         <div class="input-readonly" id="nationalityPrev"></div>
                                     </div>
                                     <div class="field"></div>
@@ -919,7 +878,7 @@
                                                     <td>
                                                         <div id="remark-1Prev"></div>
                                                         <span>/</span>
-                                                        <div id="totalremark-1Prev"></div>
+                                                        <div id="totalscore-1Prev"></div>
                                                     </td>
                                                     <td>
                                                         <div id="edudocument-1Prev"></div>
@@ -1009,24 +968,24 @@
                                 <h3>Job Expectations</h3>
                                 <div class="row">
                                     <div class="field">
-                                        <label>Expected Salary</label>
+                                        <div class="label">Expected Salary</div>
                                         <div class="phone input-readonly">
                                             <div style="display: flex; align-items: center; padding-right: 10px; height:inherit; width: 70px; margin:0px; border-right: 1px solid var(--border); text-align: center; justify-content: center;">Rp</div>
                                             <div style="padding-left: 20px;" id="expectedSalaryPrev">15.000.000</div>
                                         </div>
                                     </div>
                                     <div class="field">
-                                        <label>Available Starting Date</label>
+                                        <div class="label">Available Starting Date</div>
                                         <div class="input-readonly" id="availableDatePrev"></div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="field">
-                                        <label>Are you willing to be assigned outside the city?</label>
+                                        <div class="label">Are you willing to be assigned outside the city?</div>
                                         <div class="input-readonly" id="cityAssignedConsentPrev"></div>
                                     </div>
                                     <div class="field">
-                                        <label>Are you willing to be assigned outside the country?</label>
+                                        <div class="label">Are you willing to be assigned outside the country?</div>
                                         <div class="input-readonly" id="countryAssignedConsentPrev"></div>                                        
                                     </div>
                                 </div>
@@ -1056,37 +1015,37 @@
                                 <h3>Quick Question</h3>
                                 <div class="row">
                                     <div class="field">
-                                        <label>Are you willing to let us contact your previous epmloyer for reference?</label>
+                                        <div class="label">Are you willing to let us contact your previous epmloyer for reference?</div>
                                         <div class="input-readonly" id="Qq1Prev"></div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="field">
-                                        <label>Have you ever been involved in any legal case?</label>
+                                        <div class="label">Have you ever been involved in any legal case?</div>
                                         <div class="input-readonly" id="Qq2Prev"></div>
                                     </div>
                                 </div>
                                 <div class="row" style="display: none;">
                                     <div class="field">
-                                        <label>Please provide details.</label>
+                                        <div class="label">Please provide details.</div>
                                         <div class="input-readonly" id="Qq2detailsPrev" style="height: 100px; overflow-y: scroll;"></div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="field">
-                                        <label>Have you previously applied to PT Kapit Mas?</label>
+                                        <div class="label">Have you previously applied to PT Kapit Mas?</div>
                                         <div class="input-readonly" id="Qq3Prev"></div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="field">
-                                        <label>Where did you first learn about the job vacancy at PT Kapit Mas?</label>
+                                        <div class="label">Where did you first learn about the job vacancy at PT Kapit Mas?</div>
                                         <div class="input-readonly" id="Qq4Prev"></div>
                                     </div>
                                 </div>
                                 <div class="row" style="display:none;">
                                     <div class="field">
-                                        <label>Please provide details.</label>
+                                        <div class="label">Please provide details.</div>
                                         <div class="input-readonly" style="height: 100px; overflow-y: scroll;" id="Qq4detailsPrev"></div>
                                     </div>
                                 </div>
@@ -1095,7 +1054,7 @@
                                 <h3>Attachments</h3>
                                 <div class="row">
                                     <div class="field">
-                                        <label>Recent Photo</label>
+                                        <div class="label">Recent Photo</div>
                                         <div class="input-readonly row">
                                             <div id="recentPhotoPrev"></div>
                                             <button type="button" class="btn-link" onclick="openTab(formData['recentPhoto'])">
@@ -1107,7 +1066,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="field">
-                                        <label>Curriculum Vitae (CV) / Resume</label>
+                                        <div class="label">Curriculum Vitae (CV) / Resume</div>
                                         <div class="input-readonly row">
                                             <div id="resumePrev"></div>
                                             <button type="button" class="btn-link" onclick="openTab(formData['resume'])">
@@ -1120,7 +1079,7 @@
                                 <div class="row">
                                     <div class="field">
                                         <div class="row narrow">
-                                            <label>Portofolio</label>
+                                            <div class="label">Portofolio</div>
                                             <p class="text-secondary">(Optional)</p>
                                         </div>
                                         <div class="input-readonly row">
@@ -1159,6 +1118,7 @@
         const phoneCountryCode = document.getElementById('countryCode');
         const nationalityList = document.getElementById('nationality');
         const countryIcon = document.getElementById('countryIcon');
+        const countryIconPrev = document.getElementById('countryIconPrev');
 
         if (Object.keys(countryData).length === 0) {
             fetch('./assets/data/country_codes.json')
@@ -1182,9 +1142,9 @@
                     flag = countryData[k]['image'];
                 }
             });
-            const icon = document.getElementById('countryIcon');
             console.log(phoneCountryCode.value);
-            icon.innerHTML = `<img src="${flag}" alt='' />`;
+            countryIcon.innerHTML = `<img src="${flag}" alt='' />`;
+            countryIconPrev.innerHTML = `<img src="${flag}" alt='' />`;
         }
 
         // section checkboxes
@@ -1278,7 +1238,7 @@
             }
         }
 
-        function validateCurrentStep() {
+        function validateCurrentStep(step) {
             const currentSection = document.getElementById(`section${currentStep}`);
             const requiredInputs = currentSection.querySelectorAll('[required]');
             let hasInvalidInput = false;
@@ -1293,11 +1253,143 @@
                 }
             }
 
+            if (hasInvalidInput == false) 
+            hasInvalidInput = sectionValidator(step);
+
             if (hasInvalidInput == false) {
                 return true;
             } else {
                 return false;
             }
+        }
+
+        function fieldMissing(element) {
+            element.classList.add('missing');
+        }
+
+        function sectionValidator(step) {
+            let hasInvalidField = false;
+            switch (step) {
+                case 1: 
+                    if (!/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(document.getElementById('email').value)) {
+                        fieldMissing(document.getElementById('email'));
+                        hasInvalidField = true;
+                    }
+                    if (!/^(1\s|1|)?((\(\d{3}\))|\d{3})(\-|\s)?(\d{3})(\-|\s)?(\d{4})$/.test(document.getElementById('phone').value)) {
+                        fieldMissing(document.getElementById('phone'));
+                        hasInvalidField = true;
+                    }
+                    if (Date.parse(document.getElementById('dob').value) > Date.now()) {
+                        fieldMissing(document.getElementById('dob'));
+                        hasInvalidField = true;
+                    }                    
+                    break;
+                case 3: 
+                    var periodStarts = [...document.getElementById('eduTable').querySelectorAll('[id*=edustartperiod]')];
+                    var periodEnds = [...document.getElementById('eduTable').querySelectorAll('[id*=eduendperiod]')];
+                    var remarks = [...document.getElementById('eduTable').querySelectorAll('[id*=remark]')];
+                    var totalRemarks = [...document.getElementById('eduTable').querySelectorAll('[id*=totalscore]')];
+
+                    periodStarts.forEach(inp => {
+                        var start = Date.parse(inp.value);
+                        var end = Date.parse(periodEnds[periodStarts.indexOf(inp)].value);
+                        if (start > end) {
+                            fieldMissing(inp);
+                            fieldMissing(periodEnds[periodStarts.indexOf(inp)]);
+                            hasInvalidField = true;
+                        }
+                    })
+                    remarks.forEach(inp => {
+                        var remark = Number(inp.value);
+                        var total = Number(totalRemarks[remarks.indexOf(inp)].value);
+                        if (remark < 0 || total < 0) {
+                            fieldMissing(inp);
+                            fieldMissing(totalRemarks[remarks.indexOf(inp)]);
+                            hasInvalidField = true;
+                        }
+                        if (remark > total) {
+                            fieldMissing(inp);
+                            fieldMissing(totalRemarks[remarks.indexOf(inp)]);
+                            hasInvalidField = true;
+                        }
+                    })
+                    var inputs = document.getElementById('eduTable').querySelectorAll('input[type="file"]');
+                    inputs.forEach(inp => {
+                        if ((inp.files[0].size) > 2097152) {
+                            fieldMissing(inp);
+                            hasInvalidField = true;
+                        }
+                    })
+                    break;
+                case 4: 
+                    var periodStarts = [...document.getElementById('workExpTable').querySelectorAll('[id*=workstartperiod]')];
+                    var periodEnds = [...document.getElementById('workExpTable').querySelectorAll('[id*=workendperiod]')];
+                    var takeHomePay = [...document.getElementById('workExpTable').querySelectorAll('[id*=takehomepay]')];
+                    periodStarts.forEach(inp => {
+                        var start = Date.parse(inp.value);
+                        var end = Date.parse(periodEnds[periodStarts.indexOf(inp)].value);
+                        if (start > end) {
+                            fieldMissing(inp);
+                            fieldMissing(periodEnds[periodStarts.indexOf(inp)]);
+                            hasInvalidField = true;
+                        }
+                    })
+                    takeHomePay.forEach(inp => {
+                        if (inp.value < 0) {
+                            fieldMissing(inp);
+                            hasInvalidField = true;
+                        }
+                    })
+                    break;
+                case 5: 
+                    var periodStarts = [...document.getElementById('trainingTable').querySelectorAll('[id*=trainingstartperiod]')];
+                    var periodEnds = [...document.getElementById('trainingTable').querySelectorAll('[id*=trainingendperiod]')];
+
+                    periodStarts.forEach(inp => {
+                        var start = Date.parse(inp.value);
+                        var end = Date.parse(periodEnds[periodStarts.indexOf(inp)].value);
+                        if (start > end) {
+                            fieldMissing(inp);
+                            fieldMissing(periodEnds[periodStarts.indexOf(inp)]);
+                            hasInvalidField = true;
+                        }
+                    })
+                    var inputs = document.getElementById('trainingTable').querySelectorAll('input[type="file"]');
+                    inputs.forEach(inp => {
+                        if ((inp.files[0].size) > 2097152) {
+                            fieldMissing(inp);
+                            hasInvalidField = true;
+                        }
+                    })
+                    break;
+                case 6: 
+                    if (Number(document.getElementById('expectedSalary').value) < 0) {
+                        fieldMissing(document.getElementById('expectedSalary'));
+                        hasInvalidField = true;
+                    }
+                    if (Date.parse(document.getElementById('availableDate')) < Date.now()) {
+                        fieldMissing(document.getElementById('availableDate'));
+                        hasInvalidField = true;
+                    }
+                    break;
+                case 9: 
+                    var recentPhoto = document.getElementById('recentPhoto');
+                    var resume = document.getElementById('resume');
+                    if ((recentPhoto.files[0].size) > 2097152) {
+                        fieldMissing(inp);
+                        hasInvalidField = true;
+                    }
+                    if ((resume.files[0].size) > 1048576) {
+                        fieldMissing(inp);
+                        hasInvalidField = true;
+                    }
+                    break;
+                default: 
+                    hasInvalidField = false;
+                    break;
+            }
+
+            return hasInvalidField;
         }
 
         function saveFormData() {
@@ -1309,6 +1401,9 @@
                     if (input.type == 'file') {
                         formData[input.id] = input.files[0];
                         return;
+                    }
+                    if (input.type == 'number') {
+                        formData[input.id] = Number(input.value);
                     }
                     formData[input.id] = input.value;
                 }
@@ -1327,7 +1422,7 @@
         }
 
         function changeStep(direction) {
-            if (direction === 1 && !validateCurrentStep()) {
+            if (direction === 1 && !validateCurrentStep(currentStep)) {
                 return;
             }
 
@@ -1357,7 +1452,7 @@
         }
 
         function showPreview() {
-            const test = document.getElementById('preview-test');
+            const test = document.getElementById('preview-screen');
             console.log(formData);
             // makes it into a map where each entry is a list of [0] for label and [1] for value
             Object.entries(formData).forEach(data => {
@@ -1471,6 +1566,7 @@
             return true;
         }
 
+
         document.getElementById('applicationForm').addEventListener('submit', function (e) {
             e.preventDefault();
 
@@ -1479,12 +1575,14 @@
             
             console.log('form data:', formData);
 
+            document.getElementsByClassName('page')[0].classList.add('complete');
             document.getElementById('success-panel').style.display = 'block';
             document.getElementById('sidebar').style.display = 'none';
             document.getElementById('applicationForm').style.display = 'none';
         })
 
         function submitForm() {
+            document.getElementsByClassName('page')[0].classList.add('complete');
             document.getElementById('success-panel').style.display = 'block';
             document.getElementById('sidebar').style.display = 'none';
             document.getElementById('applicationForm').style.display = 'none';
