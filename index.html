@@ -114,11 +114,11 @@
                             <div class="row">
                                 <div class="field">
                                     <label for="fullName">Full Name</label>
-                                    <input type="text" id="fullName" name="fullName" placeholder="Input here..." required>
+                                    <input type="text" id="fullName" name="fullName" placeholder="Input here..." onfocus="this.classList.remove('missing')" required>
                                 </div>
                                 <div class="field">
                                     <label for="fullName">Gender</label>
-                                    <select name="gender" id="gender">
+                                    <select name="gender" id="gender" onfocus="this.classList.remove('missing')" required>
                                         <option value="">Select</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
@@ -129,14 +129,15 @@
                             <div class="row">
                                 <div class="field">
                                     <label for="email">Email</label>
-                                    <input type="email" name="email" id="email" placeholder="Input here..." required>
+                                    <input type="email" name="email" id="email" placeholder="Input here..." required onfocus="this.classList.remove('missing')">
                                 </div>
                                 <div class="field">
                                     <label for="phone">WhatsApp Number</label>
-                                    <div class="phone">
-                                        <select name="countryCode" id="countryCode" style="width: 200px;" required>
-                                            <option value="">Code</option>
-                                            <option value="+1">🇺🇸 +1 (USA)</option>
+                                    <div class="phone" onfocus="this.classList.remove('missing')">
+                                        <div id="countryIcon" style="width: 50px; height: 100%; padding-left: 10px; align-items: center; display: flex;"></div>
+                                        <select name="countryCode" id="countryCode" style="width: 100px; border-left: none; border-top: none; border-bottom: none;" required onfocus="this.classList.remove('missing')" onchange="changeCountryIcon()">
+                                            <option value="">#</option>
+                                            <!-- <option value="+1">🇺🇸 +1 (USA)</option>
                                             <option value="+44">🇬🇧 +44 (UK)</option>
                                             <option value="+62">🇮🇩 +62 (Indonesia)</option>
                                             <option value="+91">🇮🇳 +91 (India)</option>
@@ -156,10 +157,10 @@
                                             <option value="+7">🇷🇺 +7 (Russia)</option>
                                             <option value="+55">🇧🇷 +55 (Brazil)</option>
                                             <option value="+52">🇲🇽 +52 (Mexico)</option>
-                                            <option value="+27">🇿🇦 +27 (South Africa)</option>
+                                            <option value="+27">🇿🇦 +27 (South Africa)</option> -->
                                         </select>
                                         <input type="tel" id="phone" name="phone" placeholder="Input here..."
-                                            required />
+                                            required onfocus="this.classList.remove('missing')" />
                                     </div>
                                 </div>
                             </div>
@@ -168,19 +169,19 @@
                                 <div class="field">
                                     <label for="birthPlace">Place Birth</label>
                                     <input type="text" id="birthPlace" name="birthPlace" placeholder="Input here..."
-                                        required />
+                                        required onfocus="this.classList.remove('missing')" />
                                 </div>
 
                                 <div class="field">
                                     <label for="dob">Date of Birth</label>
-                                    <input type="date" id="dob" name="dob" required />
+                                    <input type="date" id="dob" name="dob" required onfocus="this.classList.remove('missing')" />
                                 </div>
                             </div>
 
                             <div class="row narrow">
                                 <div class="field">
                                     <label for="nationality">Nationality</label>
-                                    <select name="nationality" id="nationality" required>
+                                    <select name="nationality" id="nationality" required onfocus="this.classList.remove('missing')">
                                         <option value="">Select your nationality</option>
                                         <option value="USA">United States</option>
                                         <option value="UK">United Kingdom</option>
@@ -229,7 +230,7 @@
 
                         <div class="panel-body">
                             <div class="row narrow">
-                                <input type="checkbox" name="socialMedia" id="hasSocialMedia" onchange="toggleSection(this, 'socialContent', 'socialTable')" checked>
+                                <input type="checkbox" name="socialMedia" id="hasSocialMedia" checked>
                                 <div>I have a social media account</div>
                             </div>
                             <div class="table-wrapper" id="socialContent">
@@ -245,7 +246,7 @@
                                         <tbody>
                                             <tr id="social-row-1">
                                                 <td>
-                                                    <select id="socialplatform-1" required>
+                                                    <select id="socialplatform-1" onfocus="this.classList.remove('missing')" required>
                                                         <option value="">Choose Platform</option>
                                                         <option value="LinkedIn">LinkedIn</option>
                                                         <option value="Twitter">Twitter/X</option>
@@ -255,7 +256,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input id="sociallink-1" type="text" required
+                                                    <input id="sociallink-1" type="text" onfocus="this.classList.remove('missing')" required
                                                         placeholder="Input here..." />
                                                 </td>
                                                 <td class="table-action">
@@ -1152,6 +1153,39 @@
         let currentStep = 1;
         const totalSteps = 10;
         const formData = {};
+        const countryData = {};
+
+        // json handling
+        const phoneCountryCode = document.getElementById('countryCode');
+        const nationalityList = document.getElementById('nationality');
+        const countryIcon = document.getElementById('countryIcon');
+
+        if (Object.keys(countryData).length === 0) {
+            fetch('./assets/data/country_codes.json')
+                .then((response) => response.json())
+                .then((json) => {
+                    phoneCountryCode.innerHTML = '<option value="">#</option>';
+                    nationalityList.innerHTML = '<option value="">Select your nationality</option>';
+
+                    for (let key in json) {
+                        countryData[key] = json[key];
+                        phoneCountryCode.innerHTML += `<option value="${json[key]['phone']}">${json[key]['phone']}</option>`;
+                        nationalityList.innerHTML += `<option value="${json[key]['name']}">${json[key]['name']}</option>`;
+                    }
+                });
+        }
+
+        function changeCountryIcon() {
+            let flag;
+            let jsontest = Object.keys(countryData).some(function(k) {
+                if (countryData[k]['phone'] == phoneCountryCode.value) {
+                    flag = countryData[k]['image'];
+                }
+            });
+            const icon = document.getElementById('countryIcon');
+            console.log(phoneCountryCode.value);
+            icon.innerHTML = `<img src="${flag}" alt='' />`;
+        }
 
         // section checkboxes
         function toggleSection(self, content, id) {
@@ -1247,15 +1281,23 @@
         function validateCurrentStep() {
             const currentSection = document.getElementById(`section${currentStep}`);
             const requiredInputs = currentSection.querySelectorAll('[required]');
+            let hasInvalidInput = false;
 
             for (let input of requiredInputs) {
                 if (!input.value.trim()) {
-                    input.focus();
-                    alert('Please fill in all required fields.');
-                    return false;
+                    // input.focus();
+                    input.classList.add('missing');
+
+                    // alert('Please fill in all required fields.');
+                    hasInvalidInput = true;
                 }
             }
-            return true;
+
+            if (hasInvalidInput == false) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         function saveFormData() {
@@ -1285,9 +1327,9 @@
         }
 
         function changeStep(direction) {
-            // if (direction === 1 && !validateCurrentStep()) {
-            //     return;
-            // }
+            if (direction === 1 && !validateCurrentStep()) {
+                return;
+            }
 
             saveFormData();
 
