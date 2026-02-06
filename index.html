@@ -349,7 +349,7 @@
                                         </thead>
                                         <tbody>
                                             <tr id="edu-row-1">
-                                                <td>
+                                                <td style="width: 800px;">
                                                     <select id="level-1" onfocus="this.classList.remove('missing')" required>
                                                         <option value="">Choose level</option>
                                                         <option value="Elementary">Elementary School</option>
@@ -360,14 +360,14 @@
                                                         <option value="Master">Master</option>
                                                     </select>
                                                 </td>
-                                                <td>
+                                                <td style="width: 800px;">
                                                     <input type="text" placeholder="Input name here..."
                                                         id="schoolname-1" onfocus="this.classList.remove('missing')" required />
                                                 </td>
                                                 <td>
-                                                    <input type="month" name="" id="edustartperiod-1" onfocus="this.classList.remove('missing')" required>
+                                                    <input class="period-input" type="month" name="" id="edustartperiod-1" onfocus="this.classList.remove('missing')" required>
                                                     <span>-</span>
-                                                    <input type="month" name="" id="eduendperiod-1" onfocus="this.classList.remove('missing')" required>
+                                                    <input class="period-input" type="month" name="" id="eduendperiod-1" onfocus="this.classList.remove('missing')" required>
                                                 </td>
                                                 <td style="width: 200px;">
                                                     <input type="number" min="0" placeholder="0" id="remark-1" style="width: 80px;" onfocus="this.classList.remove('missing')" required>
@@ -384,11 +384,8 @@
                                                         </button>
                                                         <input type="file" name="edudocument-1" id="edudocument-1"
                                                             onchange="fileOnChanged(this)" required
-                                                            accept="image/*">
+                                                            accept=".pdf">
                                                     </div>
-                                                    <!-- <label for="">
-                                                        <input type="file" id="edudocument-1" accept="application/pdf">
-                                                    </label> -->
                                                 </td>
                                                 <td class="table-action">
                                                     <button type="button" class="table-add-btn"
@@ -451,25 +448,25 @@
                                         <tbody>
                                             <tr id="work-row-1">
                                                 <td>
-                                                    <input type="month" name="" id="workstartperiod-1" placeholder="Start" required onfocus="this.classList.remove('missing')">
+                                                    <input class="period-input" type="month" name="" id="workstartperiod-1" placeholder="Start" required onfocus="this.classList.remove('missing')">
                                                     <span>-</span>
-                                                    <input type="month" name="" id="workendperiod-1" placeholder="Now" required onfocus="this.classList.remove('missing')">
+                                                    <input class="period-input" type="month" name="" id="workendperiod-1" placeholder="Now" required onfocus="this.classList.remove('missing')">
                                                 </td>
-                                                <td>
+                                                <td style="width: 600px">
                                                     <input id="company-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
-                                                <td>
+                                                <td style="width: 600px">
                                                     <input id="jobtitle-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
-                                                <td>
-                                                    Rp <input id="takehomepay-1" type="number" required onfocus="this.classList.remove('missing')"
+                                                <td >
+                                                    Rp
+                                                    <input style="width: 200px;" id="takehomepay-1" type="number" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
-                                                <td>
-                                                    <input id="jobdesc-1" type="text" required onfocus="this.classList.remove('missing')"
-                                                        placeholder="Input here..." />
+                                                <td style="width: 800px;">
+                                                    <textarea id="jobdesc-1" required onfocus="this.classList.remove('missing')" placeholder="Input here..."></textarea>
                                                 </td>
                                                 <td class="table-action">
                                                     <button type="button" onclick="removeTableRow('workExpTable', this)"
@@ -531,22 +528,22 @@
                                             <tr id="training-row-1">
                                                 <td>
                                                     <input type="month" name="" id="trainingstartperiod-1"
-                                                        placeholder="Start" style="width: 150px;" required onfocus="this.classList.remove('missing')">
+                                                        placeholder="Start" class="period-input" required onfocus="this.classList.remove('missing')">
                                                     <span>-</span>
                                                     <input type="month" name="" id="trainingendperiod-1"
-                                                        placeholder="Now" style="width: 150px;" required onfocus="this.classList.remove('missing')">
+                                                        placeholder="Now" class="period-input" required onfocus="this.classList.remove('missing')">
                                                 </td>
-                                                <td>
+                                                <td style="width:500px">
                                                     <input id="institute-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
-                                                <td>
+                                                <td style="width:500px">
                                                     <input id="scope-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
-                                                <td>
-                                                    <input id="trainingdesc-1" type="text" required onfocus="this.classList.remove('missing')"
-                                                        placeholder="Input here..." />
+                                                <td style="width: 1000px;">
+                                                    <textarea id="trainingdesc-1" required onfocus="this.classList.remove('missing')"
+                                                        placeholder="Input here..."></textarea>
                                                 </td>
                                                 <td>
                                                     <div class="file-input-wrapper" onfocus="this.classList.remove('missing')">
@@ -608,7 +605,7 @@
                                         <div
                                             style="margin:0px; padding: 10px; border-right: 1px solid #e5e7eb; font-weight: 500;">
                                             Rp</div>
-                                        <input type="number" id="expectedSalary" name="expectedSalary" placeholder="0"
+                                        <input type="number" id="expectedSalary" name="expectedSalary"  placeholder="0"
                                             required onfocus="this.classList.remove('missing')">
                                     </div>
                                 </div>
@@ -671,12 +668,18 @@
                                         <tbody>
                                             <tr id="health-row-1">
                                                 <td>
-                                                    <input id="sick-1" type="text" required onfocus="this.classList.remove('missing')"
-                                                        placeholder="Input here..." />
+                                                    <select id="sick-1">
+                                                        <option value="">Choose sickness type</option>
+                                                        <option value="Tremor">Tremor</option>
+                                                        <option value="Near / Far Sighted">Near / Far Sighted</option>
+                                                        <option value="Other">Other</option>
+                                                    </select>
+                                                    <!-- <input id="sick-1" type="text" required onfocus="this.classList.remove('missing')"
+                                                        placeholder="Input here..." /> -->
                                                 </td>
                                                 <td>
-                                                    <input id="healthdescription-1" type="text" required onfocus="this.classList.remove('missing')"
-                                                        placeholder="Input here..." />
+                                                    <textarea id="healthdescription-1" required onfocus="this.classList.remove('missing')"
+                                                        placeholder="Input here..." ></textarea>
                                                 </td>
                                                 <td class="table-action">
                                                     <button type="button" onclick="removeTableRow('healthTable', this)"
@@ -882,7 +885,7 @@
                                     </div>
                                     <div class="field">
                                         <div class="label">Date of Birth</div>
-                                        <div class="input-readonly" id="dobPrev"></div>
+                                        <div class="input-readonly date" id="dobPrev"></div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -948,14 +951,18 @@
                                                         <div id="schoolname-1Prev"></div>
                                                     </td>
                                                     <td>
-                                                        <div id="edustartperiod-1Prev"></div>
-                                                        <span>-</span>
-                                                        <div id="eduendperiod-1Prev"></div>
+                                                        <div class="cell-row">
+                                                            <div class="date" id="edustartperiod-1Prev"></div>
+                                                            <span>-</span>
+                                                            <div class="date" id="eduendperiod-1Prev"></div>
+                                                        </div>
                                                     </td>
                                                     <td>
-                                                        <div id="remark-1Prev"></div>
-                                                        <span>/</span>
-                                                        <div id="totalscore-1Prev"></div>
+                                                        <div class="cell-row">
+                                                            <div class="numeral" id="remark-1Prev"></div>
+                                                            <span>/</span>
+                                                            <div class="numeral" id="totalscore-1Prev"></div>
+                                                        </div>
                                                     </td>
                                                     <td>
                                                         <div id="edudocument-1Prev"></div>
@@ -988,9 +995,11 @@
                                             <tbody>
                                                 <tr id="workPrev-1">
                                                     <td>
-                                                        <div id="workstartperiod-1Prev"></div>
-                                                        <span>-</span>
-                                                        <div id="workendperiod-1Prev"></div>
+                                                        <div class="cell-row">
+                                                            <div class="date" id="workstartperiod-1Prev"></div>
+                                                            <span>-</span>
+                                                            <div class="date" id="workendperiod-1Prev"></div>
+                                                        </div>
                                                     </td>
                                                     <td>
                                                         <div id="company-1Prev"></div>
@@ -998,7 +1007,12 @@
                                                     <td>
                                                         <div id="jobtitle-1Prev"></div>
                                                     </td>
-                                                    <td>Rp <div id="takehomepay-1Prev"></div></td>
+                                                    <td>
+                                                        <div class="cell-row">
+                                                            Rp
+                                                            <div class="numeral" id="takehomepay-1Prev"></div>
+                                                        </div>
+                                                    </td>
                                                     <td style="max-width:200px;">
                                                         <div id="jobdesc-1Prev"></div>
                                                     </td>
@@ -1025,9 +1039,9 @@
                                             </thead>
                                             <tbody>
                                                 <tr id="trainingPrev-1">
-                                                    <td style="width: 100px;"><div id="trainingstartperiod-1Prev"></div> - <div id="trainingendperiod-1Prev"></div></td>
-                                                    <td style="width: 100px;"><div id="institute-1Prev"></div></td>
-                                                    <td style="width: 100px;"><div id="scope-1Prev"></div></td>
+                                                    <td style="width: 300px;"><div class="cell-row"><div class="date" id="trainingstartperiod-1Prev"></div> - <div class="date" id="trainingendperiod-1Prev"></div></div></td>
+                                                    <td style="width: 200px;"><div id="institute-1Prev"></div></td>
+                                                    <td style="width: 200px;"><div id="scope-1Prev"></div></td>
                                                     <td style="width: 400px;"><div id="trainingdesc-1Prev"></div></td>
                                                     <td style="width: 100px;"><div id="trainingdoc-1Prev"></div></td>
                                                     <td class="table-action">
@@ -1048,12 +1062,12 @@
                                         <div class="label">Expected Salary</div>
                                         <div class="phone input-readonly">
                                             <div style="display: flex; align-items: center; padding-right: 10px; height:inherit; width: 70px; margin:0px; border-right: 1px solid var(--border); text-align: center; justify-content: center;">Rp</div>
-                                            <div style="padding-left: 20px;" id="expectedSalaryPrev">15.000.000</div>
+                                            <div style="padding-left: 20px;" class="numeral" id="expectedSalaryPrev"></div>
                                         </div>
                                     </div>
                                     <div class="field">
                                         <div class="label">Available Starting Date</div>
-                                        <div class="input-readonly" id="availableDatePrev"></div>
+                                        <div class="input-readonly date" id="availableDatePrev"></div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -1081,7 +1095,7 @@
                                             <tbody>
                                                 <tr id="healthPrev-1">
                                                     <td><div id="sick-1Prev"></div></td>
-                                                    <td><div id="healthdescription-1Prev"></div></td>
+                                                    <td style="max-width:500px;"><div id="healthdescription-1Prev"></div></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -1105,7 +1119,7 @@
                                 <div class="row" style="display: none;">
                                     <div class="field">
                                         <div class="label">Please provide details.</div>
-                                        <div class="input-readonly" id="Qq2detailsPrev" style="height: 100px; overflow-y: scroll;"></div>
+                                        <div class="input-readonly" id="Qq2detailsPrev" style="height: 100px; text-wrap-mode: wrap; overflow-x: hidden; overflow-y: scroll;"></div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -1123,7 +1137,7 @@
                                 <div class="row" style="display:none;">
                                     <div class="field">
                                         <div class="label">Please provide details.</div>
-                                        <div class="input-readonly" style="height: 100px; overflow-y: scroll;" id="Qq4detailsPrev"></div>
+                                        <div class="input-readonly" style="height: 100px; text-wrap-mode: wrap; overflow-x: hidden; overflow-y: scroll;" id="Qq4detailsPrev"></div>
                                     </div>
                                 </div>
                             </div>
@@ -1474,7 +1488,6 @@
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = () => {
-                // console.log(reader.result);
                 resolve(reader.result);
             };
             reader.onerror = reject;
@@ -1546,21 +1559,25 @@
 
         async function showPreview() {
             const test = document.getElementById('preview-screen');
-            console.log(formData);
+            const numeralInputs = document.getElementsByClassName('numeral');
+            const dateInputs = document.getElementsByClassName('date');
+
             // makes it into a map where each entry is a list of [0] for label and [1] for value
             Object.entries(formData).forEach(data => {
                 var targetElement = document.getElementById(`${data[0]}Prev`);
 
+                var cellData = data[1];
+
                 // show file name for input type file
-                if (data[1] instanceof File) {
-                    targetElement.innerHTML = data[1].name ?? '';
+                if (cellData instanceof File) {
+                    targetElement.innerHTML = cellData.name ?? '';
                     return;
                 }
 
                 if (targetElement != null) {
                     // toggle section preview
                     if (data[0].includes('has')) {
-                        if (data[1] == 'on') {
+                        if (cellData == 'on') {
                             targetElement.style.display = 'flex';
                         } else {
                             targetElement.style.display = 'none';
@@ -1571,7 +1588,7 @@
                     // possibly temporary
                     // toggle quick question details in preview section
                     if (targetElement.id == 'Qq2detailsPrev' || targetElement.id == 'Qq4detailsPrev') {
-                        if (data[1] != '') {
+                        if (cellData != '') {
                             targetElement.parentElement.parentElement.style.display = 'flex';
                         } else {
                             targetElement.parentElement.parentElement.style.display = 'none';
@@ -1579,16 +1596,17 @@
                     }
 
                     // show value to target element
-                    targetElement.innerHTML = data[1] ?? '';
+                    targetElement.innerHTML = cellData ?? '';
                 }
 
                 // showing data from table inputs
                 if (data[0].includes('-')) {
                     var firstRow = document.getElementById(`${data[0].split('-')[0]}-1Prev`);
                     if (firstRow == null) {
-                        // test.innerHTML += `<div>${data[0]} : ${data[1]}</div>`;
+                        // test.innerHTML += `<div>${data[0]} : ${cellData}</div>`;
                         return;
                     }
+
                     var tableRow = firstRow.parentElement.parentElement;
                     var table = tableRow.parentElement;
                     var tableIndex = tableRow.id.split('-')[1];
@@ -1604,7 +1622,7 @@
                                 [...cellElement.children].forEach(inputPrev => {
                                     if (inputPrev.hasAttribute('id')) {
                                         inputPrev.id = inputPrev.id.replace('-1', `-${cellIndex}`);
-                                        inputPrev.innerHTML = data[1];
+                                        inputPrev.innerHTML = cellData;
                                     }
                                 })
                             })
@@ -1612,14 +1630,28 @@
 
                             table.appendChild(newElement);
                         } else {
-                            targetElement.innerHTML = data[1] ?? '';
+                            targetElement.innerHTML = cellData ?? '';
                         }
                     }
                 }
 
                 // show data debug
-                // test.innerHTML += `<div>${data[0]} : ${data[1]}</div>`;
-            })
+                // test.innerHTML += `<div>${data[0]} : ${cellData}</div>`;
+            });
+
+            // format preview
+            [...numeralInputs].forEach(input => {
+                if (!isNaN(parseInt(input.innerHTML))) {
+                    input.innerHTML = Number(input.innerHTML).toLocaleString();
+                }
+            });
+
+            [...dateInputs].forEach(input => {
+                var date = new Date(input.innerHTML);
+                if (date != 'Invalid Date') {
+                    input.innerHTML = date.toLocaleDateString();
+                }
+            });
         }
 
         function openTab(content) {
@@ -1658,20 +1690,6 @@
             submitForm();
             return true;
         }
-
-        // document.getElementById('applicationForm').addEventListener('submit', function (e) {
-        //     e.preventDefault();
-
-        //     saveFormData();
-
-            
-        //     console.log('form data:', formData);
-
-        //     document.getElementsByClassName('page')[0].classList.add('complete');
-        //     document.getElementById('success-panel').style.display = 'block';
-        //     document.getElementById('sidebar').style.display = 'none';
-        //     document.getElementById('applicationForm').style.display = 'none';
-        // })
 
         function submitForm() {
             // turn file inputs to base64
@@ -1730,7 +1748,7 @@
             })
 
             // clearing input values
-            newRow.querySelectorAll('input').forEach(i => {
+            newRow.querySelectorAll('input, textarea').forEach(i => {
                 i.value = '';
 
                 // special logic for custom input file reset

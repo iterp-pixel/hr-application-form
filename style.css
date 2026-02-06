@@ -520,18 +520,35 @@ thead th {
   border-left: 1px solid #eee;
 }
 
-td {
+td {  
   padding: 10px 12px;
   border-left: 1px solid #f0f0f0;
   border-bottom: 1px solid #f0f0f0;
   vertical-align: middle;
   font-size: 14px;
+  white-space: nowrap;
+  /* overflow-y: auto; */
+}
+
+td div {
+  overflow: hidden;
+  text-wrap-mode: wrap;
+}
+
+.period-input {
+  width: 150px;
+}
+
+.cell-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 table select,
 table input,
-table .file-input-wrapper {
-  width: 100%;
+table .file-input-wrapper,
+table textarea {
   border: none;
   outline: none;
   font-size: 14px;
@@ -540,17 +557,18 @@ table .file-input-wrapper {
 }
 table select:hover,
 table input:hover,
-table .file-input-wrapper:hover {
+table .file-input-wrapper:hover,
+table textarea:hover {
   border: none;
   background-color: #f0f0f0;
 }
 
-table select:focus, table input:focus, table .file-input-wrapper:focus {
+table select:focus, table input:focus, table .file-input-wrapper:focus, table textarea:focus {
   border: none;
   background-color: #f9fafb;
 }
 
-table select.missing, table input.missing {
+table select.missing, table input.missing, table textarea.missing {
   border: none;
   background-color: #ffc9ca;
 }
