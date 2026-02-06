@@ -34,60 +34,66 @@
             <!-- Sidebar -->
             <aside class="sidebar" id="sidebar">
                 <div id="step1" class="step active">
+                    Job Position
+                    <div class="complete-circle">
+                        <img src="assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step2" class="step active">
                     Personal Information
                     <div class="complete-circle">
                         <img src="assets/icons/completed-step.svg" alt="Done">
                     </div>
                 </div>
-                <div id="step2" class="step">
+                <div id="step3" class="step">
                     Social Media
                     <div class="complete-circle">
                         <img src="assets/icons/completed-step.svg" alt="Done">
                     </div>
                 </div>
-                <div id="step3" class="step">
+                <div id="step4" class="step">
                     Educational Background
                     <div class="complete-circle">
                         <img src="assets/icons/completed-step.svg" alt="Done">
                     </div>
                 </div>
-                <div id="step4" class="step">
+                <div id="step5" class="step">
                     Work Experience
                     <div class="complete-circle">
                         <img src="assets/icons/completed-step.svg" alt="Done">
                     </div>
                 </div>
-                <div id="step5" class="step">
+                <div id="step6" class="step">
                     Training
                     <div class="complete-circle">
                         <img src="assets/icons/completed-step.svg" alt="Done">
                     </div>
                 </div>
-                <div id="step6" class="step">
+                <div id="step7" class="step">
                     Job Expectations
                     <div class="complete-circle">
                         <img src="assets/icons/completed-step.svg" alt="Done">
                     </div>
                 </div>
-                <div id="step7" class="step">
+                <div id="step8" class="step">
                     Health Information
                     <div class="complete-circle">
                         <img src="assets/icons/completed-step.svg" alt="Done">
                     </div>
                 </div>
-                <div id="step8" class="step">
+                <div id="step9" class="step">
                     Quick Question
                     <div class="complete-circle">
                         <img src="assets/icons/completed-step.svg" alt="Done">
                     </div>
                 </div>
-                <div id="step9" class="step">
+                <div id="step10" class="step">
                     Attachment
                     <div class="complete-circle">
                         <img src="assets/icons/completed-step.svg" alt="Done">
                     </div>
                 </div>
-                <div id="step10" class="step">
+                <div id="step11" class="step">
                     Preview Application
                     <div class="complete-circle">
                         <img src="assets/icons/completed-step.svg" alt="Done">
@@ -98,8 +104,75 @@
             <!-- Main panel -->
             <form id="applicationForm">
                 <div class="panel">
-                    <!-- personal information -->
                     <div class="form-section active" id="section1">
+                        <div class="row">
+                            <div class="panel-title">
+                                <h2>Job Position</h2>
+                                <p>
+                                    Please choose the job position you wish to apply for. Below are currently available job positions, the list may change from time to time.
+                                </p>
+                            </div>
+                            <img src="assets/icons/company-icon.svg" alt="logo">
+                        </div>
+                        <div class="panel-body" style="padding: 16px; padding-top: 32px;">
+                            <button type="button" onclick="selectJobPosition('Accounting')" class="job-entry">
+                                <h3 class="job-title">Accounting</h3>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
+                                </p>
+                            </button type="button">
+                            <button type="button" onclick="selectJobPosition('Developer')" class="job-entry">
+                                <h3 class="job-title">Developer</h3>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
+                                </p>
+                            </button type="button">
+                            <button type="button" onclick="selectJobPosition('Production Manager')" class="job-entry">
+                                <h3 class="job-title">Production Manager</h3>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
+                                </p>
+                            </button type="button">
+                            <button type="button" onclick="selectJobPosition('IT Support')" class="job-entry">
+                                <h3 class="job-title">IT Support</h3>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
+                                </p>
+                            </button type="button">
+                            <button type="button" onclick="selectJobPosition('HR Staff')" class="job-entry">
+                                <h3 class="job-title">HR Staff</h3>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
+                                </p>
+                            </button type="button">
+                            <button type="button" onclick="selectJobPosition('QC Staff')" class="job-entry">
+                                <h3 class="job-title">Quality Control Staff</h3>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
+                                </p>
+                            </button type="button">
+                            <button type="button" onclick="selectJobPosition('Production Staff')" class="job-entry">
+                                <h3 class="job-title">Production Staff</h3>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
+                                </p>
+                            </button type="button">
+                            <button type="button" onclick="selectJobPosition('Designer')" class="job-entry">
+                                <h3 class="job-title">Designer</h3>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
+                                </p>
+                            </button type="button">
+                            <button type="button" onclick="selectJobPosition('Data Analyst')" class="job-entry">
+                                <h3 class="job-title">Data Analyst</h3>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
+                                </p>
+                            </button type="button">
+                        </div>
+                    </div>
+                    <!-- personal information -->
+                    <div class="form-section" id="section2">
                         <div class="row">
                             <div class="panel-title">
                                 <h2>Personal Information</h2>
@@ -173,7 +246,7 @@
                     </div>
 
                     <!-- Social Media -->
-                    <div class="form-section" id="section2">
+                    <div class="form-section" id="section3">
                         <div class="row">
                             <div class="panel-title">
                                 <h2>Social Media</h2>
@@ -241,7 +314,7 @@
                     </div>
 
                     <!-- educational background -->
-                    <div class="form-section" id="section3">
+                    <div class="form-section" id="section4">
                         <div class="row">
                             <div class="panel-title">
                                 <h2>Educational Background</h2>
@@ -302,7 +375,7 @@
                                                     <input type="number" min="0" placeholder="0" id="totalscore-1" style="width: 80px;" onfocus="this.classList.remove('missing')" required>
                                                 </td>
                                                 <td>
-                                                    <div class="file-input-wrapper" onfocus="this.classList.remove('missing')">
+                                                    <div class="file-input-wrapper">
                                                         <span class="file-name" id="edudocument-name-1">No file
                                                             chosen</span>
                                                         <button type="button" class="file-btn" id="edudocument-btn-1"
@@ -311,7 +384,7 @@
                                                         </button>
                                                         <input type="file" name="edudocument-1" id="edudocument-1"
                                                             onchange="fileOnChanged(this)" required
-                                                            accept="image/*" onchange="this.classList.remove('missing')">
+                                                            accept="image/*">
                                                     </div>
                                                     <!-- <label for="">
                                                         <input type="file" id="edudocument-1" accept="application/pdf">
@@ -345,7 +418,7 @@
                     </div>
 
                     <!-- Work Experience -->
-                    <div class="form-section" id="section4">
+                    <div class="form-section" id="section5">
                         <div class="row">
                             <div class="panel-title">
                                 <h2>Work Experience</h2>
@@ -422,7 +495,7 @@
                     </div>
 
                     <!-- Training -->
-                    <div class="form-section" id="section5">
+                    <div class="form-section" id="section6">
                         <div class="row">
                             <div class="panel-title">
                                 <h2>Training</h2>
@@ -515,7 +588,7 @@
                     </div>
 
                     <!-- Job Expectations -->
-                    <div class="form-section" id="section6">
+                    <div class="form-section" id="section7">
                         <div class="row">
                             <div class="panel-title">
                                 <h2>Job Expectations</h2>
@@ -568,7 +641,7 @@
                     </div>
 
                     <!-- Health Information -->
-                    <div class="form-section" id="section7">
+                    <div class="form-section" id="section8">
                         <div class="row">
                             <div class="panel-title">
                                 <h2>Health Information</h2>
@@ -628,7 +701,7 @@
                     </div>
 
                     <!-- Quick Question -->
-                    <div class="form-section" id="section8">
+                    <div class="form-section" id="section9">
                         <div class="row">
                             <div class="panel-title">
                                 <h2>Quick Question</h2>
@@ -701,7 +774,7 @@
                     </div>
 
                     <!-- Attachment -->
-                    <div class="form-section" id="section9">
+                    <div class="form-section" id="section10">
                         <div class="row">
                             <div class="panel-title">
                                 <h2>Attachment</h2>
@@ -759,7 +832,7 @@
                     </div>
 
                     <!-- Preview Application -->
-                    <div class="form-section" id="section10">
+                    <div class="form-section" id="section11">
                         <div class="row" style="position: sticky; top: 0; background-color: #fff; padding-bottom: 4px;">
                             <div class="panel-title">
                                 <h2>Preview Application</h2>
@@ -772,7 +845,11 @@
                         </div>
 
                         <div class="panel-body" id="preview-screen">
-                            <div class="section-preview" id="personalInformationPrev">
+                            <div class="section-preview">
+                                <h3>Job Position</h3>
+                                <h3 class="job-title" id="job-positionPrev"></h3>
+                            </div>
+                            <div class="section-preview">
                                 <h3>Personal Information</h3>
                                 <div class="row">
                                     <div class="field">
@@ -823,7 +900,7 @@
                                         <table>
                                             <thead>
                                                 <tr>
-                                                    <th>Level</th>
+                                                    <th>Platform</th>
                                                     <th>Link</th>
                                                     <th class="table-action"></th>
                                                 </tr>
@@ -1098,7 +1175,7 @@
                     <div class="row" id="buttonGroup">
                         <button class="btn-outline" type="button" id="prevBtn" onclick="changeStep(-1)"
                             style="display: none;">Previous</button>
-                        <button class="btn" type="button" id="nextBtn" onclick="changeStep(1)">Next</button>
+                        <button class="btn" type="button" id="nextBtn" style="display: none;" onclick="changeStep(1)">Next</button>
                         <button class="btn" type="button" style="display: none;" onclick="checkForm(this.parentElement.parentElement)" id="submitBtn">Submit</button>
                     </div>
                 </div>
@@ -1110,7 +1187,7 @@
     <!-- <script src="form-loader.js"></script> -->
     <script>
         let currentStep = 1;
-        const totalSteps = 10;
+        const totalSteps = 11;
         const formData = {};
         const countryData = {};
 
@@ -1142,7 +1219,6 @@
                     flag = countryData[k]['image'];
                 }
             });
-            console.log(phoneCountryCode.value);
             countryIcon.innerHTML = `<img src="${flag}" alt='' />`;
             countryIconPrev.innerHTML = `<img src="${flag}" alt='' />`;
         }
@@ -1198,6 +1274,8 @@
 
             if (self.files.length) {
                 label.textContent = self.files[0].name;
+                self.classList.remove('missing');
+                parent.classList.remove('missing');
                 button.innerHTML = "<img src='assets/icons/cancel-icon.svg' alt='x'>"
             } else {
                 label.textContent = 'No file chosen';
@@ -1270,21 +1348,21 @@
         function sectionValidator(step) {
             let hasInvalidField = false;
             switch (step) {
-                case 1: 
+                case 2: 
                     if (!/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(document.getElementById('email').value)) {
                         fieldMissing(document.getElementById('email'));
                         hasInvalidField = true;
                     }
-                    if (!/^(1\s|1|)?((\(\d{3}\))|\d{3})(\-|\s)?(\d{3})(\-|\s)?(\d{4})$/.test(document.getElementById('phone').value)) {
-                        fieldMissing(document.getElementById('phone'));
-                        hasInvalidField = true;
-                    }
+                    // if (!/^(1\s|1|)?((\(\d{3}\))|\d{3})(\-|\s)?(\d{3})(\-|\s)?(\d{4})$/.test(document.getElementById('phone').value)) {
+                    //     fieldMissing(document.getElementById('phone'));
+                    //     hasInvalidField = true;
+                    // }
                     if (Date.parse(document.getElementById('dob').value) > Date.now()) {
                         fieldMissing(document.getElementById('dob'));
                         hasInvalidField = true;
                     }                    
                     break;
-                case 3: 
+                case 4: 
                     var periodStarts = [...document.getElementById('eduTable').querySelectorAll('[id*=edustartperiod]')];
                     var periodEnds = [...document.getElementById('eduTable').querySelectorAll('[id*=eduendperiod]')];
                     var remarks = [...document.getElementById('eduTable').querySelectorAll('[id*=remark]')];
@@ -1321,7 +1399,7 @@
                         }
                     })
                     break;
-                case 4: 
+                case 5: 
                     var periodStarts = [...document.getElementById('workExpTable').querySelectorAll('[id*=workstartperiod]')];
                     var periodEnds = [...document.getElementById('workExpTable').querySelectorAll('[id*=workendperiod]')];
                     var takeHomePay = [...document.getElementById('workExpTable').querySelectorAll('[id*=takehomepay]')];
@@ -1341,7 +1419,7 @@
                         }
                     })
                     break;
-                case 5: 
+                case 6: 
                     var periodStarts = [...document.getElementById('trainingTable').querySelectorAll('[id*=trainingstartperiod]')];
                     var periodEnds = [...document.getElementById('trainingTable').querySelectorAll('[id*=trainingendperiod]')];
 
@@ -1362,7 +1440,7 @@
                         }
                     })
                     break;
-                case 6: 
+                case 7: 
                     if (Number(document.getElementById('expectedSalary').value) < 0) {
                         fieldMissing(document.getElementById('expectedSalary'));
                         hasInvalidField = true;
@@ -1372,7 +1450,7 @@
                         hasInvalidField = true;
                     }
                     break;
-                case 9: 
+                case 10: 
                     var recentPhoto = document.getElementById('recentPhoto');
                     var resume = document.getElementById('resume');
                     if ((recentPhoto.files[0].size) > 2097152) {
@@ -1392,10 +1470,19 @@
             return hasInvalidField;
         }
 
+        const base64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                // console.log(reader.result);
+                resolve(reader.result);
+            };
+            reader.onerror = reject;
+        }) 
+
         function saveFormData() {
             const currentSection = document.getElementById(`section${currentStep}`);
             const inputs = currentSection.querySelectorAll('input, select, textarea');
-
             inputs.forEach(input => {
                 if (input.id) {
                     if (input.type == 'file') {
@@ -1404,6 +1491,7 @@
                     }
                     if (input.type == 'number') {
                         formData[input.id] = Number(input.value);
+                        return;
                     }
                     formData[input.id] = input.value;
                 }
@@ -1421,10 +1509,15 @@
             })
         }
 
+        function selectJobPosition(value) {
+            formData['job-position'] = value;
+            changeStep(1);
+        }
+
         function changeStep(direction) {
-            if (direction === 1 && !validateCurrentStep(currentStep)) {
-                return;
-            }
+            // if (direction === 1 && !validateCurrentStep(currentStep)) {
+            //     return;
+            // }
 
             saveFormData();
 
@@ -1440,18 +1533,18 @@
 
             // loadFormData();
 
-            if (currentStep === 10) {
+            if (currentStep === totalSteps) {
                 showPreview();
             }
 
             document.getElementById('prevBtn').style.display = currentStep === 1 ? 'none' : 'flex';
-            document.getElementById('nextBtn').style.display = currentStep === totalSteps ? 'none' : 'flex';
+            document.getElementById('nextBtn').style.display = (currentStep === 1 || currentStep === totalSteps) ? 'none' : 'flex';
             document.getElementById('submitBtn').style.display = currentStep === totalSteps ? 'flex' : 'none';
 
             updateProgress();
         }
 
-        function showPreview() {
+        async function showPreview() {
             const test = document.getElementById('preview-screen');
             console.log(formData);
             // makes it into a map where each entry is a list of [0] for label and [1] for value
@@ -1566,22 +1659,34 @@
             return true;
         }
 
+        // document.getElementById('applicationForm').addEventListener('submit', function (e) {
+        //     e.preventDefault();
 
-        document.getElementById('applicationForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            saveFormData();
+        //     saveFormData();
 
             
-            console.log('form data:', formData);
+        //     console.log('form data:', formData);
 
-            document.getElementsByClassName('page')[0].classList.add('complete');
-            document.getElementById('success-panel').style.display = 'block';
-            document.getElementById('sidebar').style.display = 'none';
-            document.getElementById('applicationForm').style.display = 'none';
-        })
+        //     document.getElementsByClassName('page')[0].classList.add('complete');
+        //     document.getElementById('success-panel').style.display = 'block';
+        //     document.getElementById('sidebar').style.display = 'none';
+        //     document.getElementById('applicationForm').style.display = 'none';
+        // })
 
         function submitForm() {
+            // turn file inputs to base64
+            var inputs = document.querySelectorAll('input[type="file"]');
+            [...inputs].forEach(input => {
+                if (formData[input.id]) {
+                    
+                    base64(formData[input.id]).then((value) => {
+                        formData[input.id] = value;
+                    })
+                }
+            })
+
+            console.log('submitted:', formData);
+
             document.getElementsByClassName('page')[0].classList.add('complete');
             document.getElementById('success-panel').style.display = 'block';
             document.getElementById('sidebar').style.display = 'none';

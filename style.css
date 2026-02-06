@@ -164,6 +164,46 @@ body {
   align-items: center;
 }
 
+.job-entry {
+  display: flex;
+  /* align-items: center; */
+  flex-direction: column;
+  /* justify-content: center; */
+  width: 100%;
+  height: max-content;
+  min-height: 100px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(182, 190, 198, 0.25);
+  padding: 12px;
+  transition: all 0.3s ease;
+}
+
+.job-entry .job-title, .job-entry p {
+  text-align: start;
+}
+
+.job-title {
+  line-height:normal;
+  font-size: 24px;
+}
+
+.job-entry.selected {
+  background-color: var(--primary);
+  color: var(--bg-soft);
+}
+
+.job-entry:hover {
+  box-shadow: 0 0 16px rgba(127, 131, 134, 0.25);
+}
+
+.job-entry:active {
+  background-color: #d1d8f8;
+  box-shadow: none;
+  margin: 0;
+}
+
 /* form */
 
 form {
@@ -248,6 +288,7 @@ input:focus, textarea:focus, select:focus {
 
 input:hover, textarea:hover, select:hover, .phone.hover:hover, .file-input-wrapper:hover {
   border: 1px solid #5b51b1;
+  transition: all 0.3s ease;
 }
 
 textarea {
@@ -488,17 +529,32 @@ td {
 }
 
 table select,
-table input[type="text"],
-table input[type="file"],
-table input[type="number"],
-table input[type="month"] {
-  width: auto;
+table input,
+table .file-input-wrapper {
+  width: 100%;
   border: none;
   outline: none;
   font-size: 14px;
   background: transparent;
   transition: all 0.3s ease;
 }
+table select:hover,
+table input:hover,
+table .file-input-wrapper:hover {
+  border: none;
+  background-color: #f0f0f0;
+}
+
+table select:focus, table input:focus, table .file-input-wrapper:focus {
+  border: none;
+  background-color: #f9fafb;
+}
+
+table select.missing, table input.missing {
+  border: none;
+  background-color: #ffc9ca;
+}
+
 input[type=file]::file-selector-button {
   border-radius: 10px;
   border: none;
@@ -592,6 +648,7 @@ table select {
   color: var(--text-primary);
   background: #fff;
   outline: none;
+  transition: all 0.3 ease in;
 }
 
 .file-input-wrapper input[type="file"] {
