@@ -154,6 +154,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 30px;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.3s ease;
 }
 
 .panel-center {

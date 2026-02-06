@@ -114,61 +114,80 @@
                             </div>
                             <img src="assets/icons/company-icon.svg" alt="logo">
                         </div>
-                        <div class="panel-body" style="padding: 16px; padding-top: 32px;">
-                            <button type="button" onclick="selectJobPosition('Accounting')" class="job-entry">
+                        <!-- Job list -->
+                        <div class="panel-body" id="job-list" style="padding: 16px; padding-top: 32px;">
+                            <button type="button" onclick="viewJobPosition('Accounting')" class="job-entry">
                                 <h3 class="job-title">Accounting</h3>
                                 <p>
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
                                 </p>
                             </button type="button">
-                            <button type="button" onclick="selectJobPosition('Developer')" class="job-entry">
+                            <button type="button" onclick="viewJobPosition('Developer')" class="job-entry">
                                 <h3 class="job-title">Developer</h3>
                                 <p>
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
                                 </p>
                             </button type="button">
-                            <button type="button" onclick="selectJobPosition('Production Manager')" class="job-entry">
+                            <button type="button" onclick="viewJobPosition('Production Manager')" class="job-entry">
                                 <h3 class="job-title">Production Manager</h3>
                                 <p>
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
                                 </p>
                             </button type="button">
-                            <button type="button" onclick="selectJobPosition('IT Support')" class="job-entry">
+                            <button type="button" onclick="viewJobPosition('IT Support')" class="job-entry">
                                 <h3 class="job-title">IT Support</h3>
                                 <p>
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
                                 </p>
                             </button type="button">
-                            <button type="button" onclick="selectJobPosition('HR Staff')" class="job-entry">
+                            <button type="button" onclick="viewJobPosition('HR Staff')" class="job-entry">
                                 <h3 class="job-title">HR Staff</h3>
                                 <p>
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
                                 </p>
                             </button type="button">
-                            <button type="button" onclick="selectJobPosition('QC Staff')" class="job-entry">
+                            <button type="button" onclick="viewJobPosition('QC Staff')" class="job-entry">
                                 <h3 class="job-title">Quality Control Staff</h3>
                                 <p>
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
                                 </p>
                             </button type="button">
-                            <button type="button" onclick="selectJobPosition('Production Staff')" class="job-entry">
+                            <button type="button" onclick="viewJobPosition('Production Staff')" class="job-entry">
                                 <h3 class="job-title">Production Staff</h3>
                                 <p>
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
                                 </p>
                             </button type="button">
-                            <button type="button" onclick="selectJobPosition('Designer')" class="job-entry">
+                            <button type="button" onclick="viewJobPosition('Designer')" class="job-entry">
                                 <h3 class="job-title">Designer</h3>
                                 <p>
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
                                 </p>
                             </button type="button">
-                            <button type="button" onclick="selectJobPosition('Data Analyst')" class="job-entry">
+                            <button type="button" onclick="viewJobPosition('Data Analyst')" class="job-entry">
                                 <h3 class="job-title">Data Analyst</h3>
                                 <p>
                                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
                                 </p>
                             </button type="button">
+                        </div>
+
+                        <!-- Job index -->
+                        <div class="panel-body" id="job-index" style="display: none;">
+                            <div class="row">
+                                <button class="btn" type="button" onclick="backToJobList()">
+                                    Back
+                                </button>
+                                <button class="btn-outline" type="button" onclick="selectJobPosition(selectedJob)">
+                                    Apply
+                                </button>
+                            </div>
+                            <h3 id="job-detail-title" class="job-title"></h3>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis molestiae, quidem aliquid minus explicabo illum adipisci quo eveniet necessitatibus optio. Illo nostrum quam earum ducimus eveniet exercitationem doloremque recusandae voluptatibus?
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci eaque soluta rerum sit dolorum illo quis sapiente ab numquam in blanditiis modi eveniet nostrum, minus animi cumque ut eos quae!
+                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Mollitia at voluptatibus ab autem maiores cupiditate repellat architecto ipsa perspiciatis voluptates. Porro ad vero cumque non, quo consequuntur inventore culpa at.
+                            </p>
                         </div>
                     </div>
                     <!-- personal information -->
@@ -246,7 +265,7 @@
                     </div>
 
                     <!-- Social Media -->
-                    <div class="form-section" id="section3">
+                    <div class="form-section grouped" id="section3">
                         <div class="row">
                             <div class="panel-title">
                                 <h2>Social Media</h2>
@@ -314,7 +333,7 @@
                     </div>
 
                     <!-- educational background -->
-                    <div class="form-section" id="section4">
+                    <div class="form-section grouped" id="section4">
                         <div class="row">
                             <div class="panel-title">
                                 <h2>Educational Background</h2>
@@ -415,7 +434,7 @@
                     </div>
 
                     <!-- Work Experience -->
-                    <div class="form-section" id="section5">
+                    <div class="form-section grouped" id="section5">
                         <div class="row">
                             <div class="panel-title">
                                 <h2>Work Experience</h2>
@@ -492,7 +511,7 @@
                     </div>
 
                     <!-- Training -->
-                    <div class="form-section" id="section6">
+                    <div class="form-section grouped" id="section6">
                         <div class="row">
                             <div class="panel-title">
                                 <h2>Training</h2>
@@ -638,7 +657,7 @@
                     </div>
 
                     <!-- Health Information -->
-                    <div class="form-section" id="section8">
+                    <div class="form-section grouped" id="section8">
                         <div class="row">
                             <div class="panel-title">
                                 <h2>Health Information</h2>
@@ -1204,6 +1223,7 @@
         const totalSteps = 11;
         const formData = {};
         const countryData = {};
+        let selectedJob = "";
 
         // json handling
         const phoneCountryCode = document.getElementById('countryCode');
@@ -1494,11 +1514,19 @@
         }) 
 
         function saveFormData() {
+
             const currentSection = document.getElementById(`section${currentStep}`);
+            const isGroupingData = currentSection.classList.contains('grouped') ? true : false;
+            console.log(isGroupingData);
             const inputs = currentSection.querySelectorAll('input, select, textarea');
             inputs.forEach(input => {
                 if (input.id) {
                     if (input.type == 'file') {
+                        // var uploadData = {
+                        //     'file_name':input.files[0].name,
+                        //     'mime_type':input.files[0].type,
+                        //     'file':input.files[0],
+                        // };
                         formData[input.id] = input.files[0];
                         return;
                     }
@@ -1520,6 +1548,18 @@
                     input.value = formData[input.name];
                 }
             })
+        }
+
+        function viewJobPosition(value) {
+            selectedJob = value;
+            document.getElementById('job-detail-title').innerHTML = value;
+            document.getElementById('job-index').style.display = 'flex';
+            document.getElementById('job-list').style.display = 'none';
+        }
+
+        function backToJobList() {
+            document.getElementById('job-index').style.display = 'none';
+            document.getElementById('job-list').style.display = 'flex';
         }
 
         function selectJobPosition(value) {
