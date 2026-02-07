@@ -987,7 +987,7 @@
                                                         <div id="edudocument-1Prev"></div>
                                                     </td>
                                                     <td class="table-action">
-                                                        <button type="button" class="btn-link" onclick="openTab(formData[`edudocument-${this.parentElement.parentElement.id.split('-')[1]}`])">
+                                                        <button type="button" class="btn-link" onclick="openTab(formData[`edu`][Number(this.parentElement.parentElement.id.split('-')[1])]['edudocument']['file'])">
                                                             <img src="assets/icons/new-tab-icon.svg" alt="View">
                                                         </button>
                                                     </td>
@@ -1012,7 +1012,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr id="workPrev-1">
+                                                <tr id="workExpPrev-1">
                                                     <td>
                                                         <div class="cell-row">
                                                             <div class="date" id="workstartperiod-1Prev"></div>
@@ -1064,7 +1064,7 @@
                                                     <td style="width: 400px;"><div id="trainingdesc-1Prev"></div></td>
                                                     <td style="width: 100px;"><div id="trainingdoc-1Prev"></div></td>
                                                     <td class="table-action">
-                                                        <button type="button" class="btn-link" onclick="openTab(formData[`trainingdoc-${this.parentElement.parentElement.id.split('-')[1]}`])">
+                                                        <button type="button" class="btn-link" onclick="openTab(formData[`training`][Number(this.parentElement.parentElement.id.split('-')[1])]['trainingdoc']['file'])">
                                                             <img src="assets/icons/new-tab-icon.svg" alt="View">
                                                         </button>
                                                     </td>
@@ -1167,7 +1167,7 @@
                                         <div class="label">Recent Photo</div>
                                         <div class="input-readonly row">
                                             <div id="recentPhotoPrev"></div>
-                                            <button type="button" class="btn-link" onclick="openTab(formData['recentPhoto'])">
+                                            <button type="button" class="btn-link" onclick="openTab(formData['recentPhoto']['file'])">
                                                 <img src="assets/icons/new-tab-icon.svg" alt="View">
                                             </button>
                                         </div>
@@ -1179,7 +1179,7 @@
                                         <div class="label">Curriculum Vitae (CV) / Resume</div>
                                         <div class="input-readonly row">
                                             <div id="resumePrev"></div>
-                                            <button type="button" class="btn-link" onclick="openTab(formData['resume'])">
+                                            <button type="button" class="btn-link" onclick="openTab(formData['resume']['file'])">
                                                 <img src="assets/icons/new-tab-icon.svg" alt="View">
                                             </button>
                                         </div>
@@ -1513,30 +1513,60 @@
             reader.onerror = reject;
         }) 
 
-        function saveFormData() {
+        function inputTypeSaveHandler(input) {
+            if (input.type == 'file') {
+                var uploadData = {
+                    'file_name': input.files[0] ? input.files[0].name : '',
+                    'mime_type':input.files[0] ? input.files[0].type : '',
+                    'file':input.files[0],
+                };
+                return uploadData;
+            }
+            if (input.type == 'number') {
+                return Number(input.value);
+            }
+            return input.value;
+        }
 
+        function saveFormData() {
             const currentSection = document.getElementById(`section${currentStep}`);
             const isGroupingData = currentSection.classList.contains('grouped') ? true : false;
-            console.log(isGroupingData);
             const inputs = currentSection.querySelectorAll('input, select, textarea');
+            var currentIndex = 1;
+            var tableData = {};
+            var rowData = {};
             inputs.forEach(input => {
                 if (input.id) {
-                    if (input.type == 'file') {
-                        // var uploadData = {
-                        //     'file_name':input.files[0].name,
-                        //     'mime_type':input.files[0].type,
-                        //     'file':input.files[0],
-                        // };
-                        formData[input.id] = input.files[0];
+                    if (isGroupingData) {
+                        if (input.id.includes('-')) {
+                            var column = input.id.split('-')[0];
+                            var rowIndex = Number(input.id.split('-')[1]);
+
+                            // clear rowData if it is a new row and save the previous row
+                            if (currentIndex != rowIndex) {
+                                tableData[rowIndex - 1] = rowData;
+                                rowData = {};
+                                currentIndex = rowIndex;
+                            }
+
+                            rowData[column] = inputTypeSaveHandler(input);
+                        } else {
+                            formData[input.id] = input.value;
+                        }
                         return;
                     }
-                    if (input.type == 'number') {
-                        formData[input.id] = Number(input.value);
-                        return;
-                    }
-                    formData[input.id] = input.value;
+
+                    // save each value in a key
+                    formData[input.id] = inputTypeSaveHandler(input)
                 }
             })
+
+            // table form save handling
+            if (isGroupingData) {
+                tableData[currentIndex] = rowData; // save last row
+                var table = currentSection.querySelector('table'); 
+                formData[table.id.replace('Table', '')] = tableData;
+            }
         }
 
         function loadFormData() {
@@ -1598,6 +1628,7 @@
         }
 
         async function showPreview() {
+            console.log(formData);
             const test = document.getElementById('preview-screen');
             const numeralInputs = document.getElementsByClassName('numeral');
             const dateInputs = document.getElementsByClassName('date');
@@ -1610,7 +1641,7 @@
 
                 // show file name for input type file
                 if (cellData instanceof File) {
-                    targetElement.innerHTML = cellData.name ?? '';
+                    targetElement.innerHTML = cellData['name'] ?? '';
                     return;
                 }
 
@@ -1640,39 +1671,66 @@
                 }
 
                 // showing data from table inputs
-                if (data[0].includes('-')) {
-                    var firstRow = document.getElementById(`${data[0].split('-')[0]}-1Prev`);
-                    if (firstRow == null) {
-                        // test.innerHTML += `<div>${data[0]} : ${cellData}</div>`;
+                if (typeof cellData === "object") {
+                    // preview file
+                    if (Object.keys(cellData).includes('file')) {
+                        console.log(cellData);
+                        targetElement.innerHTML = cellData['file_name'] ?? '';
                         return;
-                    }
+                    };
 
-                    var tableRow = firstRow.parentElement.parentElement;
-                    var table = tableRow.parentElement;
-                    var tableIndex = tableRow.id.split('-')[1];
-                    var cellIndex = data[0].split('-')[1];
-                    if (cellIndex != 1) {
-                        // if there is no table row for the cell, create a new one
-                        if (targetElement == null) {
-                            var newElement = tableRow.cloneNode(true);
-                            var newElementChildren = [...newElement.children];
+                    var firstRow = document.getElementById(`${data[0]}Prev-1`);
 
-                            // populate input preview elements
-                            newElementChildren.forEach(cellElement => {
-                                [...cellElement.children].forEach(inputPrev => {
-                                    if (inputPrev.hasAttribute('id')) {
-                                        inputPrev.id = inputPrev.id.replace('-1', `-${cellIndex}`);
-                                        inputPrev.innerHTML = cellData;
-                                    }
+                    if (firstRow == null) return;
+
+                    var table = firstRow.parentElement;
+
+                    Object.keys(cellData).forEach(e => {
+                        var rowCellData = cellData[e];
+                        targetElement = document.getElementById(`${data[0]}Prev-${e}`);
+                        // console.log(targetElement);
+                        Object.keys(rowCellData).forEach(column => {
+                            // if there is no table row for the cell, create a new one
+                            if (targetElement == null) {
+                                var newElement = firstRow.cloneNode(true);
+                                newElement.id = newElement.id.replace('-1', `-${e}`);
+                                [...newElement.children].forEach(row => {
+                                    [...row.children].forEach(child => {
+                                        if (child.hasAttribute('id')) {
+                                            child.id = child.id.replace('-1', `-${e}`);
+                                        }
+                                    })
                                 })
-                            })
-                            newElement.id = newElement.id.replace('-1', `-${cellIndex}`);
+                                table.appendChild(newElement);
+                                
+                                targetElement = document.getElementById(`${data[0]}Prev-${e}`);
 
-                            table.appendChild(newElement);
-                        } else {
-                            targetElement.innerHTML = cellData ?? '';
-                        }
-                    }
+                                var testzelfkjo = document.querySelector(`[id*=${column}-${e}Prev]`);
+
+                                
+
+                                if (Object.keys(rowCellData[column]).includes('file')) {
+                                    console.log(rowCellData[column]);
+                                    testzelfkjo.innerHTML = rowCellData[column]['file_name'] ?? '';
+                                } else {
+                                    testzelfkjo.innerHTML = rowCellData[column] ?? '';
+                                }
+                                
+    
+                            } else {
+                                // console.log(document.querySelector(`[id*=${column}-${e}Prev]`));
+                                var testzelfkjo = document.querySelector(`[id*=${column}-${e}Prev]`);
+                                console.log(testzelfkjo);
+                                if (Object.keys(rowCellData[column]).includes('file')) {
+                                    console.log(rowCellData[column]);
+                                    testzelfkjo.innerHTML = rowCellData[column]['file_name'] ?? '';
+                                } else {
+                                    testzelfkjo.innerHTML = rowCellData[column] ?? '';
+                                }
+                            }
+                        })
+                    })
+
                 }
 
                 // show data debug
