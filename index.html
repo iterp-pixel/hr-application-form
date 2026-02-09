@@ -116,60 +116,13 @@
                         </div>
                         <!-- Job list -->
                         <div class="panel-body" id="job-list" style="padding: 16px; padding-top: 32px;">
-                            <button type="button" onclick="viewJobPosition('Accounting')" class="job-entry">
-                                <h3 class="job-title">Accounting</h3>
-                                <p>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
-                                </p>
+                            <button type="button" style="display: none;" onclick="viewJobPosition('Accounting')" class="job-entry">
+                                <h3 class="job-title"></h3>
+                                <p></p>
                             </button type="button">
-                            <button type="button" onclick="viewJobPosition('Developer')" class="job-entry">
-                                <h3 class="job-title">Developer</h3>
-                                <p>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
-                                </p>
-                            </button type="button">
-                            <button type="button" onclick="viewJobPosition('Production Manager')" class="job-entry">
-                                <h3 class="job-title">Production Manager</h3>
-                                <p>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
-                                </p>
-                            </button type="button">
-                            <button type="button" onclick="viewJobPosition('IT Support')" class="job-entry">
-                                <h3 class="job-title">IT Support</h3>
-                                <p>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
-                                </p>
-                            </button type="button">
-                            <button type="button" onclick="viewJobPosition('HR Staff')" class="job-entry">
-                                <h3 class="job-title">HR Staff</h3>
-                                <p>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
-                                </p>
-                            </button type="button">
-                            <button type="button" onclick="viewJobPosition('QC Staff')" class="job-entry">
-                                <h3 class="job-title">Quality Control Staff</h3>
-                                <p>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
-                                </p>
-                            </button type="button">
-                            <button type="button" onclick="viewJobPosition('Production Staff')" class="job-entry">
-                                <h3 class="job-title">Production Staff</h3>
-                                <p>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
-                                </p>
-                            </button type="button">
-                            <button type="button" onclick="viewJobPosition('Designer')" class="job-entry">
-                                <h3 class="job-title">Designer</h3>
-                                <p>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
-                                </p>
-                            </button type="button">
-                            <button type="button" onclick="viewJobPosition('Data Analyst')" class="job-entry">
-                                <h3 class="job-title">Data Analyst</h3>
-                                <p>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, tempora. Debitis, quo, quaerat nihil beatae dolor delectus eos aliquam ut culpa excepturi natus iste, facere soluta voluptates deserunt voluptatibus corrupti.
-                                </p>
-                            </button type="button">
+                            <div id="no-job-display" class="panel-center" style="display:block">
+                                No Open Job
+                            </div>
                         </div>
 
                         <!-- Job index -->
@@ -183,11 +136,7 @@
                                 </button>
                             </div>
                             <h3 id="job-detail-title" class="job-title"></h3>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis molestiae, quidem aliquid minus explicabo illum adipisci quo eveniet necessitatibus optio. Illo nostrum quam earum ducimus eveniet exercitationem doloremque recusandae voluptatibus?
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci eaque soluta rerum sit dolorum illo quis sapiente ab numquam in blanditiis modi eveniet nostrum, minus animi cumque ut eos quae!
-                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Mollitia at voluptatibus ab autem maiores cupiditate repellat architecto ipsa perspiciatis voluptates. Porro ad vero cumque non, quo consequuntur inventore culpa at.
-                            </p>
+                            <p id="job-detail-description"></p>
                         </div>
                     </div>
                     <!-- personal information -->
@@ -207,11 +156,11 @@
 
                             <div class="row">
                                 <div class="field">
-                                    <label for="fullName">Full Name</label>
-                                    <input type="text" id="fullName" name="fullName" placeholder="Input here..." onfocus="this.classList.remove('missing')" required>
+                                    <label for="name">Full Name</label>
+                                    <input type="text" id="name" name="name" placeholder="Input here..." onfocus="this.classList.remove('missing')" required>
                                 </div>
                                 <div class="field">
-                                    <label for="fullName">Gender</label>
+                                    <label for="name">Gender</label>
                                     <select name="gender" id="gender" onfocus="this.classList.remove('missing')" required>
                                         <option value="">Select</option>
                                         <option value="Male">Male</option>
@@ -228,7 +177,7 @@
                                 <div class="field">
                                     <label for="phone">WhatsApp Number</label>
                                     <div class="phone hover" onfocus="this.classList.remove('missing')">
-                                        <div id="countryIcon" style="width: 50px; height: 100%; padding-left: 10px; align-items: center; display: flex;"></div>
+                                        <div id="countryIcon" style="width: 80px; height: 100%; padding-left: 10px; align-items: center; display: flex;"></div>
                                         <select name="countryCode" id="countryCode" style="width: 100px; border-left: none; border-top: none; border-bottom: none;" required onfocus="this.classList.remove('missing')" onchange="changeCountryIcon()">
                                             <option value="">#</option>
                                         </select>
@@ -687,7 +636,7 @@
                                         <tbody>
                                             <tr id="health-row-1">
                                                 <td>
-                                                    <select id="sick-1">
+                                                    <select id="sick-1" required>
                                                         <option value="">Choose sickness type</option>
                                                         <option value="Tremor">Tremor</option>
                                                         <option value="Near / Far Sighted">Near / Far Sighted</option>
@@ -876,7 +825,7 @@
                                 <div class="row">
                                     <div class="field">
                                         <div class="label">Full Name</div>
-                                        <div class="input-readonly" id="fullNamePrev"></div>
+                                        <div class="input-readonly" id="namePrev"></div>
                                     </div>
                                     <div class="field">
                                         <div class="label">Gender</div>
@@ -1223,7 +1172,41 @@
         const totalSteps = 11;
         const formData = {};
         const countryData = {};
+        let jobList = {};
+        let countryList = [];
         let selectedJob = "";
+        
+        const submitData = {
+            "jsonrpc": "2.0",
+            "method": "call",
+            "params": {
+                "name": "Sang",
+                "email": "test@mail.com",
+                "phone": "628123456789",
+                "work_exp": [
+                    {
+                        "name": "Angkasa Pura",
+                        "position": "Software Engineer",
+                        "start": "2020-01-01",
+                        "end": "2021-01-01",
+                        "document": "JVBERi0xLjQKJeLjz9MKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9Db3VudCAxIC9LaWRzIFszIDAgUl0gPj4KZW5kb2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCA2MTIgNzkyXSAvQ29udGVudHMgNCAwIFIgL1Jlc291cmNlcyA8PCAvRm9udCA8PCAvRjEgNSAwIFIgPj4gPj4gPj4KZW5kb2JqCjQgMCBvYmoKPDwgL0xlbmd0aCA0NCA+PgpzdHJlYW0KQlQgL0YxIDEyIFRmIDcyIDcyMCBUZCAodGVzdCBsYXR0ZXIpIFRqIEVUCmVuZHN0cmVhbQplbmRvYmoKNSAwIG9iago8PCAvVHlwZSAvRm9udCAvU3VidHlwZSAvVHlwZTEgL0Jhc2VGb250IC9IZWx2ZXRpY2EgPj4KZW5kb2JqCnhyZWYKMCA2CjAwMDAwMDAwMDAgNjU1MzUgZgowMDAwMDAwMDEwIDAwMDAwIG4KMDAwMDAwMDA2MyAwMDAwMCBuCjAwMDAwMDAxMTQgMDAwMDAgbgowMDAwMDAwMjE5IDAwMDAwIG4KMDAwMDAwMDMzMCAwMDAwMCBuCnRyYWlsZXIKPDwgL1NpemUgNiAvUm9vdCAxIDAgUiA+PgpzdGFydHhyZWYKNDA5CiUlRU9G",
+                        "mimetype": "application/pdf",
+                        "doc_name": "Test Letter"
+                    },
+                    {
+                        "name": "PT. ABC",
+                        "position": "Backend Developer",
+                        "start": "2021-01-01",
+                        "end": "2022-01-01",
+                        "document": "JVBERi0xLjQKJeLjz9MKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9Db3VudCAxIC9LaWRzIFszIDAgUl0gPj4KZW5kb2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCA2MTIgNzkyXSAvQ29udGVudHMgNCAwIFIgL1Jlc291cmNlcyA8PCAvRm9udCA8PCAvRjEgNSAwIFIgPj4gPj4gPj4KZW5kb2JqCjQgMCBvYmoKPDwgL0xlbmd0aCA0NiA+PgpzdHJlYW0KQlQgL0YxIDEyIFRmIDcyIDcyMCBUZCAodGVzdCBsYXR0ZXIgMikgVGoKRVQKZW5kc3RyZWFtCmVuZG9iago1IDAgb2JqCjw8IC9UeXBlIC9Gb250IC9TdWJ0eXBlIC9UeXBlMSAvQmFzZUZvbnQgL0hlbHZldGljYSA+PgplbmRvYmoKeHJlZgowIDYKMDAwMDAwMDAwMCA2NTUzNSBmCjAwMDAwMDAwMTAgMDAwMDAgbgowMDAwMDAwMDYzIDAwMDAwIG4KMDAwMDAwMDExNCAwMDAwMCBuCjAwMDAwMDAyMTkgMDAwMDAgbgowMDAwMDAwMzMyIDAwMDAwIG4KdHJhaWxlcgo8PCAvU2l6ZSA2IC9Sb290IDEgMCBSID4+CnN0YXJ0eHJlZgo0MTEKJSVFT0Y=",
+                        "mimetype": "application/pdf",
+                        "doc_name": "Test Letter 2"
+                    }
+                ],
+                "job_id": "2"
+            },
+            "id": 1
+        };
 
         // json handling
         const phoneCountryCode = document.getElementById('countryCode');
@@ -1231,30 +1214,81 @@
         const countryIcon = document.getElementById('countryIcon');
         const countryIconPrev = document.getElementById('countryIconPrev');
 
-        if (Object.keys(countryData).length === 0) {
-            fetch('./assets/data/country_codes.json')
-                .then((response) => response.json())
-                .then((json) => {
-                    phoneCountryCode.innerHTML = '<option value="">#</option>';
-                    nationalityList.innerHTML = '<option value="">Select your nationality</option>';
+        async function fetchJobList() {
+            const response = await fetch('http://192.168.1.8/applicant/jobs_list', {
+                method: 'GET',
+            });
 
-                    for (let key in json) {
-                        countryData[key] = json[key];
-                        phoneCountryCode.innerHTML += `<option value="${json[key]['phone']}">${json[key]['phone']}</option>`;
-                        nationalityList.innerHTML += `<option value="${json[key]['name']}">${json[key]['name']}</option>`;
-                    }
-                });
+            return await response.json();
         }
 
+        async function fetchCountryCode() {
+            const response = await fetch('http://192.168.1.8/applicant/res_country');
+            return await response.json();
+        }
+
+        async function checkApplicant() {
+            const response = await fetch('http://192.168.1.8/applicant/check', {
+                mode:"no-cors",
+                method: 'POST',
+            });
+            
+            return await response.json();
+        }
+
+        fetchCountryCode().then((response) => {
+            countryList = response['country_list'];
+            if (countryList.length > 0) {
+                phoneCountryCode.innerHTML = '<option value="">#</option>';
+                nationalityList.innerHTML = '<option value="">Select your nationality</option>';
+                [...countryList].forEach(country => {
+                    phoneCountryCode.innerHTML += `<option value=${country['country_phone']}>+${country['country_phone']}</option>`;
+                    nationalityList.innerHTML += `<option value=${country['country_id']}>${country['country_name']}</option>`;
+                })
+            }
+        });
+
+
+        fetchJobList().then((response) => {
+            jobList = response['open_jobs'];
+            if(jobList.length > 0) document.getElementById('no-job-display').style.display = 'none';
+            var jobListElement = document.getElementById('job-list');
+            var jobEntry = document.getElementsByClassName('job-entry')[0];
+            [...jobList].forEach(job => {
+                var newEntry = jobEntry.cloneNode(true);
+                newEntry.style.display = 'block';
+                newEntry.setAttribute('onclick', `viewJobPosition(${job['jobs_id']})`);
+                newEntry.innerHTML =
+                `<h3 class="job-title">${job['jobs_name']}</h3>
+                <p>${job['job_description']}</p>`;
+                jobListElement.appendChild(newEntry);
+            })
+        });
+
+        checkApplicant().then((response) => {
+            console.log(response);
+        });
+
         function changeCountryIcon() {
-            let flag;
-            let jsontest = Object.keys(countryData).some(function(k) {
-                if (countryData[k]['phone'] == phoneCountryCode.value) {
-                    flag = countryData[k]['image'];
+            var flag;
+            phoneCountryCode.value;
+            [...countryList].forEach(country => {
+                // console.log(country['country_phone']);
+                if (country['country_phone'] === Number(phoneCountryCode.value)) {
+                    flag = country['country_flag'];
                 }
             });
-            countryIcon.innerHTML = `<img src="${flag}" alt='' />`;
-            countryIconPrev.innerHTML = `<img src="${flag}" alt='' />`;
+
+            console.log(flag);
+            // let jsontest = Object.keys(countryData).some(function(k) {
+            //     if (countryData[k]['phone'] == phoneCountryCode.value) {
+            //         flag = countryData[k]['image'];
+            //     }
+            // });
+            if (flag) {
+                countryIcon.innerHTML = `<img width="100%" src="${flag}" alt='' />`;
+                countryIconPrev.innerHTML = `<img width="100%" src="${flag}" alt='' />`;
+            }
         }
 
         // section checkboxes
@@ -1536,7 +1570,7 @@
             var tableData = {};
             var rowData = {};
             inputs.forEach(input => {
-                if (input.id) {
+                if (input.id && input.hasAttribute('required')) {
                     if (isGroupingData) {
                         if (input.id.includes('-')) {
                             var column = input.id.split('-')[0];
@@ -1562,7 +1596,7 @@
             })
 
             // table form save handling
-            if (isGroupingData) {
+            if (isGroupingData && Object.keys(rowData).length > 0) {
                 tableData[currentIndex] = rowData; // save last row
                 var table = currentSection.querySelector('table'); 
                 formData[table.id.replace('Table', '')] = tableData;
@@ -1580,9 +1614,20 @@
             })
         }
 
-        function viewJobPosition(value) {
-            selectedJob = value;
-            document.getElementById('job-detail-title').innerHTML = value;
+        function findJob(id) {
+            var job;
+            [...jobList].forEach(entry => {
+                if (entry['jobs_id'] === id) job = entry;
+            })
+            return job ?? {};
+        }
+
+        function viewJobPosition(id) {
+            selectedJob = id;
+            var job = findJob(id);
+            
+            document.getElementById('job-detail-title').innerHTML = job['jobs_name'];
+            document.getElementById('job-detail-description').innerHTML = job['job_description'];
             document.getElementById('job-index').style.display = 'flex';
             document.getElementById('job-list').style.display = 'none';
         }
@@ -1592,8 +1637,8 @@
             document.getElementById('job-list').style.display = 'flex';
         }
 
-        function selectJobPosition(value) {
-            formData['job-position'] = value;
+        function selectJobPosition(id) {
+            formData['job_id'] = id;
             changeStep(1);
         }
 
@@ -1628,7 +1673,24 @@
         }
 
         async function showPreview() {
-            console.log(formData);
+            submitData['params'] = formData;
+            // [...Object.keys(submitData['params'])].forEach(field => {
+            //     if (typeof submitData['params'][field] === "object") {
+            //         submitData['params'][field] = [...Object.values(submitData['params'][field])];
+            //         [...submitData['params'][field]].forEach(row => {
+            //             if (typeof row === "object") {
+            //                 [...Object.values(row)].forEach(e => {
+            //                     if (typeof e === "object") {
+
+            //                     }
+            //                 })
+            //             }
+            //         })
+            //         // console.log([...Object.values(submitData['params'][field])]);
+            //     }
+            // })
+            // console.log(JSON.stringify(submitData));
+            // console.log(formData);
             const test = document.getElementById('preview-screen');
             const numeralInputs = document.getElementsByClassName('numeral');
             const dateInputs = document.getElementsByClassName('date');
@@ -1638,6 +1700,13 @@
                 var targetElement = document.getElementById(`${data[0]}Prev`);
 
                 var cellData = data[1];
+
+                // show job position
+                if (data[0] === 'job-position') {
+                    var job = findJob(data[1]);
+                    targetElement.innerHTML = job['jobs_name'];
+                    return;
+                }
 
                 // show file name for input type file
                 if (cellData instanceof File) {
@@ -1674,7 +1743,6 @@
                 if (typeof cellData === "object") {
                     // preview file
                     if (Object.keys(cellData).includes('file')) {
-                        console.log(cellData);
                         targetElement.innerHTML = cellData['file_name'] ?? '';
                         return;
                     };
@@ -1688,44 +1756,33 @@
                     Object.keys(cellData).forEach(e => {
                         var rowCellData = cellData[e];
                         targetElement = document.getElementById(`${data[0]}Prev-${e}`);
-                        // console.log(targetElement);
+                        
                         Object.keys(rowCellData).forEach(column => {
                             // if there is no table row for the cell, create a new one
                             if (targetElement == null) {
                                 var newElement = firstRow.cloneNode(true);
                                 newElement.id = newElement.id.replace('-1', `-${e}`);
                                 [...newElement.children].forEach(row => {
-                                    [...row.children].forEach(child => {
-                                        if (child.hasAttribute('id')) {
-                                            child.id = child.id.replace('-1', `-${e}`);
-                                        }
+                                    var cellElement;
+                                    Object.keys(rowCellData).forEach(col => {
+                                        cellElement = row.querySelector(`[id*=${col}-1Prev]`);
+                                        if (cellElement) cellElement.id = cellElement.id.replace('-1', `-${e}`);
                                     })
                                 })
                                 table.appendChild(newElement);
                                 
                                 targetElement = document.getElementById(`${data[0]}Prev-${e}`);
 
-                                var testzelfkjo = document.querySelector(`[id*=${column}-${e}Prev]`);
-
-                                
-
                                 if (Object.keys(rowCellData[column]).includes('file')) {
-                                    console.log(rowCellData[column]);
-                                    testzelfkjo.innerHTML = rowCellData[column]['file_name'] ?? '';
+                                    document.querySelector(`[id*=${column}-${e}Prev]`).innerHTML = rowCellData[column]['file_name'] ?? '';
                                 } else {
-                                    testzelfkjo.innerHTML = rowCellData[column] ?? '';
+                                    document.querySelector(`[id*=${column}-${e}Prev]`).innerHTML = rowCellData[column] ?? '';
                                 }
-                                
-    
                             } else {
-                                // console.log(document.querySelector(`[id*=${column}-${e}Prev]`));
-                                var testzelfkjo = document.querySelector(`[id*=${column}-${e}Prev]`);
-                                console.log(testzelfkjo);
                                 if (Object.keys(rowCellData[column]).includes('file')) {
-                                    console.log(rowCellData[column]);
-                                    testzelfkjo.innerHTML = rowCellData[column]['file_name'] ?? '';
+                                    document.querySelector(`[id*=${column}-${e}Prev]`).innerHTML = rowCellData[column]['file_name'] ?? '';
                                 } else {
-                                    testzelfkjo.innerHTML = rowCellData[column] ?? '';
+                                    document.querySelector(`[id*=${column}-${e}Prev]`).innerHTML = rowCellData[column] ?? '';
                                 }
                             }
                         })
