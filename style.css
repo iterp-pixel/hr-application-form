@@ -575,7 +575,7 @@ table select:focus, table input:focus, table .file-input-wrapper:focus, table te
   background-color: #f9fafb;
 }
 
-table select.missing, table input.missing, table textarea.missing {
+table select.missing, table input.missing, table textarea.missing, table .file-input-wrapper:has(input.missing) {
   border: none;
   background-color: #ffc9ca;
 }
