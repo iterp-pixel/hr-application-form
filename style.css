@@ -780,3 +780,43 @@ h3 {
 .btn-link:focus {
   background-color: #c2c2c2;
 }
+
+.step-progress {
+  display: none;
+}
+
+.burger {
+  display: none;
+}
+
+/* Mobile UI */
+@media screen and (width <= 900px ) {
+  .layout {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .sidebar {
+    height: 100px;
+  }
+
+  .step {
+    display: none;
+  }
+
+  .step.active {
+    display: flex;
+    border: none;
+  }
+
+  .step-progress {
+    display: flex;
+    height: 20px;
+    margin-bottom: 8px;
+    /* background-color: #111827; */
+  }
+
+  .burger {
+    display: block;
+  }
+}
