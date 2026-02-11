@@ -122,9 +122,24 @@ body {
   box-shadow: 0 0 8px rgba(182, 190, 198, 0.25);
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 10px;
   animation: fadeIn 0.3s ease;
   overflow-y: auto;
+}
+
+.panel-notification {
+  display: none;
+}
+
+.panel-notification.active {
+  display: block;
+  padding: 12px;
+  position: sticky; 
+  top: 0px;
+  height: 100px;
+  /* z-index: 1000;  */
+  background-color: #ff4d4f;
+  animation: fadeIn 0.3s ease;
 }
 
 .panel.complete {
@@ -459,6 +474,18 @@ button:disabled {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(10);
   }
 }
 

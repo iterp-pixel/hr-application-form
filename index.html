@@ -99,11 +99,20 @@
                         <img src="assets/icons/completed-step.svg" alt="Done">
                     </div>
                 </div>
+                <button type="button" onclick="selectJobPosition(1)">Skip</button>
+                <button type="button" onclick="submitDebug()">Submit dummy data</button>
+                <button type="button" onclick="checkApplicant()">Check Applicant</button>
+                <button type="button" onclick="fillDummyData()">Fill dummy data</button>
+                <!-- <button type="button" onclick="notificationHandler('info message', 'info')">Notif info</button>
+                <button type="button" onclick="notificationHandler('warning message', 'warning')">Notif warning</button> -->
             </aside>
 
             <!-- Main panel -->
             <form id="applicationForm">
                 <div class="panel">
+                    <div id="notification" class="panel-notification">
+                        Test
+                    </div>
                     <div class="form-section active" id="section1">
                         <div class="row">
                             <div class="panel-title">
@@ -126,8 +135,6 @@
                             <div id="no-job-display" class="panel-center" style="display:none">
                                 No Open Job
                             </div>
-                            <button type="button" onclick="selectJobPosition(1)">Skip</button>
-                            <button type="button" onclick="submitDebug()">Submit dummy data</button>
                         </div>
 
                         <!-- Job index -->
@@ -214,8 +221,6 @@
                                 </div>
                                 <div class="field"></div>
                             </div>
-
-                            <button type="button" onclick="checkApplicant()">Check applicant</button>
                         </div>
 
                     </div>
@@ -1189,12 +1194,6 @@
         formCheck.append("email", "test.guy@example.com");
         formCheck.append("phone", "(62) 0812345678");
 
-        // checkApplicant().then((response) => {
-        //     console.log(response);
-        // }).catch((e) => {
-        //     console.log(e);
-        // });
-
         const dummyData = {
             "name": "Joseph",
             "gender": "male",
@@ -1285,6 +1284,14 @@
                 "file": "",
             },
             "portofolio": "www.porto.com"
+        }
+
+        function fillDummyData() {
+            Object.keys(dummyData).forEach(key => {
+                if (document.getElementById(key)) {
+                    document.getElementById(key).value = dummyData[key];
+                }
+            })
         }
         
         var submitData = {
@@ -1399,30 +1406,38 @@
             formCheck.set("job_id", formData['job_id']);
             formCheck.set("name", document.getElementById('name').value);
             formCheck.set("email", document.getElementById('email').value);
-            formCheck.set("phone", `(${document.getElementById('countryCode').value}) ${document.getElementById('phone').value}`);
+            formCheck.set("phone", `(${document.getElementById('countryCode').value})${document.getElementById('phone')}`);
+            // formCheck.set("job_id", 1);
+            // formCheck.set("name", 'Ethasdn Carter');
+            // formCheck.set("email", 'ethsdan.carter@example.com');
+            // formCheck.set("phone", '987sd891');
             var data;
             const response = await fetch('http://192.168.1.8/applicant/check', {
                 method: 'POST',
                 body: formCheck,
             }).then((res) => {
-                data = res.json().then((value) => {return value});
+                data = res.json().then((value) => {
+                    return value;
+                });
             }).catch((e) => {
                 alert(e);
             });
-            
-            alert((await data)["message"]);
+
+            return (await data)[0];
         }
 
         fetchCountryCode().then((response) => {
             countryList = response['country_list'];
-            [...countryList].forEach(country => {
-                console.log(country);
-            })
+            countryList.sort((a, b) => {
+                var value = a["country_phone"] > b["country_phone"];
+                // console.log(value);
+                return value ? 1 : -1;
+            });
             if (countryList.length > 0) {
                 phoneCountryCode.innerHTML = '<option value="">#</option>';
                 nationalityList.innerHTML = '<option value="">Select your nationality</option>';
                 [...countryList].forEach(country => {
-                    phoneCountryCode.innerHTML += `<option value=${country['country_phone']}>+${country['country_phone']}</option>`;
+                    phoneCountryCode.innerHTML += `<option value=${country['country_phone']}>${country['country_phone']} (${country['country_code']})</option>`;
                     nationalityList.innerHTML += `<option value=${country['country_id']}>${country['country_name']}</option>`;
                 })
             }
@@ -1460,23 +1475,20 @@
 
         function changeCountryIcon() {
             var flag;
-            phoneCountryCode.value;
+
             [...countryList].forEach(country => {
                 // console.log(country['country_phone']);
-                if (country['country_phone'] === Number(phoneCountryCode.value)) {
+                if (country['country_code'] === phoneCountryCode.options[phoneCountryCode.selectedIndex].innerHTML.split('(')[1].replace(')', '')) {
                     flag = country['country_flag'];
                 }
             });
 
-            console.log(flag);
-            // let jsontest = Object.keys(countryData).some(function(k) {
-            //     if (countryData[k]['phone'] == phoneCountryCode.value) {
-            //         flag = countryData[k]['image'];
-            //     }
-            // });
             if (flag) {
                 countryIcon.innerHTML = `<img width="100%" src="${flag}" alt='' />`;
                 countryIconPrev.innerHTML = `<img width="100%" src="${flag}" alt='' />`;
+            } else {
+                countryIcon.innerHTML = `<img width="100%" src="" alt='' />`;
+                countryIconPrev.innerHTML = `<img width="100%" src="" alt='' />`;
             }
         }
 
@@ -1581,7 +1593,7 @@
             }
         }
 
-        function validateCurrentStep(step) {
+        async function validateCurrentStep(step) {
             const currentSection = document.getElementById(`section${currentStep}`);
             const allInputs = currentSection.querySelectorAll('input, select, textarea');
             const requiredInputs = currentSection.querySelectorAll('[required]');
@@ -1602,8 +1614,9 @@
                 }
             }
 
-            if (hasInvalidInput == false) 
-            hasInvalidInput = sectionValidator(step);
+            if (hasInvalidInput == false) {
+                hasInvalidInput = await sectionValidator(step)
+            };
 
             if (hasInvalidInput == false) {
                 return true;
@@ -1612,11 +1625,35 @@
             }
         }
 
+        function notificationHandler(message, status) {
+            var notification = document.getElementById('notification');
+            var backgroundColor;
+            switch (status) {
+                case "info": 
+                    backgroundColor = '#4CAF50';
+                    break;
+                case "warning": 
+                    backgroundColor = '#ff4d4f';
+                    break;
+                default: 
+                    backgroundColor = '#4CAF50';
+                    break;
+            }
+
+            notification.style.backgroundColor = backgroundColor;
+            notification.innerHTML = message;
+            notification.classList.add("active");
+
+            setTimeout(() => {
+                notification.classList.remove("active");
+            }, 5000);
+        }
+
         function fieldMissing(element) {
             element.classList.add('missing');
         }
 
-        function sectionValidator(step) {
+        async function sectionValidator(step) {
             let hasInvalidField = false;
 
             // some section with simple inputs skip extra validation
@@ -1634,7 +1671,20 @@
                     if (Date.parse(document.getElementById('dob').value) > Date.now()) {
                         fieldMissing(document.getElementById('dob'));
                         hasInvalidField = true;
-                    }                    
+                    }    
+                    
+                    // check applicant if previously applied
+                    hasInvalidField = checkApplicant().then((value) => {
+                        
+                        if (value["state"] === "allow") {
+                            notificationHandler(value["message"], "info");
+                            return false;
+                        } else {
+                            notificationHandler(value["message"], "warning");
+                            return true;
+                        }
+                    });
+                    console.log(await hasInvalidField);
                     break;
                 case 4: 
                     // educational background
@@ -1863,8 +1913,8 @@
             changeStep(1);
         }
 
-        function changeStep(direction, isValidated = true) {
-            if (isValidated && direction === 1 && !validateCurrentStep(currentStep)) {
+        async function changeStep(direction, isValidated = true) {
+            if (isValidated && direction === 1 && !await(validateCurrentStep(currentStep))) {
                 return;
             }
 
