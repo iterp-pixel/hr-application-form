@@ -801,6 +801,7 @@ h3 {
   .layout {
     flex-direction: column;
     overflow-y: auto;
+    /* background-color: #2E9E2F; */
   }
 
   .sidebar {
@@ -849,5 +850,33 @@ h3 {
 
   .burger {
     display: block;
+  }
+
+  .panel-body div.row {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .company-logo {
+    display: none;
+  }
+
+  .field {
+    width: 100%;
+  }
+
+  #buttonGroup {
+    gap: 8px
+  }
+
+  form {
+    width: inherit;
+    height: 100%;
+    /* background-color: #111827; */
+  }
+
+  .form-section.active {
+    height: inherit;
   }
 }
