@@ -148,12 +148,16 @@ body {
 
 /* header */
 
-.panel-title h2 {
+.panel-title h2, .topbar h2 {
   margin: 0;
   font-size: 16px;
   font-weight: 700;
   color: var(--text-primary);
   line-height: 24px;
+}
+
+.topbar h2 {
+  display: none;
 }
 
 .panel-title p {
@@ -791,13 +795,40 @@ h3 {
 
 /* Mobile UI */
 @media screen and (width <= 900px ) {
+  .page {
+    padding: 2vh 2vw;
+  }
   .layout {
     flex-direction: column;
     overflow-y: auto;
   }
 
   .sidebar {
-    height: 100px;
+    display: none;
+  }
+
+  .topbar {
+    display: block;
+    height: 100%;
+    padding: 12px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    animation: fadeIn 0.5s ease;
+    transition: all 0.3s ease;
+  }
+
+  .topbar h2 {display: block;}
+
+  .topbar-entry.active {
+    font-weight: 600;
+  }
+
+  .topbar-entry.completed {
+    color: #2E9E2F;
   }
 
   .step {

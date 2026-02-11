@@ -31,9 +31,20 @@
                 </div>
             </div>
 
+            <div class="topbar" id="topbar">
+                <div class="row">
+                    <div>
+                        <span id="step-progress" class="step-progress"></span>
+                        <div id="step-progress-title"></div>
+                    </div>
+                    <button class="burger" type="button">
+                        <img src="assets/icons/burger-icon.svg" onclick="toggleTopBar()" alt="...">
+                    </button>
+                </div>
+            </div>
+
             <!-- Sidebar -->
             <aside class="sidebar" id="sidebar">
-                <span id="step-progress" class="step-progress"></span>
                 <div id="step1" class="step active">
                     Job Position
                     <div class="complete-circle">
@@ -1188,6 +1199,7 @@
         let countryList = [];
         const educationLevels = [];
         let selectedJob = "";
+        var topBarExpanded = false;
         
         
         const formCheck = new FormData();
@@ -1595,8 +1607,41 @@
             }
         }
 
+        // toggle top bar
+        function toggleTopBar() {
+            var topBar = document.getElementById('topbar');
+
+            if (topBarExpanded) {
+                [...topBar.children].forEach(entry => {
+                    if (entry.classList.contains('topbar-entry')) {
+                        topBar.removeChild(entry);
+                    }
+                })
+                topBarExpanded = false;
+            } else {
+                var steps = document.querySelectorAll('[id*=step]');
+                steps.forEach(step => {
+                    if (!step.id.includes('-')) {
+                        var entry = document.createElement("div");
+                        entry.classList.add('topbar-entry');
+                        entry.innerHTML = document.getElementById(`${step.id}`).innerHTML.split('<')[0].trim();
+                        if (Number(step.id.split('p')[1]) === currentStep) entry.classList.add('active')
+                        else if (Number(step.id.split('p')[1]) < currentStep) entry.classList.add('completed');
+                        topBar.appendChild(entry);
+                    }
+                })
+                topBarExpanded = true;
+            }
+
+        }
+
         function updateProgress() {
             var progressElement = document.getElementById('step-progress');
+            var progressTitle = document.getElementById('step-progress-title');
+
+            if (topBarExpanded) toggleTopBar();
+
+            progressTitle.innerHTML = `<h2>${document.getElementById(`step${currentStep}`).innerHTML.split('<')[0].trim()}</h2>`;
             progressElement.innerHTML = `<div style="font-weight:bold;">${currentStep}</div><div style="color: var(--text-secondary);">/${totalSteps}</div>`;
 
             for (let i = 1; i <= totalSteps; i++) {
