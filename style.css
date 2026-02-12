@@ -858,6 +858,10 @@ h3 {
     width: 100%;
   }
 
+  .row:has(input[type="checkbox"]) {
+    flex-direction: row;
+  }
+
   .company-logo {
     display: none;
   }
