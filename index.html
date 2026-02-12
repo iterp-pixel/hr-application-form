@@ -276,15 +276,12 @@
                                         <tbody>
                                             <tr id="social-row-1">
                                                 <td>
-                                                    <select id="socialplatform-1" onchange="updateSocialPlatforms(this.value)" onfocus="this.classList.remove('missing')" required>
+                                                    <select id="socialplatform-1" onchange="updateSocialPlatforms(this.id, this.value)" onfocus="this.classList.remove('missing')" required>
                                                         <option value="">Choose Platform</option>
-                                                        <option value="www.linkedin.com/in/">LinkedIn</option>
-                                                        <option value="www.x.com/">Twitter/X</option>
-                                                        <option value="www.instagram.com/">Instagram</option>
-                                                        <option value="www.facebook.com/">Facebook</option>
                                                     </select>
                                                 </td>
                                                 <td>
+                                                    <span class="link-header">www.link.com/</span>
                                                     <input id="sociallink-1" type="text" onfocus="this.classList.remove('missing')" required
                                                         placeholder="Input here..." />
                                                 </td>
@@ -347,13 +344,13 @@
                                         </thead>
                                         <tbody>
                                             <tr id="edu-row-1">
-                                                <td style="width: 800px;">
-                                                    <select id="level-1" onfocus="this.classList.remove('missing')" required>
+                                                <td>
+                                                    <select style="width:250px" id="level-1" onfocus="this.classList.remove('missing')" required>
                                                         <option value="">Choose level</option>
                                                     </select>
                                                 </td>
-                                                <td style="width: 800px;">
-                                                    <input type="text" placeholder="Input name here..."
+                                                <td>
+                                                    <input style="width: 250px;" type="text" placeholder="Input name here..."
                                                         id="schoolname-1" onfocus="this.classList.remove('missing')" required />
                                                 </td>
                                                 <td>
@@ -444,12 +441,12 @@
                                                     <span>-</span>
                                                     <input class="period-input" type="date" name="" id="workendperiod-1" placeholder="Now" required onfocus="this.classList.remove('missing')">
                                                 </td>
-                                                <td style="width: 600px">
-                                                    <input id="company-1" type="text" required onfocus="this.classList.remove('missing')"
+                                                <td>
+                                                    <input style="width: 200px;" id="company-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
-                                                <td style="width: 600px">
-                                                    <input id="jobtitle-1" type="text" required onfocus="this.classList.remove('missing')"
+                                                <td>
+                                                    <input style="width: 200px;" id="jobtitle-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
                                                 <td >
@@ -457,8 +454,8 @@
                                                     <input style="width: 200px;" id="takehomepay-1" type="number" required onfocus="this.classList.remove('missing')"
                                                         min="0" placeholder="Input here..." />
                                                 </td>
-                                                <td style="width: 800px;">
-                                                    <textarea maxlength="350" id="jobdesc-1" required onfocus="this.classList.remove('missing')" placeholder="Input here..."></textarea>
+                                                <td>
+                                                    <textarea style="width: 200px;" maxlength="350" id="jobdesc-1" required onfocus="this.classList.remove('missing')" placeholder="Input here..."></textarea>
                                                 </td>
                                                 <td class="table-action">
                                                     <button type="button" onclick="removeTableRow('workExpTable', this)"
@@ -525,16 +522,16 @@
                                                     <input type="date" name="" id="trainingendperiod-1"
                                                         placeholder="Now" class="period-input" required onfocus="this.classList.remove('missing')">
                                                 </td>
-                                                <td style="width:500px">
-                                                    <input id="institute-1" type="text" required onfocus="this.classList.remove('missing')"
+                                                <td>
+                                                    <input style="width: 200px;" id="institute-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
-                                                <td style="width:500px">
-                                                    <input id="scope-1" type="text" required onfocus="this.classList.remove('missing')"
+                                                <td>
+                                                    <input style="width: 200px;" id="scope-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
-                                                <td style="width: 1000px;">
-                                                    <textarea maxlength="350" id="trainingdesc-1" required onfocus="this.classList.remove('missing')"
+                                                <td>
+                                                    <textarea style="width: 200px;" maxlength="350" id="trainingdesc-1" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..."></textarea>
                                                 </td>
                                                 <td>
@@ -680,7 +677,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="6">
+                                                <td colspan="3">
                                                     <button type="button" id="addHealthRow" class="table-add-btn"
                                                         onclick="addTableRow('healthTable', 'health-row-1', 'addHealthRow')">
                                                         <img src="assets/icons/plus-icon.svg" alt="+">
@@ -842,7 +839,7 @@
                         <div class="panel-body" id="preview-screen">
                             <div class="section-preview">
                                 <h3>Job Position</h3>
-                                <h3 class="job-title" id="job-positionPrev"></h3>
+                                <h3 class="job-title" id="job_idPrev"></h3>
                             </div>
                             <div class="section-preview">
                                 <h3>Personal Information</h3>
@@ -1199,6 +1196,7 @@
         let jobList = {};
         let countryList = [];
         const educationLevels = [];
+        const platformList = [];
         let selectedJob = "";
         var topBarExpanded = false;
         
@@ -1210,6 +1208,7 @@
         formCheck.append("phone", "(62) 0812345678");
 
         const dummyData = {
+            "job_id": 1,
             "name": "Joseph",
             "gender": "male",
             "email": "email@example.com",
@@ -1221,7 +1220,7 @@
             "hasSocialMedia": "on",
             "social": {
                 "1": {
-                    "socialplatform": 1,
+                    "socialplatform": 5,
                     "sociallink": "www.twitter.com/banana"
                 }
             },
@@ -1422,6 +1421,11 @@
             return await response.json();
         }
 
+        async function fetchSocialPlatform() {
+            const response = await fetch('http://192.168.1.8/applicant/utm_list');
+            return await response.json();
+        }
+
         async function checkApplicant() {
             formCheck.set("job_id", formData['job_id']);
             formCheck.set("name", document.getElementById('name').value);
@@ -1440,7 +1444,8 @@
                     return value;
                 });
             }).catch((e) => {
-                alert(e);
+                // alert(e);
+                data[0] = {"message": `An error has occured: ${e}`, "status": "reject"};
             });
 
             return (await data)[0];
@@ -1492,7 +1497,6 @@
             Object.keys(response["education_level"]).forEach(key => {
                 educationLevels[key] = response["education_level"][key];
             })
-            console.log(educationLevels);
 
             var eduLevelElement = document.getElementById('level-1');
             eduLevelElement.innerHTML = '<option value="">Choose level</option>';
@@ -1502,9 +1506,17 @@
             })
         })
 
-        // checkApplicant().then((response) => {
-        //     console.log(response);
-        // });
+        fetchSocialPlatform().then((response) => {
+            Object.keys(response["utm_list"]).forEach(key => {
+                platformList[key] = response["utm_list"][key];
+            })
+            
+            var socialElement = document.getElementById('socialplatform-1');
+            socialElement.innerHTML = '<option value="">Choose Platform</option>';
+            Object.values(platformList).forEach(platform => {
+                socialElement.innerHTML += `<option value="${platform['utm_id']}">${platform['utm_name']}</option>`;
+            })
+        })
 
         function changeCountryIcon() {
             var flag;
@@ -1575,7 +1587,6 @@
 
         // custom input type file logic
         function fileOnChanged(self) {
-            console.log('changed');
             var parent = self.parentElement;
             var elements = [...parent.children];
 
@@ -1753,7 +1764,6 @@
                             return true;
                         }
                     });
-                    console.log(await hasInvalidField);
                     break;
                 case 4: 
                     // educational background
@@ -1949,17 +1959,43 @@
 
         function findJob(id) {
             var job;
-            [...jobList].forEach(entry => {
-                if (entry['jobs_id'] === id) job = entry;
-            })
-            return job ?? {};
+            if (Object.entries(jobList).length != 0) {
+                [...jobList].forEach(entry => {
+                    if (entry['jobs_id'] === id) job = entry;
+                })
+            }
+            return job ?? null;
         }
 
-        function updateSocialPlatforms(value) {
+        function updateSocialPlatforms(id, value) {
+            const linkList = [
+                {"utm_id": 4, "link": "www.facebook.com/"},
+                {"utm_id": 5, "link": "www.x.com/"},
+                {"utm_id": 6, "link": "www.linkedin.com/in/"},
+                {"utm_id": 15, "link": "www.instagram.com/"},
+            ];
+            var link;
+
+            linkList.forEach(platform => {
+                if (platform["utm_id"] === Number(value)) {
+                    link = platform["link"];
+                }
+            });
+
+            document.getElementsByClassName('link-header')[Number(id.split('-')[1])-1].innerHTML = link ?? 'www.link.com/';
+
             var inputs = document.querySelectorAll('select[id*=socialplatform]');
-            // inputs.forEach(input => {
-            //     input.innerHTML = 
-            // })
+            var selectedPlatforms = Array.from(inputs).map(p => p.value).filter(v => v !== "");
+
+            inputs.forEach(input => {
+                Array.from(input.options).forEach(option => {
+                    option.disabled = false;
+
+                    if (option.value !== "" && option.value !== input.value && selectedPlatforms.includes(option.value)) {
+                        option.disabled = true;
+                    }
+                })
+            })
         }
 
         function viewJobPosition(id) {
@@ -2026,18 +2062,18 @@
                     "platform": s["socialplatform"],
                     "link": s["sociallink"],
                 })),
-                "educational_bg": Object.values(formData['edu'] || {}).map(e => ({
+                "educational_bg": await Promise.all(Object.values(formData['edu'] || {}).map(async (e) => ({
                     "level": e["level"],
-                    "level_name": educationLevels.find(edu => edu["edu_id"] === Number(e["level"]))["edu_name"] ?? "",
+                    "level_name": educationLevels.length != 0 ? (educationLevels.find(edu => edu["edu_id"] === Number(e["level"])) ? educationLevels.find(edu => edu["edu_id"] === Number(e["level"]))["edu_name"] : "") : "",
                     "school_name": e["schoolname"],
                     "start": e["edustartperiod"],
                     "end": e["eduendperiod"],
                     "remark": e["remark"],
                     "max_remark": e["totalscore"],
-                    "document": base64(e["edudocument"]["file"]).then((value) => value),
+                    "document": await base64(e["edudocument"]["file"]),
                     "mime_type": e["edudocument"]["mime_type"],
                     "file_name": e["edudocument"]["file_name"],
-                })),
+                }))),
                 "work_exp": Object.values(formData['workExp'] || {}).map(w => ({
                     "company_name": w["company"],
                     "position": w["jobtitle"],
@@ -2046,16 +2082,16 @@
                     "takehomepay": w["takehomepay"],
                     "description": w["jobdesc"],
                 })),
-                "training": Object.values(formData["training"] || {}).map(t => ({
+                "training": await Promise.all(Object.values(formData["training"] || {}).map(async (t) => ({
                     "institute": t["institute"],
                     "scope": t["scope"],
                     "description": t["trainingdesc"],
                     "start": t["trainingstartperiod"],
                     "end": t["trainingendperiod"],
-                    "document": base64(t["trainingdoc"]["file"]).then((value) => value),
+                    "document": await base64(t["trainingdoc"]["file"]),
                     "mime_type": t["trainingdoc"]["mime_type"],
                     "file_name": t["trainingdoc"]["file_name"],
-                })),
+                }))),
                 "expected_salary": formData["expectedSalary"],
                 "available_date": formData["availableDate"],
                 "city_assigned_consent": formData["cityAssignedConsent"],
@@ -2073,12 +2109,12 @@
                     {"question": "Please provide details of job vacancy knowledge", "answer": formData["Qq4details"],},
                 ],
                 "recent_photo": {
-                    "document": base64(formData["recentPhoto"]["file"]).then((value) => value),
+                    "document": await base64(formData["recentPhoto"]["file"]),
                     "mime_type": formData["recentPhoto"]["mime_type"],
                     "file_name": `1.${formData["recentPhoto"]["file_name"]}`,
                 },
                 "resume": {
-                    "document": base64(formData["resume"]["file"]).then((value) => value),
+                    "document": await base64(formData["resume"]["file"]),
                     "mime_type": formData["resume"]["mime_type"],
                     "file_name": `2.${formData["resume"]["file_name"]}`,
                 },
@@ -2113,9 +2149,15 @@
                 var cellData = data[1];
 
                 // show job position
-                if (data[0] === 'job-position') {
+                if (data[0] === 'job_id') {
                     var job = findJob(data[1]);
-                    targetElement.innerHTML = job['jobs_name'];
+                    targetElement.innerHTML = job ? job['jobs_name'] : '';
+                    return;
+                }
+
+                // show nationality
+                if (data[0] === 'nationality') {
+                    var nationality = nationalityList.value != "" ? nationalityList.label : "Unknown";
                     return;
                 }
 
@@ -2181,19 +2223,35 @@
                                     })
                                 })
                                 table.appendChild(newElement);
-                                
-                                targetElement = document.getElementById(`${data[0]}Prev-${e}`);
+
+                                targetElement = document.querySelector(`[id*=${column}-${e}Prev]`);
 
                                 if (Object.keys(rowCellData[column]).includes('file')) {
-                                    document.querySelector(`[id*=${column}-${e}Prev]`).innerHTML = rowCellData[column]['file_name'] ?? '';
+                                    targetElement.innerHTML = rowCellData[column]['file_name'] ?? '';
                                 } else {
-                                    document.querySelector(`[id*=${column}-${e}Prev]`).innerHTML = rowCellData[column] ?? '';
+                                    targetElement.innerHTML = rowCellData[column] ?? '';
                                 }
                             } else {
+                                targetElement = document.querySelector(`[id*=${column}-${e}Prev]`);
                                 if (Object.keys(rowCellData[column]).includes('file')) {
-                                    document.querySelector(`[id*=${column}-${e}Prev]`).innerHTML = rowCellData[column]['file_name'] ?? '';
+                                    targetElement.innerHTML = rowCellData[column]['file_name'] ?? '';
                                 } else {
-                                    document.querySelector(`[id*=${column}-${e}Prev]`).innerHTML = rowCellData[column] ?? '';
+                                    switch (column) {
+                                        case "socialplatform":
+                                            console.log(rowCellData[column]);
+                                            console.log(platformList);
+                                            targetElement.innerHTML = platformList.find(p => p["utm_id"] === Number(rowCellData[column]))["utm_name"];
+                                            break;
+                                        case "level":
+                                            targetElement.innerHTML = educationLevels.find(edu => edu["edu_id"] === Number(rowCellData[column]))["edu_name"];
+                                            break;
+                                        // case "sick":
+                                        //     targetElement.innerHTML = educationLevels.find(edu => edu["edu_id"] === Number(rowCellData[column]))["edu_name"];
+                                        //     break;
+                                        default:
+                                            targetElement.innerHTML = rowCellData[column] ?? '';
+                                            break;
+                                    }
                                 }
                             }
                         })

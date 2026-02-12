@@ -202,7 +202,7 @@ body {
 }
 
 #countryIcon img, #countryIconPrev img {
-  border: 2px solid #222;
+  /* border: 2px solid #222; */
   border-radius: 4px;
 }
 
