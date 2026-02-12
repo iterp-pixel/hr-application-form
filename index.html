@@ -112,9 +112,9 @@
                         <img src="assets/icons/completed-step.svg" alt="Done">
                     </div>
                 </div>
-                <button type="button" onclick="submitDebug()">Submit dummy data</button>
+                <!-- <button type="button" onclick="submitDebug()">Submit dummy data</button>
                 <button type="button" onclick="checkApplicant()">Check Applicant</button>
-                <button type="button" onclick="fillDummyData()">Fill dummy data</button>
+                <button type="button" onclick="fillDummyData()">Fill dummy data</button> -->
                 <!-- <button type="button" onclick="notificationHandler('info message', 'info')">Notif info</button>
                 <button type="button" onclick="notificationHandler('warning message', 'warning')">Notif warning</button> -->
                 <div class="row">
@@ -663,8 +663,6 @@
                                                         <option value="Near / Far Sighted">Near / Far Sighted</option>
                                                         <option value="Other">Other</option>
                                                     </select>
-                                                    <!-- <input id="sick-1" type="text" required onfocus="this.classList.remove('missing')"
-                                                        placeholder="Input here..." /> -->
                                                 </td>
                                                 <td>
                                                     <textarea maxlength="350" id="healthdescription-1" required onfocus="this.classList.remove('missing')"
@@ -1197,6 +1195,7 @@
         let countryList = [];
         const educationLevels = [];
         const platformList = [];
+        const medicalList = [];
         let selectedJob = "";
         var topBarExpanded = false;
         
@@ -1227,6 +1226,19 @@
             "hasEduBackground": "on",
             "edu": {
                 "1": {
+                    "level": 1,
+                    "schoolname": "SD Harapan Bangsa",
+                    "edustartperiod": "2002-06-01",
+                    "eduendperiod": "2009-06-02",
+                    "remark": 70,
+                    "totalscore": 90,
+                    "edudocument": {
+                        "file_name": "document.pdf",
+                        "mime_type": "application/pdf",
+                        "file": "",
+                    }
+                },
+                "2": {
                     "level": 1,
                     "schoolname": "SD Harapan Bangsa",
                     "edustartperiod": "2002-06-01",
@@ -1388,15 +1400,6 @@
             });
         }
 
-        // fetch("http://192.168.1.8/applicant/apply", {
-        //     method: 'POST',
-        //     body: JSON.stringify(submitData),
-        // }).then((response) => {
-        //     console.log(response);
-        // }).catch((e) => {
-        //     console.log(e);
-        // });
-
         // json handling
         const phoneCountryCode = document.getElementById('countryCode');
         const nationalityList = document.getElementById('nationality');
@@ -1423,6 +1426,11 @@
 
         async function fetchSocialPlatform() {
             const response = await fetch('http://192.168.1.8/applicant/utm_list');
+            return await response.json();
+        }
+
+        async function fetchMedicalList() {
+            const response = await fetch ('http://192.168.1.8/applicant/medical_list');
             return await response.json();
         }
 
@@ -1515,6 +1523,18 @@
             socialElement.innerHTML = '<option value="">Choose Platform</option>';
             Object.values(platformList).forEach(platform => {
                 socialElement.innerHTML += `<option value="${platform['utm_id']}">${platform['utm_name']}</option>`;
+            })
+        })
+
+        fetchMedicalList().then((response) => {
+            Object.keys(response["medical_type"]).forEach(key => {
+                medicalList[key] = response["medical_type"][key];
+            })
+
+            var healthElement = document.getElementById('sick-1');
+            healthElement.innerHTML = '<option value ="">Choose sickness type</option>';
+            Object.values(medicalList).forEach(health => {
+                healthElement.innerHTML += `<option value="${health['medical_id']}">${health['medical_name']}</option>`;
             })
         })
 
@@ -1958,12 +1978,7 @@
         }
 
         function findJob(id) {
-            var job;
-            if (Object.entries(jobList).length != 0) {
-                [...jobList].forEach(entry => {
-                    if (entry['jobs_id'] === id) job = entry;
-                })
-            }
+            var job = jobList.find(v => v["jobs_id"] === id);
             return job ?? null;
         }
 
@@ -2157,7 +2172,8 @@
 
                 // show nationality
                 if (data[0] === 'nationality') {
-                    var nationality = nationalityList.value != "" ? nationalityList.label : "Unknown";
+                    var nationality = countryList.find(v => v['country_id'] === cellData);
+                    targetElement.innerHTML = nationality ? nationality['country_name'] : "";
                     return;
                 }
 
@@ -2229,7 +2245,20 @@
                                 if (Object.keys(rowCellData[column]).includes('file')) {
                                     targetElement.innerHTML = rowCellData[column]['file_name'] ?? '';
                                 } else {
-                                    targetElement.innerHTML = rowCellData[column] ?? '';
+                                    switch (column) {
+                                        case "socialplatform":
+                                            targetElement.innerHTML = platformList.find(p => p["utm_id"] === Number(rowCellData[column]))["utm_name"];
+                                            break;
+                                        case "level":
+                                            targetElement.innerHTML = educationLevels.find(edu => edu["edu_id"] === Number(rowCellData[column]))["edu_name"];
+                                            break;
+                                        case "sick":
+                                            targetElement.innerHTML = medicalList.find(h => h["medical_id"] === Number(rowCellData[column]))["medical_name"];
+                                            break;
+                                        default:
+                                            targetElement.innerHTML = rowCellData[column] ?? '';
+                                            break;
+                                    }
                                 }
                             } else {
                                 targetElement = document.querySelector(`[id*=${column}-${e}Prev]`);
@@ -2238,16 +2267,14 @@
                                 } else {
                                     switch (column) {
                                         case "socialplatform":
-                                            console.log(rowCellData[column]);
-                                            console.log(platformList);
                                             targetElement.innerHTML = platformList.find(p => p["utm_id"] === Number(rowCellData[column]))["utm_name"];
                                             break;
                                         case "level":
                                             targetElement.innerHTML = educationLevels.find(edu => edu["edu_id"] === Number(rowCellData[column]))["edu_name"];
                                             break;
-                                        // case "sick":
-                                        //     targetElement.innerHTML = educationLevels.find(edu => edu["edu_id"] === Number(rowCellData[column]))["edu_name"];
-                                        //     break;
+                                        case "sick":
+                                            targetElement.innerHTML = medicalList.find(h => h["medical_id"] === Number(rowCellData[column]))["medical_name"];
+                                            break;
                                         default:
                                             targetElement.innerHTML = rowCellData[column] ?? '';
                                             break;
