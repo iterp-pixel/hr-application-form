@@ -420,6 +420,38 @@
                                             </tr>
                                         </tbody>
                                     </table>
+
+                                    <table id="eduMobileTable" class="mobile">
+                                        <tbody>
+                                            <tr id="edu-mobile-1">
+                                                <td>
+                                                    <div class="row fixed">
+                                                        <h2 id="mobile-level-1">Tap the edit icon</h2>
+                                                        <div class="mobile-button-group">
+                                                            <button type="button" onclick="removeTableRow('eduTable', document.getElementById('eduTable').getElementsByClassName('table-action')[1].firstElementChild)"><img src="assets/icons/trash-icon.svg" alt=""></button>
+                                                            <button type="button" onclick="toggleBottomSheet(this.parentElement.parentElement.parentElement.parentElement)"><img src="assets/icons/edit-icon.svg" alt=""></button>
+                                                        </div>
+                                                    </div>
+                                                    <div id="mobile-schoolname-1" class="mobile-row-desc">...</div>
+                                                    <div class="row fixed">
+                                                        <div id="mobile-edustartperiod-1">...</div>-<div id="mobile-eduendperiod-1">...</div>
+                                                    </div>
+                                                    <div class="row fixed">
+                                                        <div id="mobile-remark-1">...</div>/<div id="mobile-totalscore-1">...</div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <button type="button" class="table-add-btn"
+                                                        onclick="addTableRow('eduTable', 'edu-row-1', 'addEduRow')">
+                                                        <img src="assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                                 <div>
 

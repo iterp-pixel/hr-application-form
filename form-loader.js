@@ -836,6 +836,8 @@ function updateSocialPlatforms(id, value) {
 function updateMobileTable(element) {
     var value = element.value;
     var mobileElement = document.getElementById(`mobile-${element.id}`);
+    
+    if (mobileElement === null) return;
 
     if (element.tagName === 'SELECT') {
         mobileElement.innerHTML = value != "" ? element.options[element.selectedIndex].innerHTML : "Platform";
@@ -1360,6 +1362,9 @@ var mobileSelectedRow;
 
 function toggleBottomSheet(element) {
     var sheetBody = bottomSheet.querySelector('.sheet-body');
+    var tableForm;
+    if (element) tableForm = document.getElementById(element.id.replace('mobile', 'row'));
+
     bottomSheet.style.height = "500px";
     if (bottomSheet.classList.contains('active')) {
 
@@ -1372,8 +1377,8 @@ function toggleBottomSheet(element) {
                 sheetBody.innerHTML = `
                 <div class="row">
                     <div class="panel-title">
-                        <h2 style="display: block; font-size: 24px;">Form Section</h2>
-                        <p>Panel description</p>
+                        <h2 style="display: block; font-size: 24px;">Social Platform</h2>
+                        <p>Choose your social media platform and enter your profile username below.</p>
                     </div>
                     <button type="button" class="close-btn" onclick="toggleBottomSheet()"><img src="assets/icons/cancel-icon.svg" alt="X"></button>
                 </div>
@@ -1394,9 +1399,81 @@ function toggleBottomSheet(element) {
                     sheetBody.querySelector('[id="socialplatform-mobile"]').innerHTML += `<option value="${platform['utm_id']}">${platform['utm_name']}</option>`;
                 })
                 break;
+            case "edu":
+                sheetBody.innerHTML = `
+                <div class="row">
+                    <div class="panel-title">
+                        <h2 style="display: block; font-size: 24px;">Educational Background</h2>
+                        <p>Please provide your educational background details accurately.</p>
+                    </div>
+                    <button type="button" class="close-btn" onclick="toggleBottomSheet()"><img src="assets/icons/cancel-icon.svg" alt="X"></button>
+                </div>
+                <div class="field">
+                    <label for="level-mobile">Education Level</label>
+                    <select id="level-mobile" onfocus="this.classList.remove('missing')" required>
+                        <option value="">Choose Level</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="schoolname-mobile">School Name</label>
+                    <input id="schoolname-mobile" type="text" placeholder="Input Name">
+                </div>
+                <div class="row>
+                    <div class="field">
+                        <label for="edustartperiod-mobile">Start Periode Study</label>
+                        <input id="edustartperiod-mobile" type="date">
+                    </div>
+                    <div class="field">
+                        <label for="eduendperiod-mobile">Until Periode Study</label>
+                        <input id="eduendperiod-mobile" type="date">
+                    </div>
+                </div>
+                <label for="edustartperiod-mobile">Start Periode Study</label>
+                <div class="row fixed field">
+                    <input id="remark-mobile" type="number" min="0" placeholder="0">
+                    from
+                    <input id="totalscore-mobile" type="number" min="0" placeholder="0">
+                </div>
+                <div class="field">
+                    <label for="edudocument-mobile">Upload Document</label>
+                    <div class="file-input-wrapper" onfocus="this.classList.remove('missing')">
+                        <span class="file-name" id="edudocument-name-mobile">No file chosen</span>
+                        <button type="button" class="file-btn" id="edudocument-btn-mobile"
+                            onclick="fileUploadHandler(this, 'edudocument-name-mobile', 'edudocument-mobile')">
+                            <img src="assets/icons/upload-icon.svg" alt="Upload">
+                        </button>
+                        <input type="file" name="edudocument-mobile" id="edudocument-mobile"
+                            onchange="fileOnChanged(this, 'edudocument-name-mobile', 'edudocument-btn-mobile')" required
+                            accept=".pdf" onfocus="this.classList.remove('missing')">
+                    </div>
+                    <p class="text-secondary">Max. Size 2MB with format .PDF</p>
+                </div>
+                <button type="Add" onclick="mobileAddData('${element.id}')">Add</button>
+                `;
+                sheetBody.querySelector('[id="level-mobile"]').innerHTML = `<option value="">Choose Level</option>`;
+                Object.values(educationLevels).forEach(platform => {
+                    sheetBody.querySelector('[id="level-mobile"]').innerHTML += `<option value="${platform['edu_id']}">${platform['edu_name']}</option>`;
+                })
+                break;
             default:
                 break;
         }
+
+        // fill in existing data to bottom sheet form
+        [...sheetBody.querySelectorAll('input, select, textarea')].forEach(input => {
+            var formInput = tableForm.querySelector(`[id="${input.id.replace('mobile', element.id.split('-')[2])}"]`);
+            
+            if (input.type === "file") {
+                if (formInput.files.length) {
+                    const dt = new DataTransfer();
+                    dt.items.add(formInput.files[0]);
+                    input.files = dt.files;
+                    fileOnChanged(input);
+                }
+            } else {
+                input.value = formInput.value;
+            }
+        })
         bottomSheet.classList.add('active');
     }
 }
@@ -1411,7 +1488,18 @@ function mobileAddData(element) {
         if (!hasEmptyFields) {
             var formInputId = input.id.replace("mobile", formElement.id.split('-')[2]);
             var formInput = formElement.querySelector(`[id="${formInputId}"]`);
-            formInput.value = input.value;
+            if (input.type === "file") {
+                if (input.files.length) {
+                    const dt = new DataTransfer();
+                    dt.items.add(input.files[0]);
+                    formInput.files = dt.files;
+                    fileOnChanged(formInput);
+                } else {
+                    hasEmptyFields = true;
+                }
+            } else {
+                formInput.value = input.value;
+            }
             updateMobileTable(formInput);
         }
     });
