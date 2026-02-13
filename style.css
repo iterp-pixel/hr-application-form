@@ -112,7 +112,7 @@ body {
 /* main panel */
 
 .panel {
-  flex: 1;
+  /* flex: 1; */
   padding: 20px;
   background: #fff;
   width: inherit;
@@ -402,6 +402,7 @@ button {
   font-size: 16px;
   cursor: pointer;
   transition: all 0.1s ease;
+  align-items: center;
 }
 
 button:disabled {
@@ -543,9 +544,12 @@ button:disabled {
 
 table {
   width: 100%;
-  min-width: 900px;
   border-collapse: collapse;
   font-size: 13px;
+}
+
+.mobile {
+  display: none;
 }
 
 thead th {
@@ -793,19 +797,106 @@ h3 {
   display: none;
 }
 
+.bottom-sheet {
+  display: none;
+  padding-top: 16px;
+  position:fixed;
+  bottom: 0px;
+  width: 100%;
+  height: 500px;
+  background-color: var(--bg-soft);
+  border-radius: 16px 16px 0px 0px;
+  z-index: 1000;
+  box-shadow: 0 0 16px rgba(130, 137, 145, 0.25);
+  animation: slideDown 0.3s ease;
+  overflow: hidden;
+}
+
+.bottom-sheet div {
+  padding: 0 8px 0 8px;
+}
+
+.sheet-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sheet-grabber {
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(500px);
+  }
+  to {
+    transform: translateY(0px);
+  }
+}
+
 /* Mobile UI */
 @media screen and (width <= 900px ) {
   .page {
     padding: 2vh 2vw;
   }
+
+  .bottom-sheet.active {
+    display: block;
+    animation: slideUp 0.3s ease;
+  }
+
+  .bottom-sheet.close {
+    animation: slideDown 0.3s ease;
+  }
   .layout {
     flex-direction: column;
-    overflow-y: auto;
-    /* background-color: #2E9E2F; */
+    overflow: hidden;
+  }
+
+  form {
+    height: 100vh;
   }
 
   .sidebar {
     display: none;
+  }
+
+  table {
+    display: none;
+  }
+
+  .mobile {
+    display: table;
+  }
+
+  .mobile button, .close-btn {
+    background-color: transparent;
+  }
+
+  .mobile button:active, .close-btn {
+    background-color: #e5e7eb;
+  }
+
+  .mobile-row-desc {
+    font-size: 20px;
+    font-style: italic;
+    color: var(--text-secondary);
+  }
+
+  .mobile-button-group {
+    display: flex;
+    flex-direction: row;
+  }
+
+  tr {    
+    padding: 20px;
+    height: auto;
+    flex-direction: column;
+    width: 10px;
   }
 
   .topbar {
@@ -850,12 +941,26 @@ h3 {
 
   .burger {
     display: block;
+    background-color: transparent;
+  }
+
+  .burger:active {
+    background-color: #ebedf5;
+  }
+
+  .panel-title h2 {
+    display: none;
   }
 
   .panel-body div.row {
     display: flex;
     flex-direction: column;
     width: 100%;
+  }
+
+  div.row.fixed {
+    flex-direction: row;
+    justify-content: space-between;
   }
 
   .row:has(input[type="checkbox"]) {
@@ -874,13 +979,4 @@ h3 {
     gap: 8px
   }
 
-  form {
-    width: inherit;
-    height: 100%;
-    /* background-color: #111827; */
-  }
-
-  .form-section.active {
-    height: inherit;
-  }
 }

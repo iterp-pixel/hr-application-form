@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <div class="page">
+    <div class="page" style="position: relative; z-index: 1;">
         <div class="layout">
             <!-- Success Screen -->
             <div class="panel complete" style="display: none; overflow: hidden;" id="success-panel">
@@ -276,13 +276,13 @@
                                         <tbody>
                                             <tr id="social-row-1">
                                                 <td>
-                                                    <select id="socialplatform-1" onchange="updateSocialPlatforms(this.id, this.value)" onfocus="this.classList.remove('missing')" required>
+                                                    <select id="socialplatform-1" onchange="updateSocialPlatforms(this.id, this.value); updateMobileTable(this)" onfocus="this.classList.remove('missing')" required>
                                                         <option value="">Choose Platform</option>
                                                     </select>
                                                 </td>
                                                 <td>
                                                     <span class="link-header">www.link.com/</span>
-                                                    <input id="sociallink-1" type="text" onfocus="this.classList.remove('missing')" required
+                                                    <input id="sociallink-1" type="text" onfocus="this.classList.remove('missing')" onchange="updateMobileTable(this)" required
                                                         placeholder="Input here..." />
                                                 </td>
                                                 <td class="table-action">
@@ -294,6 +294,32 @@
                                             <tr>
                                                 <td colspan="3">
                                                     <button type="button" id="addSocialRow" class="table-add-btn"
+                                                        onclick="addTableRow('socialTable', 'social-row-1', 'addSocialRow')">
+                                                        <img src="assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    
+                                    <table id="socialMobileTable" class="mobile">
+                                        <tbody>
+                                            <tr id="social-mobile-1">
+                                                <td>
+                                                    <div class="row fixed">
+                                                        <h2 id="mobile-socialplatform-1">Platform</h2>
+                                                        <div class="mobile-button-group">
+                                                            <button type="button" onclick="removeTableRow('socialTable', document.getElementById('socialTable').getElementsByClassName('table-action')[1].firstElementChild)"><img src="assets/icons/trash-icon.svg" alt=""></button>
+                                                            <button type="button" onclick="toggleBottomSheet(this.parentElement.parentElement.parentElement.parentElement)"><img src="assets/icons/edit-icon.svg" alt=""></button>
+                                                        </div>
+                                                    </div>
+                                                    <div id="mobile-sociallink-1" class="mobile-row-desc">username</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <button type="button" class="table-add-btn"
                                                         onclick="addTableRow('socialTable', 'social-row-1', 'addSocialRow')">
                                                         <img src="assets/icons/plus-icon.svg" alt="+">
                                                         New Item
@@ -1183,9 +1209,18 @@
                 </div>
 
             </form>
-
+            
         </div>
     </div>
+    
+    <!-- bottom sheet -->
+    <div id="bottom-sheet" class="bottom-sheet">
+        <div class="sheet-grabber">
+            <img src="assets/icons/grabber-icon.svg" alt="-">
+        </div>
+        <div class="sheet-body"></div>
+    </div>
+
     <script src="form-loader.js"></script>
 
 </body>

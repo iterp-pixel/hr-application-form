@@ -692,11 +692,11 @@ async function sectionValidator(step) {
             var recentPhoto = document.getElementById('recentPhoto');
             var resume = document.getElementById('resume');
             if ((recentPhoto.files[0].size) > 2097152) {
-                fieldMissing(inp);
+                fieldMissing(recentPhoto);
                 hasInvalidField = true;
             }
             if ((resume.files[0].size) > 1048576) {
-                fieldMissing(inp);
+                fieldMissing(resume);
                 hasInvalidField = true;
             }
             break;
@@ -808,6 +808,8 @@ function updateSocialPlatforms(id, value) {
         }
     });
 
+    console.log(id);
+
     document.getElementsByClassName('link-header')[Number(id.split('-')[1])-1].innerHTML = link ?? 'www.link.com/';
 
     var inputs = document.querySelectorAll('select[id*=socialplatform]');
@@ -822,6 +824,17 @@ function updateSocialPlatforms(id, value) {
             }
         })
     })
+}
+
+function updateMobileTable(element) {
+    var value = element.value;
+    var mobileElement = document.getElementById(`mobile-${element.id}`);
+
+    if (element.tagName === 'SELECT') {
+        mobileElement.innerHTML = value != "" ? element.options[element.selectedIndex].innerHTML : "Platform";
+    } else {
+        mobileElement.innerHTML = value != "" ? value : "username";
+    }
 }
 
 function viewJobPosition(id) {
@@ -969,7 +982,7 @@ async function showPreview() {
     const dateInputs = document.getElementsByClassName('date');
 
     // makes it into a map where each entry is a list of [0] for label and [1] for value
-    Object.entries(dummyData).forEach(data => {
+    Object.entries(submitData).forEach(data => {
         var targetElement = document.getElementById(`${data[0]}Prev`);
 
         var cellData = data[1];
@@ -1155,17 +1168,6 @@ function checkForm(form) {
 
 
 function submitForm() {
-    // turn file inputs to base64
-    // var inputs = document.querySelectorAll('input[type="file"]');
-    // [...inputs].forEach(input => {
-    //     if (formData[input.id]) {
-            
-    //         base64(formData[input.id]).then((value) => {
-    //             formData[input.id] = value;
-    //         })
-    //     }
-    // })
-
     fetch("http://192.168.1.8/applicant/apply", {
         method: 'POST',
         body: JSON.stringify(submitData),
@@ -1187,16 +1189,21 @@ function addTableRow(tableId, tableRow, button) {
     const addRowButton = document.getElementById(button).parentElement.cloneNode(true);
     const newRow = row.cloneNode(true);
     const tbody = table.lastElementChild;
-
+    
+    const mobileRow = document.getElementById(`${row.id.replace('row', 'mobile')}`);
+    const newMobileRow = mobileRow.cloneNode(true);
+    const mobileAddButton = document.getElementById(button).parentElement.cloneNode(true);;
+    mobileAddButton.removeAttribute('id');
 
     // increment id per new row
     const rowId = row.id.replace('-1', '');
     const rowCount = document.querySelectorAll(`[id*="${rowId}"]`).length;
 
     newRow.id = row.id.replace('-1', '') + `-${rowCount + 1}`;
+    newMobileRow.id = newMobileRow.id.replace('-1', `-${rowCount + 1}`);
     const content = [...newRow.children];
     content.forEach(row => {
-        let elements = [...row.children];
+        var elements = [...row.children];
         elements.forEach(element => {
             element.classList.remove('missing');
             
@@ -1215,6 +1222,23 @@ function addTableRow(tableId, tableRow, button) {
                     if (e.hasAttribute('name')) {
                         e.name = e.name.replace('-1', `-${rowCount + 1}`);
                     };
+                })
+            }
+        })
+    });
+
+    // mobile UI
+    [...newMobileRow.children].forEach(row => {
+        [...row.children].forEach(element => {
+            if (element.hasAttribute('id')) {
+                element.id = element.id.replace('-1', `-${rowCount + 1}`);
+                element.innerHTML = "...";
+            } else {
+                [...element.children].forEach(e => {
+                    if (e.hasAttribute('id')) {
+                        e.id = e.id.replace('-1', `-${rowCount + 1}`);
+                        e.innerHTML = "Tap the edit icon";
+                    }
                 })
             }
         })
@@ -1242,22 +1266,27 @@ function addTableRow(tableId, tableRow, button) {
     })
 
     tbody.removeChild(tbody.lastElementChild);
-
+    mobileRow.parentElement.removeChild(mobileRow.parentElement.lastElementChild);
+    
     tbody.appendChild(newRow);
+    mobileRow.parentElement.appendChild(newMobileRow);
+    
     tbody.appendChild(addRowButton);
+    mobileRow.parentElement.appendChild(mobileAddButton);
 }
 
 function removeTableRow(tableId, obj) {
     const table = document.getElementById(tableId).lastElementChild;
     const selectedRow = obj.parentNode.parentNode;
+    const mobileRow = document.getElementById(selectedRow.id.replace('row', 'mobile'));
     const rowIdHeader = table.firstElementChild.id.replace('-1', '');
     const rows = table.querySelectorAll(`[id*="${rowIdHeader}"]`);
+    const mobileTableRows = mobileRow.parentElement.querySelectorAll(`[id*=${mobileRow.id.split('-')[0]}-${mobileRow.id.split('-')[1]}]`);
     const selectedRowId = selectedRow.id.split('-')[2];
-
     // const content = [...rows.children];
 
     if (rows.length <= 1) {
-        alert('Cannot delete the only entry');
+        notificationHandler("Cannot delete the only entry", "warning");
         return;
     }
 
@@ -1270,20 +1299,21 @@ function removeTableRow(tableId, obj) {
         })
     })
     selectedRow.remove();
+    mobileRow.remove();
 
     // fix table row numbering
     rows.forEach(row => {
         const thisRowNumber = row.id.split('-')[2];
         if (thisRowNumber > selectedRowId) {
             row.id = rowIdHeader + '-' + (thisRowNumber - 1);
-            let cells = [...row.children];
+            var cells = [...row.children];
             cells.forEach(cell => {
-                let elements = [...cell.children];
+                var elements = [...cell.children];
                 elements.forEach(element => {
                     if (element.hasAttribute('id')) {
                         // update element and formData numbering
                         delete formData[element.id];
-                        let elementNumber = element.id.split('-')[1];
+                        var elementNumber = element.id.split('-')[1];
                         element.id = element.id.replace(`-${elementNumber}`, `-${thisRowNumber - 1}`)
                         formData[element.id] = element.value;
                     }
@@ -1291,6 +1321,127 @@ function removeTableRow(tableId, obj) {
             })
         }
     })
+    mobileTableRows.forEach(row => {
+        const thisRowNumber = row.id.split('-')[2];
+        if (thisRowNumber > selectedRowId) {
+            row.id = row.id.split('-')[0] + '-' + row.id.split('-')[1] + '-' + (thisRowNumber - 1);
+            var cells = [...row.children];
+            cells.forEach(cell => {
+                var elements = [...cell.children];
+                elements.forEach(element => {
+                    if (element.hasAttribute('id')) {
+                        var elementNumber = element.id.split('-')[2];
+                        element.id = element.id.replace(`-${elementNumber}`, `-${thisRowNumber - 1}`);
+                    } else {
+                        [...element.children].forEach(e => {
+                            if (e.hasAttribute('id')) {
+                                var elementNumber = e.id.split('-')[2];
+                                e.id = e.id.replace(`-${elementNumber}`, `-${thisRowNumber - 1}`);
+                            }
+                        })
+                    }
+                })
+            })
+        }
+    })
+}
+
+let isDragging = false;
+let startY, startBottom;
+const bottomSheet = document.getElementById('bottom-sheet');
+var mobileSelectedRow;
+
+function toggleBottomSheet(element) {
+    var sheetBody = bottomSheet.querySelector('.sheet-body');
+    bottomSheet.style.height = "500px";
+    if (bottomSheet.classList.contains('active')) {
+
+        mobileSelectedRow = "";
+        bottomSheet.classList.remove('active');
+    } else {
+        mobileSelectedRow = element;
+        switch(element.id.split("-")[0]) {
+            case "social":
+                sheetBody.innerHTML = `
+                <div class="row">
+                    <div class="panel-title">
+                        <h2 style="display: block; font-size: 24px;">Form Section</h2>
+                        <p>Panel description</p>
+                    </div>
+                    <button type="button" class="close-btn" onclick="toggleBottomSheet()"><img src="assets/icons/cancel-icon.svg" alt="X"></button>
+                </div>
+                <div class="field">
+                    <label for="socialplatform-mobile">Platform</label>
+                    <select id="socialplatform-mobile" onfocus="this.classList.remove('missing')" required>
+                        <option value="">Choose Platform</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="sociallink-mobile">Link Platform</label>
+                    <input id="sociallink-mobile" type="text" placeholder="Input Link">
+                </div>
+                <button type="Add" onclick="mobileAddData('${element.id}')">Add</button>
+                `;
+                sheetBody.querySelector('[id="socialplatform-mobile"]').innerHTML = `<option value="">Choose Platform</option>`;
+                Object.values(platformList).forEach(platform => {
+                    sheetBody.querySelector('[id="socialplatform-mobile"]').innerHTML += `<option value="${platform['utm_id']}">${platform['utm_name']}</option>`;
+                })
+                break;
+            default:
+                break;
+        }
+        bottomSheet.classList.add('active');
+    }
+}
+
+function mobileAddData(element) {
+    var formElement = document.getElementById(element.replace('mobile', 'row'));
+    var sheetInputs = bottomSheet.querySelectorAll('input, select, textarea');
+
+    [...sheetInputs].forEach(input => {
+        if (input.value != "") {
+            var formInputId = input.id.replace("mobile", formElement.id.split('-')[2]);
+            var formInput = formElement.querySelector(`[id="${formInputId}"]`);
+            formInput.value = input.value;
+            updateMobileTable(formInput);
+        } else {
+            alert('Please fill in the required field');
+            return;
+        }
+    });
+    toggleBottomSheet();
+}
+
+document.querySelector('.sheet-grabber').addEventListener("mousedown", startDragging);
+// document.querySelector('.sheet-body').querySelector('.row').addEventListener("mousedown", startDragging);
+
+function startDragging(e) {
+    e.preventDefault();
+    isDragging = true;
+    startY = e.clientY;
+    startBottom = parseInt(getComputedStyle(bottomSheet).height);
+
+    document.addEventListener("mousemove", drag);
+    document.addEventListener("mouseup", stopDragging);
+}
+
+function drag(e) {
+    if (!isDragging) return;
+    if (Number(bottomSheet.style.height.replace('px', '')) < 100) {
+        toggleBottomSheet();
+        stopDragging();
+        return;
+    };
+    const deltaY = e.clientY - startY;
+    bottomSheet.style.height = Math.min(Math.max(startBottom - deltaY, 0), window.innerHeight) + "px";
+}
+
+function stopDragging() {
+    isDragging = false;
+    document
+        .removeEventListener("mousemove", drag);
+    document
+        .removeEventListener("mouseup", stopDragging);
 }
 
 updateProgress();
