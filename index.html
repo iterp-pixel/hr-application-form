@@ -38,8 +38,8 @@
                         <span id="step-progress" class="step-progress"></span>
                         <div id="step-progress-title"></div>
                     </div>
-                    <button class="burger" type="button">
-                        <img src="assets/icons/burger-icon.svg" onclick="toggleTopBar()" alt="...">
+                    <button class="burger" type="button" onclick="toggleTopBar()">
+                        <img src="assets/icons/burger-icon.svg" alt="...">
                     </button>
                 </div>
             </div>
@@ -112,9 +112,9 @@
                         <img src="assets/icons/completed-step.svg" alt="Done">
                     </div>
                 </div>
-                <button type="button" onclick="submitDebug()">Submit dummy data</button>
+                <!-- <button type="button" onclick="submitDebug()">Submit dummy data</button>
                 <button type="button" onclick="checkApplicant()">Check Applicant</button>
-                <button type="button" onclick="fillDummyData()">Fill dummy data</button>
+                <button type="button" onclick="fillDummyData()">Fill dummy data</button> -->
                 <!-- <button type="button" onclick="notificationHandler('info message', 'info')">Notif info</button>
                 <button type="button" onclick="notificationHandler('warning message', 'warning')">Notif warning</button> -->
                 <div class="row">
@@ -371,23 +371,23 @@
                                         <tbody>
                                             <tr id="edu-row-1">
                                                 <td>
-                                                    <select style="width:250px" id="level-1" onfocus="this.classList.remove('missing')" required>
+                                                    <select onchange="updateMobileTable(this)" style="width:250px" id="level-1" onfocus="this.classList.remove('missing')" required>
                                                         <option value="">Choose level</option>
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <input style="width: 250px;" type="text" placeholder="Input name here..."
+                                                    <input onchange="updateMobileTable(this)" style="width: 250px;" type="text" placeholder="Input name here..."
                                                         id="schoolname-1" onfocus="this.classList.remove('missing')" required />
                                                 </td>
                                                 <td>
-                                                    <input class="period-input" type="date" name="" id="edustartperiod-1" onfocus="this.classList.remove('missing')" required>
+                                                    <input onchange="updateMobileTable(this)" class="period-input" type="date" name="" id="edustartperiod-1" onfocus="this.classList.remove('missing')" required>
                                                     <span>-</span>
-                                                    <input class="period-input" type="date" name="" id="eduendperiod-1" onfocus="this.classList.remove('missing')" required>
+                                                    <input onchange="updateMobileTable(this)" class="period-input" type="date" name="" id="eduendperiod-1" onfocus="this.classList.remove('missing')" required>
                                                 </td>
                                                 <td style="width: 200px;">
-                                                    <input type="number" min="0" placeholder="0" id="remark-1" style="width: 80px;" onfocus="this.classList.remove('missing')" required>
+                                                    <input onchange="updateMobileTable(this)" type="number" min="0" placeholder="0" id="remark-1" style="width: 80px;" onfocus="this.classList.remove('missing')" required>
                                                     <span>/</span>
-                                                    <input type="number" min="0" placeholder="0" id="totalscore-1" style="width: 80px;" onfocus="this.classList.remove('missing')" required>
+                                                    <input onchange="updateMobileTable(this)" type="number" min="0" placeholder="0" id="totalscore-1" style="width: 80px;" onfocus="this.classList.remove('missing')" required>
                                                 </td>
                                                 <td>
                                                     <div class="file-input-wrapper">
@@ -433,10 +433,10 @@
                                                         </div>
                                                     </div>
                                                     <div id="mobile-schoolname-1" class="mobile-row-desc">...</div>
-                                                    <div class="row fixed">
+                                                    <div class="row fixed mobile-row-desc">
                                                         <div id="mobile-edustartperiod-1">...</div>-<div id="mobile-eduendperiod-1">...</div>
                                                     </div>
-                                                    <div class="row fixed">
+                                                    <div class="row fixed mobile-row-desc">
                                                         <div id="mobile-remark-1">...</div>/<div id="mobile-totalscore-1">...</div>
                                                     </div>
                                                 </td>
@@ -495,25 +495,25 @@
                                         <tbody>
                                             <tr id="work-row-1">
                                                 <td>
-                                                    <input class="period-input" type="date" name="" id="workstartperiod-1" placeholder="Start" required onfocus="this.classList.remove('missing')">
+                                                    <input onchange="updateMobileTable(this)" class="period-input" type="date" name="" id="workstartperiod-1" placeholder="Start" required onfocus="this.classList.remove('missing')">
                                                     <span>-</span>
-                                                    <input class="period-input" type="date" name="" id="workendperiod-1" placeholder="Now" required onfocus="this.classList.remove('missing')">
+                                                    <input onchange="updateMobileTable(this)" class="period-input" type="date" name="" id="workendperiod-1" placeholder="Now" required onfocus="this.classList.remove('missing')">
                                                 </td>
                                                 <td>
-                                                    <input style="width: 200px;" id="company-1" type="text" required onfocus="this.classList.remove('missing')"
+                                                    <input onchange="updateMobileTable(this)" style="width: 200px;" id="company-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
                                                 <td>
-                                                    <input style="width: 200px;" id="jobtitle-1" type="text" required onfocus="this.classList.remove('missing')"
+                                                    <input onchange="updateMobileTable(this)" style="width: 200px;" id="jobtitle-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
                                                 <td >
                                                     Rp
-                                                    <input style="width: 200px;" id="takehomepay-1" type="number" required onfocus="this.classList.remove('missing')"
+                                                    <input onchange="updateMobileTable(this)" style="width: 200px;" id="takehomepay-1" type="number" required onfocus="this.classList.remove('missing')"
                                                         min="0" placeholder="Input here..." />
                                                 </td>
                                                 <td>
-                                                    <textarea style="width: 200px;" maxlength="350" id="jobdesc-1" required onfocus="this.classList.remove('missing')" placeholder="Input here..."></textarea>
+                                                    <textarea onchange="updateMobileTable(this)" style="width: 200px;" maxlength="350" id="jobdesc-1" required onfocus="this.classList.remove('missing')" placeholder="Input here..."></textarea>
                                                 </td>
                                                 <td class="table-action">
                                                     <button type="button" onclick="removeTableRow('workExpTable', this)"
@@ -524,6 +524,40 @@
                                             <tr>
                                                 <td colspan="6">
                                                     <button type="button" id="addWorkRow" class="table-add-btn"
+                                                        onclick="addTableRow('workExpTable', 'work-row-1', 'addWorkRow')">
+                                                        <img src="assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table id="workExpMobileTable" class="mobile">
+                                        <tbody>
+                                            <tr id="work-mobile-1">
+                                                <td>
+                                                    <div class="row fixed">
+                                                        <h2 id="mobile-jobtitle-1">Tap the edit icon</h2>
+                                                        <div class="mobile-button-group">
+                                                            <button type="button" onclick="removeTableRow('workExpTable', document.getElementById('workExpTable').getElementsByClassName('table-action')[1].firstElementChild)"><img src="assets/icons/trash-icon.svg" alt=""></button>
+                                                            <button type="button" onclick="toggleBottomSheet(this.parentElement.parentElement.parentElement.parentElement)"><img src="assets/icons/edit-icon.svg" alt=""></button>
+                                                        </div>
+                                                    </div>
+                                                    <div id="mobile-company-1" class="mobile-row-desc">...</div>
+                                                    <div class="row fixed mobile-row-desc">
+                                                        <div id="mobile-workstartperiod-1">...</div>-<div id="mobile-workendperiod-1">...</div>
+                                                    </div>
+                                                    <div class="row fixed mobile-row-desc">
+                                                        Rp
+                                                        <div id="mobile-takehomepay-1">...</div>
+                                                    </div>
+                                                    <div id="mobile-jobdesc-1" class="mobile-row-desc"></div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <button type="button" class="table-add-btn"
                                                         onclick="addTableRow('workExpTable', 'work-row-1', 'addWorkRow')">
                                                         <img src="assets/icons/plus-icon.svg" alt="+">
                                                         New Item
@@ -574,22 +608,22 @@
                                         <tbody>
                                             <tr id="training-row-1">
                                                 <td>
-                                                    <input type="date" name="" id="trainingstartperiod-1"
+                                                    <input onchange="updateMobileTable(this)" type="date" name="" id="trainingstartperiod-1"
                                                         placeholder="Start" class="period-input" required onfocus="this.classList.remove('missing')">
                                                     <span>-</span>
-                                                    <input type="date" name="" id="trainingendperiod-1"
+                                                    <input onchange="updateMobileTable(this)" type="date" name="" id="trainingendperiod-1"
                                                         placeholder="Now" class="period-input" required onfocus="this.classList.remove('missing')">
                                                 </td>
                                                 <td>
-                                                    <input style="width: 200px;" id="institute-1" type="text" required onfocus="this.classList.remove('missing')"
+                                                    <input onchange="updateMobileTable(this)" style="width: 200px;" id="institute-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
                                                 <td>
-                                                    <input style="width: 200px;" id="scope-1" type="text" required onfocus="this.classList.remove('missing')"
+                                                    <input onchange="updateMobileTable(this)" style="width: 200px;" id="scope-1" type="text" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." />
                                                 </td>
                                                 <td>
-                                                    <textarea style="width: 200px;" maxlength="350" id="trainingdesc-1" required onfocus="this.classList.remove('missing')"
+                                                    <textarea onchange="updateMobileTable(this)" style="width: 200px;" maxlength="350" id="trainingdesc-1" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..."></textarea>
                                                 </td>
                                                 <td>
@@ -617,6 +651,36 @@
                                             <tr>
                                                 <td colspan="6">
                                                     <button type="button" id="addTrainingRow" class="table-add-btn"
+                                                        onclick="addTableRow('trainingTable', 'training-row-1', 'addTrainingRow')">
+                                                        <img src="assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table id="trainingMobileTable" class="mobile">
+                                        <tbody>
+                                            <tr id="training-mobile-1">
+                                                <td>
+                                                    <div class="row fixed">
+                                                        <h2 id="mobile-scope-1">Tap the edit icon</h2>
+                                                        <div class="mobile-button-group">
+                                                            <button type="button" onclick="removeTableRow('trainingTable', document.getElementById('trainingTable').getElementsByClassName('table-action')[1].firstElementChild)"><img src="assets/icons/trash-icon.svg" alt=""></button>
+                                                            <button type="button" onclick="toggleBottomSheet(this.parentElement.parentElement.parentElement.parentElement)"><img src="assets/icons/edit-icon.svg" alt=""></button>
+                                                        </div>
+                                                    </div>
+                                                    <div id="mobile-institute-1" class="mobile-row-desc">...</div>
+                                                    <div class="row fixed mobile-row-desc">
+                                                        <div id="mobile-trainingstartperiod-1">...</div>-<div id="mobile-trainingendperiod-1">...</div>
+                                                    </div>
+                                                    <div id="mobile-trainingdesc-1" class="mobile-row-desc"></div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <button type="button" class="table-add-btn"
                                                         onclick="addTableRow('trainingTable', 'training-row-1', 'addTrainingRow')">
                                                         <img src="assets/icons/plus-icon.svg" alt="+">
                                                         New Item
@@ -715,7 +779,7 @@
                                         <tbody>
                                             <tr id="health-row-1">
                                                 <td>
-                                                    <select id="sick-1" required>
+                                                    <select onchange="updateMobileTable(this)" id="sick-1" required>
                                                         <option value="">Choose sickness type</option>
                                                         <option value="Tremor">Tremor</option>
                                                         <option value="Near / Far Sighted">Near / Far Sighted</option>
@@ -723,7 +787,7 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <textarea maxlength="350" id="healthdescription-1" required onfocus="this.classList.remove('missing')"
+                                                    <textarea onchange="updateMobileTable(this)" maxlength="350" id="healthdescription-1" required onfocus="this.classList.remove('missing')"
                                                         placeholder="Input here..." ></textarea>
                                                 </td>
                                                 <td class="table-action">
@@ -735,6 +799,32 @@
                                             <tr>
                                                 <td colspan="3">
                                                     <button type="button" id="addHealthRow" class="table-add-btn"
+                                                        onclick="addTableRow('healthTable', 'health-row-1', 'addHealthRow')">
+                                                        <img src="assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table id="healthMobileTable" class="mobile">
+                                        <tbody>
+                                            <tr id="health-mobile-1">
+                                                <td>
+                                                    <div class="row fixed">
+                                                        <h2 id="mobile-sick-1">Tap the edit icon</h2>
+                                                        <div class="mobile-button-group">
+                                                            <button type="button" onclick="removeTableRow('healthTable', document.getElementById('healthTable').getElementsByClassName('table-action')[1].firstElementChild)"><img src="assets/icons/trash-icon.svg" alt=""></button>
+                                                            <button type="button" onclick="toggleBottomSheet(this.parentElement.parentElement.parentElement.parentElement)"><img src="assets/icons/edit-icon.svg" alt=""></button>
+                                                        </div>
+                                                    </div>
+                                                    <div id="mobile-healthdescription-1" class="mobile-row-desc">...</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <button type="button" class="table-add-btn"
                                                         onclick="addTableRow('healthTable', 'health-row-1', 'addHealthRow')">
                                                         <img src="assets/icons/plus-icon.svg" alt="+">
                                                         New Item
@@ -869,7 +959,7 @@
                             </div>
                             <div class="row narrow">
                                 <div class="field">
-                                    <div class="row narrow">
+                                    <div class="row fixed narrow">
                                         <label for="portofolio">Portofolio</label>
                                         <p class="text-secondary">(Optional)</p>
                                     </div>
@@ -1236,7 +1326,7 @@
                             style="display: none;">Previous</button>
                             <button class="btn" type="button" id="nextBtn" style="display: none;" onclick="changeStep(1)">Next</button>
                             <button class="btn" type="button" style="display: none;" onclick="checkForm(this.parentElement.parentElement)" id="submitBtn">Submit</button>
-                            <button class="btn" type="button" style="display: flex;" onclick="changeStep(1, false)">Skip</button>
+                            <!-- <button class="btn" type="button" style="display: flex;" onclick="changeStep(1, false)">Skip</button> -->
                     </div>
                 </div>
 

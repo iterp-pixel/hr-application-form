@@ -372,7 +372,6 @@ function changeCountryIcon() {
 function toggleSection(self, content, id) {
     const table = document.getElementById(id);
     const mobileTable = document.getElementById(table.id.replace('Table', 'MobileTable')).querySelector('tbody');
-    console.log(mobileTable);
     const inputs = table.querySelectorAll('input, select, textarea');
     if (self.checked) {
         document.getElementById(content).style.display = 'block';
@@ -1428,7 +1427,7 @@ function toggleBottomSheet(element) {
                     <label for="schoolname-mobile">School Name</label>
                     <input id="schoolname-mobile" type="text" placeholder="Input Name">
                 </div>
-                <div class="row>
+                <div class="row">
                     <div class="field">
                         <label for="edustartperiod-mobile">Start Periode Study</label>
                         <input id="edustartperiod-mobile" type="date">
@@ -1463,6 +1462,124 @@ function toggleBottomSheet(element) {
                 sheetBody.querySelector('[id="level-mobile"]').innerHTML = `<option value="">Choose Level</option>`;
                 Object.values(educationLevels).forEach(platform => {
                     sheetBody.querySelector('[id="level-mobile"]').innerHTML += `<option value="${platform['edu_id']}">${platform['edu_name']}</option>`;
+                })
+                break;
+            case "work":
+                sheetBody.innerHTML = `
+                <div class="row">
+                    <div class="panel-title">
+                        <h2 style="display: block; font-size: 24px;">Work Experience</h2>
+                        <p>Please provide details of your previous work experience.</p>
+                    </div>
+                    <button type="button" class="close-btn" onclick="toggleBottomSheet()"><img src="assets/icons/cancel-icon.svg" alt="X"></button>
+                </div>
+                <div class="field">
+                    <label for="company-mobile">Company Name</label>
+                    <input id="company-mobile" type="text" placeholder="Input Name">
+                </div>
+                <div class="field">
+                    <label for="jobtitle-mobile">Job Title</label>
+                    <input id="jobtitle-mobile" type="text" placeholder="Input Name">
+                </div>
+                <div class="row">
+                    <div class="field">
+                        <label for="workstartperiod-mobile">Start Periode</label>
+                        <input id="workstartperiod-mobile" type="date">
+                    </div>
+                    <div class="field">
+                        <label for="workendperiod-mobile">End Periode</label>
+                        <input id="workendperiod-mobile" type="date">
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="takehomepay-mobile">Take Home Pay</label>
+                    <div class="phone hover">
+                        <div
+                            style="margin:0px; padding: 10px; border-right: 1px solid #e5e7eb; font-weight: 500;">
+                            Rp</div>
+                        <input type="number" id="takehomepay-mobile" name="takehomepay-mobile" min="0"  placeholder="0"
+                            required onfocus="this.classList.remove('missing')">
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="jobdesc-mobile">Description</label>
+                    <textarea maxlength="350" id="jobdesc-mobile" onfocus="this.classList.remove('missing')"></textarea>
+                </div>
+                <button type="Add" onclick="mobileAddData('${element.id}')">Add</button>
+                `;
+                break;
+            case "training":
+                sheetBody.innerHTML = `
+                <div class="row">
+                    <div class="panel-title">
+                        <h2 style="display: block; font-size: 24px;">Training</h2>
+                        <p>Please provide details of the training or course you have.</p>
+                    </div>
+                    <button type="button" class="close-btn" onclick="toggleBottomSheet()"><img src="assets/icons/cancel-icon.svg" alt="X"></button>
+                </div>
+                <div class="row">
+                    <div class="field">
+                        <label for="trainingstartperiod-mobile">Start Periode</label>
+                        <input id="trainingstartperiod-mobile" type="date">
+                    </div>
+                    <div class="field">
+                        <label for="trainingendperiod-mobile">End Periode</label>
+                        <input id="trainingendperiod-mobile" type="date">
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="institute-mobile">Institute Name</label>
+                    <input id="institute-mobile" type="text" placeholder="Input Name">
+                </div>
+                <div class="field">
+                    <label for="scope-mobile">Scope Training</label>
+                    <input id="scope-mobile" type="text" placeholder="Input Name">
+                </div>
+                <div class="field">
+                    <label for="trainingdesc-mobile">Description</label>
+                    <textarea maxlength="350" id="trainingdesc-mobile" onfocus="this.classList.remove('missing')"></textarea>
+                </div>
+                <div class="field">
+                    <label for="trainingdoc-mobile">Upload Document</label>
+                    <div class="file-input-wrapper" onfocus="this.classList.remove('missing')">
+                        <span class="file-name" id="trainingdoc-name-mobile">No file chosen</span>
+                        <button type="button" class="file-btn" id="trainingdoc-btn-mobile"
+                            onclick="fileUploadHandler(this, 'trainingdoc-name-mobile', 'trainingdoc-mobile')">
+                            <img src="assets/icons/upload-icon.svg" alt="Upload">
+                        </button>
+                        <input type="file" name="trainingdoc-mobile" id="trainingdoc-mobile"
+                            onchange="fileOnChanged(this, 'trainingdoc-name-mobile', 'trainingdoc-btn-mobile')" required
+                            accept=".pdf" onfocus="this.classList.remove('missing')">
+                    </div>
+                    <p class="text-secondary">Max. Size 2MB with format .PDF</p>
+                </div>
+                <button type="Add" onclick="mobileAddData('${element.id}')">Add</button>
+                `;
+                break;
+            case "health":
+                sheetBody.innerHTML = `
+                <div class="row">
+                    <div class="panel-title">
+                        <h2 style="display: block; font-size: 24px;">Health Information</h2>
+                        <p>Please provide your health information accurately for record purposes.</p>
+                    </div>
+                    <button type="button" class="close-btn" onclick="toggleBottomSheet()"><img src="assets/icons/cancel-icon.svg" alt="X"></button>
+                </div>
+                <div class="field">
+                    <label for="sick-mobile">Sick Type</label>
+                    <select id="sick-mobile" onfocus="this.classList.remove('missing')" required>
+                        <option value="">Choose Platform</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="healthdescription-mobile">Description</label>
+                    <textarea maxlength="350" id="healthdescription-mobile" type="text" placeholder="Input Description"></textarea>
+                </div>
+                <button type="Add" onclick="mobileAddData('${element.id}')">Add</button>
+                `;
+                sheetBody.querySelector('[id="sick-mobile"]').innerHTML = `<option value="">Choose Platform</option>`;
+                Object.values(medicalList).forEach(platform => {
+                    sheetBody.querySelector('[id="sick-mobile"]').innerHTML += `<option value="${platform['medical_id']}">${platform['medical_name']}</option>`;
                 })
                 break;
             default:
