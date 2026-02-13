@@ -112,9 +112,9 @@
                         <img src="assets/icons/completed-step.svg" alt="Done">
                     </div>
                 </div>
-                <!-- <button type="button" onclick="submitDebug()">Submit dummy data</button>
+                <button type="button" onclick="submitDebug()">Submit dummy data</button>
                 <button type="button" onclick="checkApplicant()">Check Applicant</button>
-                <button type="button" onclick="fillDummyData()">Fill dummy data</button> -->
+                <button type="button" onclick="fillDummyData()">Fill dummy data</button>
                 <!-- <button type="button" onclick="notificationHandler('info message', 'info')">Notif info</button>
                 <button type="button" onclick="notificationHandler('warning message', 'warning')">Notif warning</button> -->
                 <div class="row">
@@ -188,7 +188,7 @@
                             <div class="row">
                                 <div class="field">
                                     <label for="name">Full Name</label>
-                                    <input type="text" id="name" name="name" placeholder="Input here..." onfocus="this.classList.remove('missing')" required>
+                                    <input type="text" id="name" name="name" placeholder="Input here..." onfocus="this.classList.remove('missing')" required autocomplete="off">
                                 </div>
                                 <div class="field">
                                     <label for="name">Gender</label>
@@ -203,7 +203,7 @@
                             <div class="row">
                                 <div class="field">
                                     <label for="email">Email</label>
-                                    <input type="email" name="email" id="email" placeholder="Input here..." required onfocus="this.classList.remove('missing')">
+                                    <input type="email" name="email" id="email" placeholder="Input here..." required onfocus="this.classList.remove('missing')" autocomplete="off">
                                 </div>
                                 <div class="field">
                                     <label for="phone">WhatsApp Number</label>
@@ -213,7 +213,7 @@
                                             <option value="">#</option>
                                         </select>
                                         <input type="tel" id="phone" name="phone" placeholder="Input here..."
-                                            required onfocus="this.classList.remove('missing')" />
+                                            required onfocus="this.classList.remove('missing')" autocomplete="off" />
                                     </div>
                                 </div>
                             </div>

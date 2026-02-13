@@ -1323,8 +1323,18 @@ function removeTableRow(tableId, obj) {
                         // update element and formData numbering
                         delete formData[element.id];
                         var elementNumber = element.id.split('-')[1];
-                        element.id = element.id.replace(`-${elementNumber}`, `-${thisRowNumber - 1}`)
+                        element.id = element.id.replace(`-${elementNumber}`, `-${thisRowNumber - 1}`);
                         formData[element.id] = element.value;
+                    } else if (element.classList.contains('file-input-wrapper')) {
+                        var e = element.querySelector('input');
+                        var span = element.querySelector('span');
+                        var button = element.querySelector('button');
+                        var elementNumber = e.id.split('-')[1];
+
+                        span.id = span.id.replace(`-${elementNumber}`, `-${thisRowNumber - 1}`);
+                        button.id = button.id.replace(`-${elementNumber}`, `-${thisRowNumber - 1}`);
+                        e.name = e.name.replace(`-${elementNumber}`, `-${thisRowNumber - 1}`);
+                        e.id = e.id.replace(`-${elementNumber}`, `-${thisRowNumber - 1}`);
                     }
                 })
             })
