@@ -260,7 +260,7 @@
 
                         <div class="panel-body">
                             <div class="row narrow">
-                                <input type="checkbox" name="socialMedia" id="hasSocialMedia" onchange="toggleSection(this, 'socialContent', 'socialContent')" checked>
+                                <input type="checkbox" name="socialMedia" id="hasSocialMedia" onchange="toggleSection(this, 'socialContent', 'socialTable')" checked>
                                 <div>I have a social media account</div>
                             </div>
                             <div class="table-wrapper" id="socialContent">
@@ -308,13 +308,13 @@
                                             <tr id="social-mobile-1">
                                                 <td>
                                                     <div class="row fixed">
-                                                        <h2 id="mobile-socialplatform-1">Platform</h2>
+                                                        <h2 id="mobile-socialplatform-1">Tap the edit icon</h2>
                                                         <div class="mobile-button-group">
                                                             <button type="button" onclick="removeTableRow('socialTable', document.getElementById('socialTable').getElementsByClassName('table-action')[1].firstElementChild)"><img src="assets/icons/trash-icon.svg" alt=""></button>
                                                             <button type="button" onclick="toggleBottomSheet(this.parentElement.parentElement.parentElement.parentElement)"><img src="assets/icons/edit-icon.svg" alt=""></button>
                                                         </div>
                                                     </div>
-                                                    <div id="mobile-sociallink-1" class="mobile-row-desc">username</div>
+                                                    <div id="mobile-sociallink-1" class="mobile-row-desc">...</div>
                                                 </td>
                                             </tr>
                                             <tr>

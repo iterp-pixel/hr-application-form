@@ -371,6 +371,8 @@ function changeCountryIcon() {
 // section checkboxes
 function toggleSection(self, content, id) {
     const table = document.getElementById(id);
+    const mobileTable = document.getElementById(table.id.replace('Table', 'MobileTable')).querySelector('tbody');
+    console.log(mobileTable);
     const inputs = table.querySelectorAll('input, select, textarea');
     if (self.checked) {
         document.getElementById(content).style.display = 'block';
@@ -393,6 +395,11 @@ function toggleSection(self, content, id) {
             }
             input.value = '';
             input.required = false;
+        });
+        [...mobileTable.children].forEach(child => {
+            if (child.hasAttribute('id') && !child.id.includes('-1')) {
+                child.remove();
+            }
         })
         self.value = 'off';
     }
@@ -1397,19 +1404,22 @@ function toggleBottomSheet(element) {
 function mobileAddData(element) {
     var formElement = document.getElementById(element.replace('mobile', 'row'));
     var sheetInputs = bottomSheet.querySelectorAll('input, select, textarea');
+    var hasEmptyFields = false;
 
     [...sheetInputs].forEach(input => {
-        if (input.value != "") {
+        if (input.value === "") hasEmptyFields = true;
+        if (!hasEmptyFields) {
             var formInputId = input.id.replace("mobile", formElement.id.split('-')[2]);
             var formInput = formElement.querySelector(`[id="${formInputId}"]`);
             formInput.value = input.value;
             updateMobileTable(formInput);
-        } else {
-            alert('Please fill in the required field');
-            return;
         }
     });
-    toggleBottomSheet();
+    if (!hasEmptyFields) {
+        toggleBottomSheet();
+    } else {
+        alert('Please fill all required fields');
+    }
 }
 
 document.querySelector('.sheet-grabber').addEventListener("mousedown", startDragging);
