@@ -1052,7 +1052,7 @@
                                                         <div id="sociallink-1Prev"></div>
                                                     </td>
                                                     <td class="table-action">
-                                                        <button type="button" class="btn-link" onclick="openTab(formData[`sociallink-${this.parentElement.parentElement.id.split('-')[1]}`])">
+                                                        <button type="button" class="btn-link" onclick="openTab(this.parentElement.parentElement.querySelector('[id*=sociallink]'))">
                                                             <img src="assets/icons/new-tab-icon.svg" alt="View">
                                                         </button>
                                                     </td>
@@ -1326,7 +1326,7 @@
                             style="display: none;">Previous</button>
                             <button class="btn" type="button" id="nextBtn" style="display: none;" onclick="changeStep(1)">Next</button>
                             <button class="btn" type="button" style="display: none;" onclick="checkForm(this.parentElement.parentElement)" id="submitBtn">Submit</button>
-                            <!-- <button class="btn" type="button" style="display: flex;" onclick="changeStep(1, false)">Skip</button> -->
+                            <button class="btn" type="button" style="display: flex;" onclick="changeStep(1, false)">Skip</button>
                     </div>
                 </div>
 
@@ -1334,6 +1334,8 @@
             
         </div>
     </div>
+
+    <div id="background" class="background"></div>
     
     <!-- bottom sheet -->
     <div id="bottom-sheet" class="bottom-sheet">

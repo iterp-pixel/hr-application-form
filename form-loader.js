@@ -9,6 +9,12 @@ const platformList = [];
 const medicalList = [];
 let selectedJob = "";
 var topBarExpanded = false;
+const linkList = [
+    {"utm_id": 4, "link": "www.facebook.com/"},
+    {"utm_id": 5, "link": "www.x.com/"},
+    {"utm_id": 6, "link": "www.linkedin.com/in/"},
+    {"utm_id": 15, "link": "www.instagram.com/"},
+];
 
 
 const formCheck = new FormData();
@@ -22,21 +28,20 @@ const dummyData = {
     "name": "Joseph",
     "gender": "male",
     "email": "email@example.com",
-    "countryCode": "62",
-    "phone": "89147951",
+    "phone": "(62) 89147951",
     "birthPlace": "Jakarta",
     "dob": "1998-12-03",
     "nationality": 1,
     "hasSocialMedia": "on",
-    "social": {
-        "1": {
+    "social": [
+        {
             "socialplatform": 5,
             "sociallink": "www.twitter.com/banana"
         }
-    },
+    ],
     "hasEduBackground": "on",
-    "edu": {
-        "1": {
+    "edu": [
+        {
             "level": 1,
             "schoolname": "SD Harapan Bangsa",
             "edustartperiod": "2002-06-01",
@@ -49,7 +54,7 @@ const dummyData = {
                 "file": "",
             }
         },
-        "2": {
+        {
             "level": 1,
             "schoolname": "SD Harapan Bangsa",
             "edustartperiod": "2002-06-01",
@@ -62,10 +67,10 @@ const dummyData = {
                 "file": "",
             }
         }
-    },
+    ],
     "hasWorkExp": "on",
-    "workExp": {
-        "1": {
+    "workExp": [
+        {
             "workstartperiod": "2018-02-10",
             "workendperiod": "2019-03-12",
             "company": "Corpo",
@@ -73,10 +78,10 @@ const dummyData = {
             "takehomepay": 1000000,
             "jobdesc": "Banana"
         }
-    },
+    ],
     "hasTraining": "on",
-    "training": {
-        "1": {
+    "training": [
+        {
             "trainingstartperiod": "2025-01-01",
             "trainingendperiod": "2025-02-01",
             "institute": "Training o",
@@ -88,37 +93,45 @@ const dummyData = {
                 "file": "",
             }
         }
-    },
+    ],
     "expectedSalary": 10000000,
     "availableDate": "2026-03-01",
     "cityAssignedConsent": "Yes",
     "countryAssignedConsent": "Yes",
     "hasHealth": "on",
-    "health": {
-        "1": {
+    "health": [
+        {
             "sick": 1,
             "healthdescription": "hhoohohoho"
         },
-        "2": {
+        {
             "sick": 2,
             "healthdescription": "sick ouch"
         }
-    },
-    "Qq1": "Yes",
-    "Qq2": "Yes",
-    "Qq2details": "Banana",
-    "Qq3": "No",
-    "Qq4": "Other",
-    "Qq4details": "Banana",
+    ],
+    "quick_questions": [
+        {"question": "Are you willing to let us contact your previous employer for reference?", "answer": "Yes",},
+        {"question": "Have you ever been involved in any legal case?", "answer": "No",},
+        {"question": "Have you previously applied to PT Kapit Mas?", "answer": "No",},
+        {"question": "Where did you first learn about the job vacancy at PT Kapit Mas?", "answer": "LinkedIn",},
+        {"question": "Please provide details of involved case", "answer": "",},
+        {"question": "Please provide details of job vacancy knowledge", "answer": "",},
+    ],
+    // "Qq1": "Yes",
+    // "Qq2": "Yes",
+    // "Qq2details": "Banana",
+    // "Qq3": "No",
+    // "Qq4": "Other",
+    // "Qq4details": "Banana",
     "recentPhoto": {
         "file_name": "photo.png",
         "mime_type": "image/png",
-        "file": "",
+        "document": "",
     },
     "resume": {
         "file_name": "resume.pdf",
         "mime_type": "application/pdf",
-        "file": "",
+        "document": "",
     },
     "portofolio": "www.porto.com"
 }
@@ -140,10 +153,16 @@ var submitData = {
     "birth_place": "Bandung",
     "dob": "2026/10/9",
     "nationality": 1,
-    "social_media": [{
+    "social_media": [
+        {
         "platform": 4,
         "link": "www.instagram.com",
-    }],
+        },
+        {
+        "platform": 2,
+        "link": "www.insoan.com",
+        },
+    ],
     "educational_bg": [{
         "level": "Bachelor (S1)",
         "school_name": "Universitas Mantap Jiwa",
@@ -201,9 +220,34 @@ var submitData = {
 };
 
 async function submitDebug() {
+    const formSubmit = new FormData();
+    for (var key in submitData) {
+        if (typeof submitData[key] === "object") {
+            formSubmit.append(key, JSON.stringify(submitData[key]));
+            // var objectData = submitData[key];
+            // if (Array.isArray(objectData)) {
+            //     for (var index in objectData) {
+            //         listData = objectData[index];
+            //         for (var entry in listData) {
+            //             console.log(listData[entry]);
+            //             formSubmit.append(`${key}[${index}][${entry}]`, listData[entry]);
+            //         }
+            //     }
+            //     continue;
+            // }
+            // for (var k in objectData) {
+            //     formSubmit.append(`${key}[${k}]`, objectData[k]);
+            // }
+            continue;
+        }
+        formSubmit.append(key, submitData[key]);
+    }
+    formSubmit.forEach((value, key) => {
+        console.log(key, value);
+    })
     const response = await fetch("http://192.168.1.8/applicant/apply", {
         method: 'POST',
-        body: JSON.stringify(submitData),
+        body: formSubmit,
     }).then((response) => {
         console.log(response);
     }).catch((e) => {
@@ -572,6 +616,7 @@ function fieldMissing(element) {
 
 async function sectionValidator(step) {
     let hasInvalidField = false;
+    var validImageTypes = ["image/png", "image/jpg"];
 
     // some section with simple inputs skip extra validation
     switch (step) {
@@ -591,16 +636,16 @@ async function sectionValidator(step) {
             }    
             
             // check applicant if previously applied
-            hasInvalidField = checkApplicant().then((value) => {
+            // hasInvalidField = checkApplicant().then((value) => {
                 
-                if (value["state"] === "allow") {
-                    notificationHandler(value["message"], "info");
-                    return false;
-                } else {
-                    notificationHandler(value["message"], "warning");
-                    return true;
-                }
-            });
+            //     if (value["state"] === "allow") {
+            //         notificationHandler(value["message"], "info");
+            //         return false;
+            //     } else {
+            //         notificationHandler(value["message"], "warning");
+            //         return true;
+            //     }
+            // });
             break;
         case 4: 
             // educational background
@@ -697,11 +742,11 @@ async function sectionValidator(step) {
         case 10: 
             var recentPhoto = document.getElementById('recentPhoto');
             var resume = document.getElementById('resume');
-            if ((recentPhoto.files[0].size) > 2097152) {
+            if ((recentPhoto.files[0].size) > 2097152 || (!validImageTypes.includes(recentPhoto.files[0].type))) {
                 fieldMissing(recentPhoto);
                 hasInvalidField = true;
             }
-            if ((resume.files[0].size) > 1048576) {
+            if ((resume.files[0].size) > 1048576 || recentPhoto.files[0].type != "application/pdf") {
                 fieldMissing(resume);
                 hasInvalidField = true;
             }
@@ -800,12 +845,6 @@ function findJob(id) {
 }
 
 function updateSocialPlatforms(id, value) {
-    const linkList = [
-        {"utm_id": 4, "link": "www.facebook.com/"},
-        {"utm_id": 5, "link": "www.x.com/"},
-        {"utm_id": 6, "link": "www.linkedin.com/in/"},
-        {"utm_id": 15, "link": "www.instagram.com/"},
-    ];
     var link;
 
     linkList.forEach(platform => {
@@ -895,102 +934,39 @@ async function changeStep(direction, isValidated = true) {
     updateProgress();
 }
 
+function previewColumnData(column, rowCellData, targetElement) {
+    var previewData;
+    switch (column) {
+        case "socialplatform":
+            previewData = platformList.find(p => p["utm_id"] === Number(rowCellData[column]));
+            targetElement.innerHTML = previewData != null ? previewData["utm_name"] : "";
+            break;
+        case "sociallink":
+            previewData = linkList.find(p => p["utm_id"] === Number(rowCellData["socialplatform"]));
+            targetElement.innerHTML = `${previewData != null ? previewData["link"] : ""}${rowCellData[column]}`;
+            break;
+        case "level":
+            previewData = educationLevels.find(edu => edu["edu_id"] === Number(rowCellData[column]));
+            targetElement.innerHTML = previewData != null ? previewData["edu_name"] : "";
+            break;
+        case "sick":
+            previewData = medicalList.find(h => h["medical_id"] === Number(rowCellData[column]));
+            targetElement.innerHTML = previewData != null ? previewData["medical_name"] : "";
+            break;
+        default:
+            targetElement.innerHTML = rowCellData[column] ?? '';
+            break;
+    }
+};
+
 async function showPreview() {
-    submitData = {
-        "job_id": formData["job_id"],
-        "name": formData["name"],
-        "email": formData["email"],
-        "phone": `(${formData["countryCode"]})${formData["phone"]}`,
-        "gender": formData["gender"],
-        "birth_place": formData["birthPlace"],
-        "dob": formData["dob"],
-        "nationality": formData["nationality"],
-        "social_media": Object.values(formData['social'] || {}).map(s => ({
-            "platform": s["socialplatform"],
-            "link": s["sociallink"],
-        })),
-        "educational_bg": await Promise.all(Object.values(formData['edu'] || {}).map(async (e) => ({
-            "level": e["level"],
-            "level_name": educationLevels.length != 0 ? (educationLevels.find(edu => edu["edu_id"] === Number(e["level"])) ? educationLevels.find(edu => edu["edu_id"] === Number(e["level"]))["edu_name"] : "") : "",
-            "school_name": e["schoolname"],
-            "start": e["edustartperiod"],
-            "end": e["eduendperiod"],
-            "remark": e["remark"],
-            "max_remark": e["totalscore"],
-            "document": await base64(e["edudocument"]["file"]),
-            "mime_type": e["edudocument"]["mime_type"],
-            "file_name": e["edudocument"]["file_name"],
-        }))),
-        "work_exp": Object.values(formData['workExp'] || {}).map(w => ({
-            "company_name": w["company"],
-            "position": w["jobtitle"],
-            "start": w["workstartperiod"],
-            "end": w["workendperiod"],
-            "takehomepay": w["takehomepay"],
-            "description": w["jobdesc"],
-        })),
-        "training": await Promise.all(Object.values(formData["training"] || {}).map(async (t) => ({
-            "institute": t["institute"],
-            "scope": t["scope"],
-            "description": t["trainingdesc"],
-            "start": t["trainingstartperiod"],
-            "end": t["trainingendperiod"],
-            "document": await base64(t["trainingdoc"]["file"]),
-            "mime_type": t["trainingdoc"]["mime_type"],
-            "file_name": t["trainingdoc"]["file_name"],
-        }))),
-        "expected_salary": formData["expectedSalary"],
-        "available_date": formData["availableDate"],
-        "city_assigned_consent": formData["cityAssignedConsent"],
-        "country_assigned_consent": formData["countryAssignedConsent"],
-        "health": Object.values(formData["health"] || {}).map(h => ({
-            "sickness": h["sick"],
-            "description": h["healthdescription"],
-        })),
-        "quick_questions":[
-            {"question": "Are you willing to let us contact your previous employer for reference?", "answer": formData["Qq1"],},
-            {"question": "Have you ever been involved in any legal case?", "answer": formData["Qq2"],},
-            {"question": "Have you previously applied to PT Kapit Mas?", "answer": formData["Qq3"],},
-            {"question": "Where did you first learn about the job vacancy at PT Kapit Mas?", "answer": formData["Qq4"],},
-            {"question": "Please provide details of involved case", "answer": formData["Qq2details"],},
-            {"question": "Please provide details of job vacancy knowledge", "answer": formData["Qq4details"],},
-        ],
-        "recent_photo": {
-            "document": await base64(formData["recentPhoto"]["file"]),
-            "mime_type": formData["recentPhoto"]["mime_type"],
-            "file_name": `1.${formData["recentPhoto"]["file_name"]}`,
-        },
-        "resume": {
-            "document": await base64(formData["resume"]["file"]),
-            "mime_type": formData["resume"]["mime_type"],
-            "file_name": `2.${formData["resume"]["file_name"]}`,
-        },
-        "portofolio": formData["portofolio"],
-    };
-    // [...Object.keys(submitData['params'])].forEach(field => {
-    //     if (typeof submitData['params'][field] === "object") {
-    //         submitData['params'][field] = [...Object.values(submitData['params'][field])];
-    //         [...submitData['params'][field]].forEach(row => {
-    //             if (typeof row === "object") {
-    //                 // console.log(row);
-    //                 [...Object.entries(row)].forEach(e => {
-    //                     if (typeof e[1] === "object") {
-    //                         console.log(e[1]);
-    //                         row[e[0]] = e[1];
-    //                     }
-    //                 })
-    //             }
-    //         })
-    //     }
-    // })
-    console.log(submitData);
-    // console.log(formData);
+    console.log(formData);
     const test = document.getElementById('preview-screen');
     const numeralInputs = document.getElementsByClassName('numeral');
     const dateInputs = document.getElementsByClassName('date');
 
     // makes it into a map where each entry is a list of [0] for label and [1] for value
-    Object.entries(submitData).forEach(data => {
+    Object.entries(formData).forEach(data => {
         var targetElement = document.getElementById(`${data[0]}Prev`);
 
         var cellData = data[1];
@@ -1002,9 +978,10 @@ async function showPreview() {
             return;
         }
 
+
         // show nationality
         if (data[0] === 'nationality') {
-            var nationality = countryList.find(v => v['country_id'] === cellData);
+            var nationality = countryList.find(v => v['country_id'] === Number(cellData));
             targetElement.innerHTML = nationality ? nationality['country_name'] : "";
             return;
         }
@@ -1077,40 +1054,14 @@ async function showPreview() {
                         if (Object.keys(rowCellData[column]).includes('file')) {
                             targetElement.innerHTML = rowCellData[column]['file_name'] ?? '';
                         } else {
-                            switch (column) {
-                                case "socialplatform":
-                                    targetElement.innerHTML = platformList.find(p => p["utm_id"] === Number(rowCellData[column]))["utm_name"];
-                                    break;
-                                case "level":
-                                    targetElement.innerHTML = educationLevels.find(edu => edu["edu_id"] === Number(rowCellData[column]))["edu_name"];
-                                    break;
-                                case "sick":
-                                    targetElement.innerHTML = medicalList.find(h => h["medical_id"] === Number(rowCellData[column]))["medical_name"];
-                                    break;
-                                default:
-                                    targetElement.innerHTML = rowCellData[column] ?? '';
-                                    break;
-                            }
+                            previewColumnData(column, rowCellData, targetElement);
                         }
                     } else {
                         targetElement = document.querySelector(`[id*=${column}-${e}Prev]`);
                         if (Object.keys(rowCellData[column]).includes('file')) {
                             targetElement.innerHTML = rowCellData[column]['file_name'] ?? '';
                         } else {
-                            switch (column) {
-                                case "socialplatform":
-                                    targetElement.innerHTML = platformList.find(p => p["utm_id"] === Number(rowCellData[column]))["utm_name"];
-                                    break;
-                                case "level":
-                                    targetElement.innerHTML = educationLevels.find(edu => edu["edu_id"] === Number(rowCellData[column]))["edu_name"];
-                                    break;
-                                case "sick":
-                                    targetElement.innerHTML = medicalList.find(h => h["medical_id"] === Number(rowCellData[column]))["medical_name"];
-                                    break;
-                                default:
-                                    targetElement.innerHTML = rowCellData[column] ?? '';
-                                    break;
-                            }
+                            previewColumnData(column, rowCellData, targetElement);
                         }
                     }
                 })
@@ -1144,6 +1095,9 @@ function openTab(content) {
 
     if (content instanceof File) {
         url = URL.createObjectURL(content);
+    } else if (content instanceof HTMLElement) {
+        if (content.innerHTML === "") return;
+        url = content.innerHTML;
     } else if (content instanceof URL) {
         url = content.href;
     } else if (typeof content === "string") {
@@ -1175,7 +1129,79 @@ function checkForm(form) {
 }
 
 
-function submitForm() {
+async function submitForm() {
+    submitData = {
+        "job_id": formData["job_id"],
+        "name": formData["name"],
+        "email": formData["email"],
+        "phone": `(${formData["countryCode"]})${formData["phone"]}`,
+        "gender": formData["gender"],
+        "birthPlace": formData["birthPlace"],
+        "dob": formData["dob"],
+        "nationality": formData["nationality"],
+        "social_media": Object.values(formData['social'] || {}).map(s => ({
+            "platform": s["socialplatform"],
+            "link": s["sociallink"],
+        })),
+        "educational_bg": await Promise.all(Object.values(formData['edu'] || {}).map(async (e) => ({
+            "level": e["level"],
+            "level_name": educationLevels.length != 0 ? (educationLevels.find(edu => edu["edu_id"] === Number(e["level"])) ? educationLevels.find(edu => edu["edu_id"] === Number(e["level"]))["edu_name"] : "") : "",
+            "school_name": e["schoolname"],
+            "start": e["edustartperiod"],
+            "end": e["eduendperiod"],
+            "remark": e["remark"],
+            "max_remark": e["totalscore"],
+            "document": await base64(e["edudocument"]["file"]),
+            "mime_type": e["edudocument"]["mime_type"],
+            "file_name": e["edudocument"]["file_name"],
+        }))),
+        "work_exp": Object.values(formData['workExp'] || {}).map(w => ({
+            "company_name": w["company"],
+            "position": w["jobtitle"],
+            "start": w["workstartperiod"],
+            "end": w["workendperiod"],
+            "takehomepay": w["takehomepay"],
+            "description": w["jobdesc"],
+        })),
+        "training": await Promise.all(Object.values(formData["training"] || {}).map(async (t) => ({
+            "institute": t["institute"],
+            "scope": t["scope"],
+            "description": t["trainingdesc"],
+            "start": t["trainingstartperiod"],
+            "end": t["trainingendperiod"],
+            "document": await base64(t["trainingdoc"]["file"]),
+            "mime_type": t["trainingdoc"]["mime_type"],
+            "file_name": t["trainingdoc"]["file_name"],
+        }))),
+        "expected_salary": formData["expectedSalary"],
+        "available_date": formData["availableDate"],
+        "city_assigned_consent": formData["cityAssignedConsent"],
+        "country_assigned_consent": formData["countryAssignedConsent"],
+        "health": Object.values(formData["health"] || {}).map(h => ({
+            "sickness": h["sick"],
+            "description": h["healthdescription"],
+        })),
+        "quick_questions":[
+            {"question": "Are you willing to let us contact your previous employer for reference?", "answer": formData["Qq1"],},
+            {"question": "Have you ever been involved in any legal case?", "answer": formData["Qq2"],},
+            {"question": "Have you previously applied to PT Kapit Mas?", "answer": formData["Qq3"],},
+            {"question": "Where did you first learn about the job vacancy at PT Kapit Mas?", "answer": formData["Qq4"],},
+            {"question": "Please provide details of involved case", "answer": formData["Qq2details"],},
+            {"question": "Please provide details of job vacancy knowledge", "answer": formData["Qq4details"],},
+        ],
+        "recent_photo": {
+            "document": await base64(formData["recentPhoto"]["file"]),
+            "mime_type": formData["recentPhoto"]["mime_type"],
+            "file_name": `1.${formData["recentPhoto"]["file_name"]}`,
+        },
+        "resume": {
+            "document": await base64(formData["resume"]["file"]),
+            "mime_type": formData["resume"]["mime_type"],
+            "file_name": `2.${formData["resume"]["file_name"]}`,
+        },
+        "portofolio": formData["portofolio"],
+    };
+
     fetch("http://192.168.1.8/applicant/apply", {
         method: 'POST',
         body: JSON.stringify(submitData),
@@ -1367,6 +1393,7 @@ function removeTableRow(tableId, obj) {
 let isDragging = false;
 let startY, startBottom;
 const bottomSheet = document.getElementById('bottom-sheet');
+const darkenBg = document.getElementById('background');
 var mobileSelectedRow;
 
 function toggleBottomSheet(element) {
@@ -1375,11 +1402,13 @@ function toggleBottomSheet(element) {
     if (element) tableForm = document.getElementById(element.id.replace('mobile', 'row'));
 
     bottomSheet.style.height = "500px";
+    // darkenBg.classList.remove('active');
     if (bottomSheet.classList.contains('active')) {
-
         mobileSelectedRow = "";
         bottomSheet.classList.remove('active');
+        // darkenBg.classList.remove('active');
     } else {
+        darkenBg.classList.add('active');
         mobileSelectedRow = element;
         switch(element.id.split("-")[0]) {
             case "social":
@@ -1601,6 +1630,7 @@ function toggleBottomSheet(element) {
                 input.value = formInput.value;
             }
         })
+        bottomSheet.scrollTop = 0;
         bottomSheet.classList.add('active');
     }
 }
@@ -1637,17 +1667,22 @@ function mobileAddData(element) {
     }
 }
 
+document.querySelector('.sheet-grabber').addEventListener("touchstart", startDragging);
 document.querySelector('.sheet-grabber').addEventListener("mousedown", startDragging);
-// document.querySelector('.sheet-body').querySelector('.row').addEventListener("mousedown", startDragging);
 
 function startDragging(e) {
     e.preventDefault();
     isDragging = true;
-    startY = e.clientY;
+    startY = e instanceof TouchEvent ? e.touches[0].clientY : e.clientY;
     startBottom = parseInt(getComputedStyle(bottomSheet).height);
 
-    document.addEventListener("mousemove", drag);
-    document.addEventListener("mouseup", stopDragging);
+    if (e instanceof TouchEvent) {
+        document.addEventListener("touchmove", drag);
+        document.addEventListener("touchend", stopDragging);
+    } else {
+        document.addEventListener("mousemove", drag);
+        document.addEventListener("mouseup", stopDragging);
+    }
 }
 
 function drag(e) {
@@ -1657,16 +1692,17 @@ function drag(e) {
         stopDragging();
         return;
     };
-    const deltaY = e.clientY - startY;
+    const deltaY = (e instanceof TouchEvent ? e.touches[0].clientY : e.clientY) - startY;
     bottomSheet.style.height = Math.min(Math.max(startBottom - deltaY, 0), window.innerHeight) + "px";
 }
 
 function stopDragging() {
     isDragging = false;
-    document
-        .removeEventListener("mousemove", drag);
-    document
-        .removeEventListener("mouseup", stopDragging);
+    document.removeEventListener("touchmove", drag);
+    document.removeEventListener("touchend", stopDragging);
+
+    document.removeEventListener("mousemove", drag);
+    document.removeEventListener("mouseend", stopDragging);
 }
 
 updateProgress();
