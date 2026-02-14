@@ -1,6 +1,6 @@
-let currentStep = 1;
+let currentStep = localStorage.getItem("lastStep") ? Number(localStorage.getItem("lastStep")) : 1;
 const totalSteps = 11;
-const formData = {};
+const formData = JSON.parse(localStorage.getItem("formData")) ?? {};
 const countryData = {};
 let jobList = {};
 let countryList = [];
@@ -15,6 +15,12 @@ const linkList = [
     {"utm_id": 6, "link": "www.linkedin.com/in/"},
     {"utm_id": 15, "link": "www.instagram.com/"},
 ];
+
+// initialize form
+document.getElementById(`section${currentStep}`).classList.add('active');
+document.getElementById('prevBtn').style.display = currentStep === 1 ? 'none' : 'flex';
+document.getElementById('nextBtn').style.display = (currentStep === 1 || currentStep === totalSteps) ? 'none' : 'flex';
+document.getElementById('submitBtn').style.display = (currentStep === totalSteps ? 'flex' : 'none');
 
 
 const formCheck = new FormData();
@@ -746,7 +752,7 @@ async function sectionValidator(step) {
                 fieldMissing(recentPhoto);
                 hasInvalidField = true;
             }
-            if ((resume.files[0].size) > 1048576 || recentPhoto.files[0].type != "application/pdf") {
+            if ((resume.files[0].size) > 1048576 || resume.files[0].type != "application/pdf") {
                 fieldMissing(resume);
                 hasInvalidField = true;
             }
@@ -779,6 +785,8 @@ function inputTypeSaveHandler(input) {
             'mime_type':input.files[0] ? input.files[0].type : '',
             'file':input.files[0],
         };
+
+        console.log(JSON.stringify(uploadData));
         return uploadData;
     }
     if (input.type == 'number') {
@@ -826,14 +834,37 @@ function saveFormData() {
         var table = currentSection.querySelector('table'); 
         formData[table.id.replace('Table', '')] = tableData;
     }
+
+    var formCatalyst = {};
+    Object.entries(formData).forEach(entry => {
+        if (typeof entry[1] === 'object') {
+            console.log(JSON.stringify(entry[1]));
+            formCatalyst[entry[0]] = JSON.stringify(entry[1]);
+            console.log(formCatalyst[entry[0]]);
+        } else {
+            formCatalyst[entry[0]] = entry[1];
+        }
+    });
+
+    localStorage.setItem("formData", JSON.stringify(formCatalyst));
 }
 
 function loadFormData() {
     const currentSection = document.getElementById(`section${currentStep}`);
-    const inputs = currentSection.querySelectorAll('input, select');
+    const inputs = currentSection.querySelectorAll('input, select, textarea');
 
     inputs.forEach(input => {
         if (input.name && formData[input.name]) {
+            if (input.type === 'file') {
+                console.log(formData[input.name]["file"]);
+                // if (formData[input.name]["file"].files[0].length) {
+                //     const dt = new DataTransfer();
+                //     dt.items.add(formData[input.name]["file"].files[0]);
+                //     input.files = dt.files;
+                //     fileOnChanged(input);
+                // }
+                return;
+            }
             input.value = formData[input.name];
         }
     })
@@ -921,7 +952,7 @@ async function changeStep(direction, isValidated = true) {
     }
     document.getElementById(`section${currentStep}`).classList.add('active')
 
-    // loadFormData();
+    loadFormData();
 
     if (currentStep === totalSteps) {
         showPreview();
@@ -931,6 +962,7 @@ async function changeStep(direction, isValidated = true) {
     document.getElementById('nextBtn').style.display = (currentStep === 1 || currentStep === totalSteps) ? 'none' : 'flex';
     document.getElementById('submitBtn').style.display = (currentStep === totalSteps ? 'flex' : 'none');
 
+    localStorage.setItem("lastStep", currentStep);
     updateProgress();
 }
 
@@ -1634,6 +1666,8 @@ function toggleBottomSheet(element) {
         bottomSheet.classList.add('active');
     }
 }
+
+console.log(formData);
 
 function mobileAddData(element) {
     var formElement = document.getElementById(element.replace('mobile', 'row'));
