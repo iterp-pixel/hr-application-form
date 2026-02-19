@@ -10,6 +10,8 @@
 * {
   box-sizing: border-box;
   font-family: Inter, system-ui, sans-serif;
+  scrollbar-color: var(--border) #fff;
+  scrollbar-width: thin;
 }
 
 body {
@@ -39,7 +41,7 @@ body {
   display: flex;
   flex-direction: row;
   gap: 32px;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .page.complete {
@@ -49,6 +51,10 @@ body {
 /* sidebar */
 
 .sidebar {
+  display: none;
+}
+
+.sidebar.active {
   min-width: 240px;
   height: 100%;
   padding: 12px;
@@ -59,6 +65,7 @@ body {
   flex-direction: column;
   gap: 16px;
   animation: fadeIn 0.5s ease;
+  overflow-y: auto;
 }
 
 .step {
@@ -112,7 +119,6 @@ body {
 /* main panel */
 
 .panel {
-  /* flex: 1; */
   padding: 20px;
   background: #fff;
   width: inherit;
@@ -129,21 +135,62 @@ body {
 
 .panel-notification {
   display: none;
+  animation: fadeOut 0.3s ease;
 }
 
 .panel-notification.active {
   display: block;
   padding: 12px;
-  position: sticky; 
+  position: absolute;
+  width: 98%;
+  margin:12px;
   top: 0px;
-  height: 100px;
-  /* z-index: 1000;  */
+  max-height: max-content;
+  z-index: 10000;
   background-color: #ff4d4f;
+  border-radius: 10px;
   animation: fadeIn 0.3s ease;
+  font-weight: 600;
+  color: var(--bg-soft);
 }
 
 .panel.complete {
   height: inherit;
+}
+
+div#splash-screen {
+  opacity: 0;
+  width: 100%;
+  height: inherit;
+  background: transparent;
+  border: none;
+  animation: splashScreen 3s ease;
+}
+
+.layout.splash {
+  flex-direction: row;
+}
+
+@keyframes splashScreen {
+  0% {
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 100%;
+  }
+
+  85% {
+    opacity: 100%;
+  }
+
+  90% {
+    opacity: 0%;
+  }
+
+  100% {
+    display: none;
+  }
 }
 
 /* header */
@@ -247,6 +294,13 @@ form {
 }
 
 .form-section.active {
+  display: block;
+  height: 100%;
+  overflow-y: auto;
+  animation: fadeIn 0.3s ease;
+}
+
+.job-section {
   display: block;
   height: 100%;
   overflow-y: auto;
@@ -419,7 +473,7 @@ button:disabled {
   margin-top: 8px;
   height: 48px;
   border-radius: 8px;
-  border: none;
+  border: 1px solid #434E7E;
   background: #434E7E;
   color: #FFFFFF;
   font-size: 16px;
@@ -449,23 +503,33 @@ button:disabled {
   transition: all 0.1s ease;
 }
 
+.btn:hover:active, .btn-outline:hover:active {
+  background-color: #132366;
+  color: var(--bg-soft);
+  box-shadow: none;
+}
+
+.btn:disabled:hover {
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+
 .btn:hover {
   background-color: #FFFFFF;
   color: #434E7E;
   border: 1px solid #434E7E;
   box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-  /* transition: all 0.1s ease; */
 }
 
 .btn-outline:hover {
   background-color: #434E7E;
   color: #FFFFFF;
   box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-  /* transition: all 0.1s ease; */
 }
 
-.btn:disabled {
+.btn:disabled, .btn:disabled:active, .btn:disabled:hover {
   background-color: #F5F5F5;
+  border: 1px solid var(--border);
   color: #BDBDBD;
 
 }
@@ -476,7 +540,7 @@ button:disabled {
     transform: translateY(10px);
   }
 
-  to {
+  90% {
     opacity: 1;
     transform: translateY(0);
   }
@@ -594,7 +658,6 @@ table textarea {
   border: none;
   outline: none;
   font-size: 14px;
-  background: transparent;
   transition: all 0.3s ease;
 }
 table select:hover,
@@ -743,7 +806,8 @@ table select {
 /* preview application */
 div.input-readonly {
   width: 100%;
-  height: 48px;
+  height: max-content;
+  min-height: 45px;
   padding: 12px;
   border-radius: 8px;
   border: 1px solid var(--border);
@@ -777,8 +841,14 @@ h3 {
 }
 
 .btn-link {
+  position: sticky;
+  right: 0px;
+  z-index: 10;
+  padding: 0px;
   background-color: transparent;
   align-items: center;
+  height: 30px;
+  width: 30px;
 }
 
 .btn-link:hover {
@@ -833,16 +903,73 @@ h3 {
   justify-content: center;
 }
 
-/* .background {
-  display: none;
-} */
+.presubmit-confirmation {
+  padding: 16px;
+  background-color: var(--bg-soft);
+  border-left: 2px solid var(--border);
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 24px;
+  word-wrap: break-word;
+}
 
+.presubmit-confirmation h3 {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: 0.07px;
+  word-wrap: break-word;
+}
 .background {
+  display: none;
+}
+.background.active {
+  display: block;
   width: 100%;
   height: 100%;
-  position: fixed;
-  z-index: 10000;
+  position: absolute;
+  z-index: 900;
+  top: 0px;
   background-color: #52525248;
+  transition: all 0.3s ease;
+}
+
+.topbar {
+  display: none;
+}
+
+.restore-form {
+  display: none;
+  height: max-content;
+  animation: fadeIn 0.3s ease;
+}
+
+.close-btn {
+  background-color: transparent;
+}
+
+.close-btn:active {
+  background-color: #e5e7eb;
+}
+
+.back-btn {
+  background-color: transparent;
+  padding: 16px;
+  padding-top: 0px;
+}
+.back-btn:hover {
+  background-color: var(--bg-soft);
+}
+.back-btn:active {
+  background-color: var(--border);
+}
+
+.sticky-title {
+  top: 0px; 
+  position: sticky; 
+  z-index: 100;
+  padding-bottom: 8px;
+  background-color: #fff;
 }
 
 @keyframes slideUp {
@@ -877,7 +1004,7 @@ h3 {
     height: 100vh;
   }
 
-  .sidebar {
+  .sidebar, .sidebar.active {
     display: none;
   }
 
@@ -889,11 +1016,13 @@ h3 {
     display: table;
   }
 
-  .mobile button, .close-btn {
+  .mobile button {
     background-color: transparent;
+    width: 50px;
+    padding: 0px;
   }
 
-  .mobile button:active, .close-btn {
+  .mobile button:active {
     background-color: #e5e7eb;
   }
 
@@ -979,8 +1108,17 @@ h3 {
     justify-content: space-between;
   }
 
+  div.row.fixed.narrow {
+    justify-content: left;
+  }
+
   .row:has(input[type="checkbox"]) {
     flex-direction: row;
+  }
+
+  .panel-notification.active {
+    margin:0;
+    width:100%;
   }
 
   .company-logo {
@@ -993,6 +1131,10 @@ h3 {
 
   #buttonGroup {
     gap: 8px
+  }
+
+  .mobile button.table-add-btn {
+    width: 100%;
   }
 
 }

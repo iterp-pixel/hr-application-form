@@ -1,9 +1,9 @@
-let currentStep = localStorage.getItem("lastStep") ? Number(localStorage.getItem("lastStep")) : 1;
+let currentStep = 1;
 const totalSteps = 11;
-const formData = JSON.parse(localStorage.getItem("formData")) ?? {};
+const formData = {};
 const countryData = {};
-let jobList = {};
-let countryList = [];
+const jobList = {};
+const countryList = [];
 const educationLevels = [];
 const platformList = [];
 const medicalList = [];
@@ -34,9 +34,10 @@ const dummyData = {
     "name": "Joseph",
     "gender": "male",
     "email": "email@example.com",
-    "phone": "(62) 89147951",
+    "countryCode": "62",
+    "phone": "89147951",
     "birthPlace": "Jakarta",
-    "dob": "1998-12-03",
+    "dob": "1998/12/3",
     "nationality": 1,
     "hasSocialMedia": "on",
     "social": [
@@ -50,8 +51,8 @@ const dummyData = {
         {
             "level": 1,
             "schoolname": "SD Harapan Bangsa",
-            "edustartperiod": "2002-06-01",
-            "eduendperiod": "2009-06-02",
+            "edustartperiod": "2002/6/1",
+            "eduendperiod": "2009/6/2",
             "remark": 70,
             "totalscore": 90,
             "edudocument": {
@@ -63,8 +64,8 @@ const dummyData = {
         {
             "level": 1,
             "schoolname": "SD Harapan Bangsa",
-            "edustartperiod": "2002-06-01",
-            "eduendperiod": "2009-06-02",
+            "edustartperiod": "2002/6/1",
+            "eduendperiod": "2009/6/2",
             "remark": 70,
             "totalscore": 90,
             "edudocument": {
@@ -77,8 +78,8 @@ const dummyData = {
     "hasWorkExp": "on",
     "workExp": [
         {
-            "workstartperiod": "2018-02-10",
-            "workendperiod": "2019-03-12",
+            "workstartperiod": "2018/2/10",
+            "workendperiod": "2019/3/12",
             "company": "Corpo",
             "jobtitle": "Banana",
             "takehomepay": 1000000,
@@ -88,8 +89,8 @@ const dummyData = {
     "hasTraining": "on",
     "training": [
         {
-            "trainingstartperiod": "2025-01-01",
-            "trainingendperiod": "2025-02-01",
+            "trainingstartperiod": "2025/1/1",
+            "trainingendperiod": "2025/2/1",
             "institute": "Training o",
             "scope": "buss",
             "trainingdesc": "boasf",
@@ -101,7 +102,7 @@ const dummyData = {
         }
     ],
     "expectedSalary": 10000000,
-    "availableDate": "2026-03-01",
+    "availableDate": "2026/3/1",
     "cityAssignedConsent": "Yes",
     "countryAssignedConsent": "Yes",
     "hasHealth": "on",
@@ -115,20 +116,20 @@ const dummyData = {
             "healthdescription": "sick ouch"
         }
     ],
-    "quick_questions": [
-        {"question": "Are you willing to let us contact your previous employer for reference?", "answer": "Yes",},
-        {"question": "Have you ever been involved in any legal case?", "answer": "No",},
-        {"question": "Have you previously applied to PT Kapit Mas?", "answer": "No",},
-        {"question": "Where did you first learn about the job vacancy at PT Kapit Mas?", "answer": "LinkedIn",},
-        {"question": "Please provide details of involved case", "answer": "",},
-        {"question": "Please provide details of job vacancy knowledge", "answer": "",},
-    ],
-    // "Qq1": "Yes",
-    // "Qq2": "Yes",
-    // "Qq2details": "Banana",
-    // "Qq3": "No",
-    // "Qq4": "Other",
-    // "Qq4details": "Banana",
+    // "quick_questions": [
+    //     {"question": "Are you willing to let us contact your previous employer for reference?", "answer": "Yes",},
+    //     {"question": "Have you ever been involved in any legal case?", "answer": "No",},
+    //     {"question": "Have you previously applied to PT Kapit Mas?", "answer": "No",},
+    //     {"question": "Where did you first learn about the job vacancy at PT Kapit Mas?", "answer": "LinkedIn",},
+    //     {"question": "Please provide details of involved case", "answer": "",},
+    //     {"question": "Please provide details of job vacancy knowledge", "answer": "",},
+    // ],
+    "Qq1": "Yes",
+    "Qq2": "Yes",
+    "Qq2details": "Banana",
+    "Qq3": "No",
+    "Qq4": "Other",
+    "Qq4details": "Banana",
     "recentPhoto": {
         "file_name": "photo.png",
         "mime_type": "image/png",
@@ -142,6 +143,10 @@ const dummyData = {
     "portofolio": "www.porto.com"
 }
 
+function dummySubmit() {
+    formatData(dummyData);
+}
+
 function fillDummyData() {
     Object.keys(dummyData).forEach(key => {
         if (document.getElementById(key)) {
@@ -150,116 +155,102 @@ function fillDummyData() {
     })
 }
 
-var submitData = {
-    "job_id": 1,
-    "name": "John Doe",
-    "email": "Email@example.com",
-    "phone": "(62) 8120487531",
-    "gender": "male",
-    "birth_place": "Bandung",
-    "dob": "2026/10/9",
-    "nationality": 1,
-    "social_media": [
-        {
-        "platform": 4,
-        "link": "www.instagram.com",
-        },
-        {
-        "platform": 2,
-        "link": "www.insoan.com",
-        },
-    ],
-    "educational_bg": [{
-        "level": "Bachelor (S1)",
-        "school_name": "Universitas Mantap Jiwa",
-        "start": "2021/10/1",
-        "end": "2025/10/12",
-        "remark": 90,
-        "max_remark": 100,
-        "document": "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",
-        "mime_type": "application/pdf",
-        "file_name": "edu_document.pdf",
-    }],
-    "work_exp": [{
-        "company_name": "Corpo",
-        "position": "Job",
-        "start": "2025/10/12",
-        "end": "2026/2/23",
-        "takehomepay": 9000000,
-        "description": "Lorem Ipsum",
-    }],
-    "training": [{
-        "institute": "training",
-        "scope": "manager",
-        "description": "Lorem ipsum",
-        "start": "2023/8/23",
-        "end": "2024/5/23",
-        "document": "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",
-        "mime_type": "application/pdf",
-        "file_name": "training-doc.pdf",
-    }],
-    "expected_salary": 10000000,
-    "available_date": "2026/3/1",
-    "city_assigned_consent": "Yes",
-    "country_assigned_consent": "Yes",
-    "health": [{
-        "sickness": 1,
-        "description": "Lorem Ipsum",
-    }],
-    "quick_question_1": "Yes",
-    "quick_question_2": "No",
-    "quick_question_3": "No",
-    "quick_question_4": "LinkedIn",
-    "question_detail_2": "",
-    "question_detail_4": "",
-    "recent_photo": {
-        "document": "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",
-        "mime_type": "image/png",
-        "file_name": "1.photo.png",
-    },
-    "resume": {
-        "document": "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",
-        "mime_type": "application/pdf",
-        "file_name": "2.resume.pdf",
-    },
-    "portofolio": "www.porto.com",
-};
+// splash screen
+const splashScreen = document.getElementById("splash-screen");
+document.querySelector(".layout").classList.add("splash");
+document.getElementById("splash-screen").addEventListener("animationend", () => {
+    document.getElementById("splash-screen").style.display = "none";
+    document.querySelector(".layout").classList.remove("splash");
+    document.getElementById('topbar').style.display = 'block';
+    document.getElementById('sidebar').classList.add('active');
+    document.getElementById('applicationForm').style.display = 'block';
 
-async function submitDebug() {
-    const formSubmit = new FormData();
-    for (var key in submitData) {
-        if (typeof submitData[key] === "object") {
-            formSubmit.append(key, JSON.stringify(submitData[key]));
-            // var objectData = submitData[key];
-            // if (Array.isArray(objectData)) {
-            //     for (var index in objectData) {
-            //         listData = objectData[index];
-            //         for (var entry in listData) {
-            //             console.log(listData[entry]);
-            //             formSubmit.append(`${key}[${index}][${entry}]`, listData[entry]);
-            //         }
-            //     }
-            //     continue;
-            // }
-            // for (var k in objectData) {
-            //     formSubmit.append(`${key}[${k}]`, objectData[k]);
-            // }
-            continue;
-        }
-        formSubmit.append(key, submitData[key]);
+    if (localStorage.getItem("formData")) {
+        document.getElementById('restoreForm').style.display = 'block';
+        document.querySelector('.layout').style.display = 'none';
+    } else {
+        fetchData();
     }
-    formSubmit.forEach((value, key) => {
-        console.log(key, value);
-    })
-    const response = await fetch("http://192.168.1.8/applicant/apply", {
-        method: 'POST',
-        body: formSubmit,
-    }).then((response) => {
-        console.log(response);
-    }).catch((e) => {
-        console.log(e);
-    });
-}
+})
+
+var submitData = {};
+// var submitData = {
+//     "job_id": 1,
+//     "name": "John Doe",
+//     "email": "Email@example.com",
+//     "phone": "(62) 8120487531",
+//     "gender": "male",
+//     "birth_place": "Bandung",
+//     "dob": "2026/10/9",
+//     "nationality": 1,
+//     "social_media": [
+//         {
+//         "platform": 4,
+//         "link": "www.instagram.com",
+//         },
+//         {
+//         "platform": 2,
+//         "link": "www.insoan.com",
+//         },
+//     ],
+//     "educational_bg": [{
+//         "edu_id": 1,
+//         "level": "Elementary School",
+//         "school_name": "SD Tunas Cemerlang",
+//         "start": "2021/10/1",
+//         "end": "2025/10/12",
+//         "remark": 90,
+//         "max_remark": 100,
+//         "document": "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",
+//         "mime_type": "application/pdf",
+//         "file_name": "edu_document.pdf",
+//     }],
+//     "work_exp": [{
+//         "company_name": "Corpo",
+//         "position": "Job",
+//         "start": "2025/10/12",
+//         "end": "2026/2/23",
+//         "takehomepay": 9000000,
+//         "description": "Lorem Ipsum",
+//     }],
+//     "training": [{
+//         "institute": "training",
+//         "scope": "manager",
+//         "description": "Lorem ipsum",
+//         "start": "2023/8/23",
+//         "end": "2024/5/23",
+//         "document": "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",
+//         "mime_type": "application/pdf",
+//         "file_name": "training-doc.pdf",
+//     }],
+//     "expected_salary": 10000000,
+//     "available_date": "2026/3/1",
+//     "city_assigned_consent": "Yes",
+//     "country_assigned_consent": "Yes",
+//     "health": [{
+//         "sickness": 1,
+//         "description": "Lorem Ipsum",
+//     }],
+//     "quick_questions":[
+//         {"question": "Are you willing to let us contact your previous employer for reference?", "answer": "Yes",},
+//         {"question": "Have you ever been involved in any legal case?", "answer": "No",},
+//         {"question": "Have you previously applied to PT Kapit Mas?", "answer": "No",},
+//         {"question": "Where did you first learn about the job vacancy at PT Kapit Mas?", "answer": "LinkedIn",},
+//         {"question": "Please provide details of involved case", "answer": "",},
+//         {"question": "Please provide details of job vacancy knowledge", "answer": "",},
+//     ],
+//     "recent_photo": {
+//         "document": "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",
+//         "mime_type": "image/png",
+//         "file_name": "1.photo.png",
+//     },
+//     "resume": {
+//         "document": "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",
+//         "mime_type": "application/pdf",
+//         "file_name": "2.resume.pdf",
+//     },
+//     "portofolio": "www.porto.com",
+// };
 
 // json handling
 const phoneCountryCode = document.getElementById('countryCode');
@@ -267,143 +258,151 @@ const nationalityList = document.getElementById('nationality');
 const countryIcon = document.getElementById('countryIcon');
 const countryIconPrev = document.getElementById('countryIconPrev');
 
-async function fetchJobList() {
-    const response = await fetch('http://192.168.1.8/applicant/jobs_list', {
-        method: 'GET',
-    });
-
-    return await response.json();
-}
-
-async function fetchCountryCode() {
-    const response = await fetch('http://192.168.1.8/applicant/res_country');
-    return await response.json();
-}
-
-async function fetchEducationLevel() {
-    const response = await fetch('http://192.168.1.8/applicant/education_level');
-    return await response.json();
-}
-
-async function fetchSocialPlatform() {
-    const response = await fetch('http://192.168.1.8/applicant/utm_list');
-    return await response.json();
-}
-
-async function fetchMedicalList() {
-    const response = await fetch ('http://192.168.1.8/applicant/medical_list');
-    return await response.json();
-}
-
-async function checkApplicant() {
-    formCheck.set("job_id", formData['job_id']);
-    formCheck.set("name", document.getElementById('name').value);
-    formCheck.set("email", document.getElementById('email').value);
-    formCheck.set("phone", `(${document.getElementById('countryCode').value})${document.getElementById('phone')}`);
-    // formCheck.set("job_id", 1);
-    // formCheck.set("name", 'Ethasdn Carter');
-    // formCheck.set("email", 'ethsdan.carter@example.com');
-    // formCheck.set("phone", '987sd891');
-    var data;
-    const response = await fetch('http://192.168.1.8/applicant/check', {
-        method: 'POST',
-        body: formCheck,
-    }).then((res) => {
-        data = res.json().then((value) => {
-            return value;
-        });
-    }).catch((e) => {
-        // alert(e);
-        data[0] = {"message": `An error has occured: ${e}`, "status": "reject"};
-    });
-
-    return (await data)[0];
-}
-
-fetchCountryCode().then((response) => {
-    countryList = response['country_list'];
-    countryList.sort((a, b) => {
-        var value = a["country_phone"] > b["country_phone"];
-        // console.log(value);
-        return value ? 1 : -1;
-    });
-    if (countryList.length > 0) {
-        phoneCountryCode.innerHTML = '<option value="">#</option>';
-        nationalityList.innerHTML = '<option value="">Select your nationality</option>';
-        [...countryList].forEach(country => {
-            phoneCountryCode.innerHTML += `<option value=${country['country_phone']}>${country['country_phone']} (${country['country_code']})</option>`;
-            nationalityList.innerHTML += `<option value=${country['country_id']}>${country['country_name']}</option>`;
+function fetchData() {
+    fetchCountryCode().then((response) => {
+        const data = JSON.parse(response)['country_list'];
+        Object.keys(data).forEach(key => {
+            countryList[key] = data[key];
         })
-    }
-});
+        countryList.sort((a, b) => {
+            var value = a["country_phone"] > b["country_phone"];
+            return value ? 1 : -1;
+        });
+        if (countryList.length > 0) {
+            phoneCountryCode.innerHTML = '<option value="">#</option>';
+            nationalityList.innerHTML = '<option value="">Select your nationality</option>';
+            [...countryList].forEach(country => {
+                phoneCountryCode.innerHTML += `<option value=${country['country_phone']}>${country['country_phone']} (${country['country_code']})</option>`;
+                nationalityList.innerHTML += `<option value=${country['country_id']}>${country['country_name']}</option>`;
+            })
 
-fetchJobList().then((response) => {
-    jobList = response['open_jobs'];
-    if (jobList.length < 1) {
+            if (formData["countryCode"]) {
+                phoneCountryCode.value = formData["countryCode"];
+                changeCountryIcon();
+            };
+            if (formData["nationality"]) {
+                nationalityList.value = formData["countryCode"];
+            };
+        }
+    }).catch((e) => {
+        notificationHandler(`Country; Could not fetch data`, "warning");
+    });
+
+    fetchJobList().then((response) => {
+        const data = JSON.parse(response)['open_jobs'];
+        Object.keys(data).forEach(key => {
+            jobList[key] = data[key];
+        })
+        if (jobList.length < 1) {
+            document.getElementById('loading-job-display').style.display = 'none';
+            document.getElementById('no-job-display').style.display = 'flex';
+        } else {
+            document.getElementById('no-job-display').style.display = 'none';
+            document.getElementById('loading-job-display').style.display = 'none';
+        }
+        var jobListElement = document.getElementById('job-list').querySelector('.panel-body');
+        var jobEntry = document.getElementsByClassName('job-entry')[0];
+        Object.values(jobList).forEach(job => {
+            var newEntry = jobEntry.cloneNode(true);
+            newEntry.style.display = 'block';
+            newEntry.setAttribute('onclick', `viewJobPosition(${job['jobs_id']})`);
+            newEntry.innerHTML =
+            `<h3 class="job-title">${job['jobs_name']}</h3>
+            <p>${job['job_description']}</p>`;
+            jobListElement.appendChild(newEntry);
+        })
+    }).catch((e) => {
         document.getElementById('loading-job-display').style.display = 'none';
         document.getElementById('no-job-display').style.display = 'flex';
-    } else {
-        document.getElementById('no-job-display').style.display = 'none';
-        document.getElementById('loading-job-display').style.display = 'none';
-    }
-    var jobListElement = document.getElementById('job-list');
-    var jobEntry = document.getElementsByClassName('job-entry')[0];
-    [...jobList].forEach(job => {
-        var newEntry = jobEntry.cloneNode(true);
-        newEntry.style.display = 'block';
-        newEntry.setAttribute('onclick', `viewJobPosition(${job['jobs_id']})`);
-        newEntry.innerHTML =
-        `<h3 class="job-title">${job['jobs_name']}</h3>
-        <p>${job['job_description']}</p>`;
-        jobListElement.appendChild(newEntry);
-    })
-}).catch((e) => {
-    document.getElementById('loading-job-display').style.display = 'none';
-    document.getElementById('no-job-display').style.display = 'flex';
-});
+        notificationHandler(`Jobs; Could not fetch data`, "warning");
+    });
 
-fetchEducationLevel().then((response) => {
-    Object.keys(response["education_level"]).forEach(key => {
-        educationLevels[key] = response["education_level"][key];
-    })
+    fetchEducationLevel().then((response) => {
+        const data = JSON.parse(response)["education_level"];
+        Object.keys(data).forEach(key => {
+            educationLevels[key] = data[key];
+        })
 
-    var eduLevelElement = document.getElementById('level-1');
-    eduLevelElement.innerHTML = '<option value="">Choose level</option>';
-    Object.values(educationLevels).forEach(level => {
-        eduLevelElement.innerHTML += `<option value=${level['edu_id']}>${level['edu_name']}</option>`;
+        var eduLevelElement = document.getElementById('level-1');
+        eduLevelElement.innerHTML = '<option value="">Choose level</option>';
+        Object.values(educationLevels).forEach(level => {
+            eduLevelElement.innerHTML += `<option value=${level['edu_id']}>${level['edu_name']}</option>`;
+        })
 
-    })
-})
-
-fetchSocialPlatform().then((response) => {
-    Object.keys(response["utm_list"]).forEach(key => {
-        platformList[key] = response["utm_list"][key];
-    })
-    
-    var socialElement = document.getElementById('socialplatform-1');
-    socialElement.innerHTML = '<option value="">Choose Platform</option>';
-    Object.values(platformList).forEach(platform => {
-        socialElement.innerHTML += `<option value="${platform['utm_id']}">${platform['utm_name']}</option>`;
-    })
-})
-
-fetchMedicalList().then((response) => {
-    Object.keys(response["medical_type"]).forEach(key => {
-        medicalList[key] = response["medical_type"][key];
+        if (formData["edu"]) {
+            Object.keys(formData["edu"]).forEach(e => {
+                eduLevelElement = document.getElementById(`level-${e}`);
+                eduLevelElement.innerHTML = '<option value="">Choose level</option>';
+                Object.values(educationLevels).forEach(level => {
+                    eduLevelElement.innerHTML += `<option value=${level['edu_id']}>${level['edu_name']}</option>`;
+                });
+                eduLevelElement.value = formData["edu"][e]["level"];
+            })
+            
+            toggleFieldEndDate(document.getElementById('level-1'));
+        };
+    }).catch((e) => {
+        notificationHandler(`Education; Could not fetch data`, "warning");
     })
 
-    var healthElement = document.getElementById('sick-1');
-    healthElement.innerHTML = '<option value ="">Choose sickness type</option>';
-    Object.values(medicalList).forEach(health => {
-        healthElement.innerHTML += `<option value="${health['medical_id']}">${health['medical_name']}</option>`;
+    fetchSocialPlatform().then((response) => {
+        const data = JSON.parse(response)["utm_list"];    
+        Object.keys(data).forEach(key => {
+            platformList[key] = data[key];
+        })
+        
+        var socialElement = document.getElementById('socialplatform-1');
+        socialElement.innerHTML = '<option value="">Choose Platform</option>';
+        Object.values(platformList).forEach(platform => {
+            socialElement.innerHTML += `<option value="${platform['utm_id']}">${platform['utm_name']}</option>`;
+        });
+
+        if (formData["social"]) {
+            Object.keys(formData["social"]).forEach(e => {
+                socialElement = document.getElementById(`socialplatform-${e}`);
+                socialElement.innerHTML = '<option value="">Choose Platform</option>';
+                Object.values(platformList).forEach(platform => {
+                    socialElement.innerHTML += `<option value="${platform['utm_id']}">${platform['utm_name']}</option>`;
+                });
+                socialElement.value = formData["social"][e]["socialplatform"];
+                updateSocialPlatforms(socialElement.id, socialElement.value);
+            })
+        };
+    }).catch((e) => {
+        notificationHandler(`Platforms; Could not fetch data`, "warning");
     })
-})
+
+    fetchMedicalList().then((response) => {
+        const data = JSON.parse(response)["medical_type"];
+        Object.keys(data).forEach(key => {
+            medicalList[key] = data[key];
+        })
+
+        var healthElement = document.getElementById('sick-1');
+        healthElement.innerHTML = '<option value ="">Choose sickness type</option>';
+        Object.values(medicalList).forEach(health => {
+            healthElement.innerHTML += `<option value="${health['medical_id']}">${health['medical_name']}</option>`;
+        })
+
+        if (formData["health"]) {
+            Object.keys(formData["health"]).forEach(e => {
+                healthElement = document.getElementById(`sick-${e}`);
+                healthElement.innerHTML = '<option value ="">Choose sickness type</option>';
+                Object.values(medicalList).forEach(health => {
+                    healthElement.innerHTML += `<option value="${health['medical_id']}">${health['medical_name']}</option>`;
+                })
+                healthElement.value = formData["health"][e]["sick"];
+            })
+        };
+    }).catch((e) => {
+        notificationHandler(`Medical; Could not fetch data`, "warning");
+    })
+}
 
 function changeCountryIcon() {
     var flag;
 
     [...countryList].forEach(country => {
-        // console.log(country['country_phone']);
         if (country['country_code'] === phoneCountryCode.options[phoneCountryCode.selectedIndex].innerHTML.split('(')[1].replace(')', '')) {
             flag = country['country_flag'];
         }
@@ -565,6 +564,8 @@ async function validateCurrentStep(step) {
     const allInputs = currentSection.querySelectorAll('input, select, textarea');
     const requiredInputs = currentSection.querySelectorAll('[required]');
     let hasInvalidInput = false;
+    let hasValidatedSection = false;
+    let validationMessage = "";
 
     // refresh field status
     for (var input of allInputs) {
@@ -575,19 +576,20 @@ async function validateCurrentStep(step) {
         if (!input.value.trim()) {
             // input.focus();
             input.classList.add('missing');
-
-            // alert('Please fill in all required fields.');
+            validationMessage = "Please fill all required fields!";
             hasInvalidInput = true;
         }
     }
 
     if (hasInvalidInput == false) {
-        hasInvalidInput = await sectionValidator(step)
+        hasInvalidInput = await sectionValidator(step);
+        hasValidatedSection = true;
     };
 
     if (hasInvalidInput == false) {
         return true;
     } else {
+        if (!hasValidatedSection) notificationHandler(validationMessage, "warning");
         return false;
     }
 }
@@ -620,6 +622,31 @@ function fieldMissing(element) {
     element.classList.add('missing');
 }
 
+// remove required attribute on end date input when it is the highest level (edu) or latest date (workExp)
+function toggleFieldEndDate(element) {
+    const baseId = element.id.split('-')[0];
+    const group = document.querySelectorAll(`select[id*="${baseId}"], input[id*="${baseId}"]`);
+    var maxValue;
+    if (group.length === 1) {
+        maxValue = element.type === 'date' ? Date.parse(group[0].value) : Number(group[0].value);
+    } else {
+        var values = [...group].map(e => e.type === 'date' ? Date.parse(e.value) : Number(e.value));
+        maxValue = Math.max(...values);
+    }
+
+    
+    group.forEach(e => {
+        const target = e.parentElement.parentElement.parentElement.querySelector(`input[id*="endperiod-${e.id.split('-')[1]}"]`);
+        var value = e.type === 'date' ? Date.parse(e.value) : Number(e.value);
+        if (value === maxValue) {
+            target.required = false;
+        } else {
+            target.required = true;
+        };
+
+    })
+}
+
 async function sectionValidator(step) {
     let hasInvalidField = false;
     var validImageTypes = ["image/png", "image/jpg"];
@@ -627,31 +654,36 @@ async function sectionValidator(step) {
     // some section with simple inputs skip extra validation
     switch (step) {
         case 2: 
+            var currentDate = new Date(Date.now());
+            var selectedDate = new Date(Date.parse(document.getElementById('dob').value));
             // personal information
             if (!/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(document.getElementById('email').value)) {
                 fieldMissing(document.getElementById('email'));
-                hasInvalidField = true;
+                notificationHandler("Please fill in a valid email address.", "warning");
+                return true;
             }
-            // if (!/^(1\s|1|)?((\(\d{3}\))|\d{3})(\-|\s)?(\d{3})(\-|\s)?(\d{4})$/.test(document.getElementById('phone').value)) {
-            //     fieldMissing(document.getElementById('phone'));
-            //     hasInvalidField = true;
-            // }
-            if (Date.parse(document.getElementById('dob').value) > Date.now()) {
+            if (!/^[0-9]*$/.test(document.getElementById('phone').value)) {
+                fieldMissing(document.getElementById('phone'));
+                notificationHandler("Please fill in a valid phone number (e.g. 123xxxx)", "warning");
+                return true;
+            }
+
+            if (selectedDate.getFullYear() > (currentDate.getFullYear() - 13)) {
                 fieldMissing(document.getElementById('dob'));
-                hasInvalidField = true;
+                notificationHandler("You need to be at least 13 years old to apply.", "warning");
+                return true;
             }    
             
             // check applicant if previously applied
-            // hasInvalidField = checkApplicant().then((value) => {
-                
-            //     if (value["state"] === "allow") {
-            //         notificationHandler(value["message"], "info");
-            //         return false;
-            //     } else {
-            //         notificationHandler(value["message"], "warning");
-            //         return true;
-            //     }
-            // });
+            hasInvalidField = checkApplicant(formCheck, formData['job_id']).then((response) => {
+                if (response["state"] === "allow") {
+                    notificationHandler(response["message"], "info");
+                    return false;
+                } else {
+                    notificationHandler(response["message"], "warning");
+                    return true;
+                }
+            });
             break;
         case 4: 
             // educational background
@@ -666,28 +698,38 @@ async function sectionValidator(step) {
                 if (start > end) {
                     fieldMissing(inp);
                     fieldMissing(periodEnds[periodStarts.indexOf(inp)]);
+                    notificationHandler("Start date period cannot be bigger than end date period.", "warning");
                     hasInvalidField = true;
+                    return;
                 }
-            })
+            });
+            if (hasInvalidField) return hasInvalidField;
             remarks.forEach(inp => {
                 var remark = Number(inp.value);
                 var total = Number(totalRemarks[remarks.indexOf(inp)].value);
                 if (remark < 0 || total < 0) {
                     fieldMissing(inp);
                     fieldMissing(totalRemarks[remarks.indexOf(inp)]);
+                    notificationHandler("Grade cannot be less than 0.", "warning");
                     hasInvalidField = true;
+                    return;
                 }
                 if (remark > total) {
                     fieldMissing(inp);
                     fieldMissing(totalRemarks[remarks.indexOf(inp)]);
+                    notificationHandler("Grade cannot be bigger than max grade.", "warning");
                     hasInvalidField = true;
+                    return;
                 }
             })
+            if (hasInvalidField) return hasInvalidField;
             var inputs = document.getElementById('eduTable').querySelectorAll('input[type="file"][required]');
             inputs.forEach(inp => {
                 if ((inp.files[0].size) > 2097152 || inp.files[0].type != "application/pdf") {
                     fieldMissing(inp);
+                    notificationHandler("Attachment(s) is either bigger than 2MB or not the correct file type", "warning");
                     hasInvalidField = true;
+                    return;
                 }
             })
             break;
@@ -702,13 +744,18 @@ async function sectionValidator(step) {
                 if (start > end) {
                     fieldMissing(inp);
                     fieldMissing(periodEnds[periodStarts.indexOf(inp)]);
+                    notificationHandler("Start date period cannot be bigger than end date period.", "warning");
                     hasInvalidField = true;
+                    return;
                 }
             })
+            if (hasInvalidField) return hasInvalidField;
             takeHomePay.forEach(inp => {
                 if (inp.value < 0) {
                     fieldMissing(inp);
+                    notificationHandler("Take home pay cannot be less than 0.", "warning");
                     hasInvalidField = true;
+                    return;
                 }
             })
             break;
@@ -723,14 +770,19 @@ async function sectionValidator(step) {
                 if (start > end) {
                     fieldMissing(inp);
                     fieldMissing(periodEnds[periodStarts.indexOf(inp)]);
+                    notificationHandler("Start date period cannot be bigger than end date period.", "warning");
                     hasInvalidField = true;
+                    return;
                 }
             })
+            if (hasInvalidField) return hasInvalidField;
             var inputs = document.getElementById('trainingTable').querySelectorAll('input[type="file"][required]');
             inputs.forEach(inp => {
                 if ((inp.files[0].size) > 2097152 || inp.files[0].type != "application/pdf") {
                     fieldMissing(inp);
+                    notificationHandler("Attachment(s) is either bigger than 2MB or not the correct file type.", "warning");
                     hasInvalidField = true;
+                    return;
                 }
             })
             break;
@@ -738,23 +790,27 @@ async function sectionValidator(step) {
             // job expectations
             if (Number(document.getElementById('expectedSalary').value) < 0) {
                 fieldMissing(document.getElementById('expectedSalary'));
-                hasInvalidField = true;
+                notificationHandler("Expected salary cannot be less than 0.", "warning");
+                return true;
             }
-            if (Date.parse(document.getElementById('availableDate')) < Date.now()) {
+            if (Date.parse(document.getElementById('availableDate').value) < Date.now()) {
                 fieldMissing(document.getElementById('availableDate'));
-                hasInvalidField = true;
+                notificationHandler("Available date cannot be before today.", "warning");
+                return true;
             }
             break;
         case 10: 
             var recentPhoto = document.getElementById('recentPhoto');
             var resume = document.getElementById('resume');
-            if ((recentPhoto.files[0].size) > 2097152 || (!validImageTypes.includes(recentPhoto.files[0].type))) {
+            if ((recentPhoto.files[0].size) > 1048576 || (!validImageTypes.includes(recentPhoto.files[0].type))) {
                 fieldMissing(recentPhoto);
-                hasInvalidField = true;
+                notificationHandler("Recent photo is either bigger than 1MB or not the correct file type.", "warning");
+                return true;
             }
-            if ((resume.files[0].size) > 1048576 || resume.files[0].type != "application/pdf") {
+            if ((resume.files[0].size) > 2097152 || resume.files[0].type != "application/pdf") {
                 fieldMissing(resume);
-                hasInvalidField = true;
+                notificationHandler("Resume is either bigger than 2MB or not the correct file type.", "warning");
+                return true;
             }
             break;
         default: 
@@ -770,7 +826,7 @@ const base64 = file => new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
-            resolve(reader.result);
+            resolve(reader.result.split(',')[1]);
         };
     } catch(error) {
         // reader.onerror = reject;
@@ -786,7 +842,6 @@ function inputTypeSaveHandler(input) {
             'file':input.files[0],
         };
 
-        console.log(JSON.stringify(uploadData));
         return uploadData;
     }
     if (input.type == 'number') {
@@ -835,18 +890,75 @@ function saveFormData() {
         formData[table.id.replace('Table', '')] = tableData;
     }
 
-    var formCatalyst = {};
-    Object.entries(formData).forEach(entry => {
-        if (typeof entry[1] === 'object') {
-            console.log(JSON.stringify(entry[1]));
-            formCatalyst[entry[0]] = JSON.stringify(entry[1]);
-            console.log(formCatalyst[entry[0]]);
-        } else {
-            formCatalyst[entry[0]] = entry[1];
-        }
-    });
+    var formCatalyst = cleanDataStructure(formData);
 
     localStorage.setItem("formData", JSON.stringify(formCatalyst));
+}
+
+// clearing attachment input before putting in localStorage
+function cleanDataStructure(value) {
+    if (Array.isArray(value)) {
+        return value.map(cleanDataStructure);
+    }
+
+    if (value && typeof value === "object") {
+        if ("file_name" in value || "mime_type" in value) return "";
+        const data = {};
+        for (const key in value) {
+            data[key] = cleanDataStructure(value[key]);
+        }
+
+        return data;
+    }
+
+    // primitive value
+    return value;
+}
+
+async function closeRestoreWindow(value) {
+    if (value) {
+        const savedData = JSON.parse(localStorage.getItem("formData"));
+
+        // fill input fields
+        Object.keys(savedData).forEach(k => {
+            var inputElement = document.getElementById(k);
+            formData[k] = savedData[k];
+
+            // does not fill in file input and tries to fill in table sections
+            if (typeof savedData[k] === 'object') {
+                if (Object.keys(savedData[k]).includes("file_name")) return;
+                Object.entries(savedData[k]).forEach(data => {
+                    Object.entries(data[1]).forEach(cell => {
+                        var tableCell = document.getElementById(`${cell[0]}-${data[0]}`);
+
+                        // creates new table row if it can't find one
+                        if (!tableCell) {
+                            var titleCaseSection = k.replace('Exp', "").charAt(0).toUpperCase() + k.substring(1).replace('Exp', "");
+                            addTableRow(`${k}Table`, `${k.replace('Exp', "")}-row-1`, `add${titleCaseSection}Row`);
+                            tableCell = document.getElementById(`${cell[0]}-${data[0]}`);
+                        };
+                        tableCell.value = cell[1];
+                    })
+                })
+            }
+            if (inputElement) {
+                inputElement.value = savedData[k]
+                if (inputElement.type === 'checkbox' && inputElement.id != "confirmation-agreement") {
+                    inputElement.checked = (savedData[k] === "on" ? true : false);
+                    inputElement.onchange();
+                };
+            };
+        });
+
+        toggleFieldEndDate(document.getElementById('workstartperiod-1'));
+
+        notificationHandler("Previous draft restored.", "info");
+    } else {
+        localStorage.clear();
+    }
+    fetchData();
+    document.getElementById('restoreForm').style.display = 'none';
+    document.querySelector('.layout').style.display = 'flex';
 }
 
 function loadFormData() {
@@ -871,7 +983,7 @@ function loadFormData() {
 }
 
 function findJob(id) {
-    var job = jobList.find(v => v["jobs_id"] === id);
+    var job = Object.values(jobList).find(v => v["jobs_id"] === id);
     return job ?? null;
 }
 
@@ -884,22 +996,20 @@ function updateSocialPlatforms(id, value) {
         }
     });
 
-    console.log(id);
-
     document.getElementsByClassName('link-header')[Number(id.split('-')[1])-1].innerHTML = link ?? 'www.link.com/';
 
-    var inputs = document.querySelectorAll('select[id*=socialplatform]');
-    var selectedPlatforms = Array.from(inputs).map(p => p.value).filter(v => v !== "");
+    // var inputs = document.querySelectorAll('select[id*=socialplatform]');
+    // var selectedPlatforms = Array.from(inputs).map(p => p.value).filter(v => v !== "");
 
-    inputs.forEach(input => {
-        Array.from(input.options).forEach(option => {
-            option.disabled = false;
+    // inputs.forEach(input => {
+    //     Array.from(input.options).forEach(option => {
+    //         option.disabled = false;
 
-            if (option.value !== "" && option.value !== input.value && selectedPlatforms.includes(option.value)) {
-                option.disabled = true;
-            }
-        })
-    })
+    //         if (option.value !== "" && option.value !== input.value && selectedPlatforms.includes(option.value)) {
+    //             option.disabled = true;
+    //         }
+    //     })
+    // })
 }
 
 function updateMobileTable(element) {
@@ -909,50 +1019,91 @@ function updateMobileTable(element) {
     if (mobileElement === null) return;
 
     if (element.tagName === 'SELECT') {
-        mobileElement.innerHTML = value != "" ? element.options[element.selectedIndex].innerHTML : "Platform";
+        mobileElement.innerHTML = value != "" ? element.options[element.selectedIndex].innerHTML : "Null";
     } else {
-        mobileElement.innerHTML = value != "" ? value : "username";
+        mobileElement.innerHTML = value != "" ? value : "null";
     }
 }
 
 function viewJobPosition(id) {
     selectedJob = id;
+    const jobListElement = document.getElementById('job-index');
     var job = findJob(id);
     
-    document.getElementById('job-detail-title').innerHTML = job['jobs_name'];
     document.getElementById('job-detail-description').innerHTML = job['job_description'];
-    document.getElementById('job-index').style.display = 'flex';
+    jobListElement.style.display = 'flex';
+    jobListElement.querySelectorAll('.job-title').forEach(e => {
+        e.innerHTML = job['jobs_name'];
+    })
     document.getElementById('job-list').style.display = 'none';
+    document.getElementById('applyBtn').style.display = 'block';
 }
 
 function backToJobList() {
     document.getElementById('job-index').style.display = 'none';
-    document.getElementById('job-list').style.display = 'flex';
+    document.getElementById('job-list').style.display = 'block';
+    document.getElementById('applyBtn').style.display = 'none';
 }
 
 function selectJobPosition(id) {
     formData['job_id'] = id;
     changeStep(1);
+    document.getElementById('applyBtn').style.display = 'none';
 }
+var currentSectionElements = document.getElementById('section1').querySelectorAll('input, select, textarea');
+const nextBtn = document.getElementById('nextBtn');
+const submitBtn = document.getElementById('submitBtn');
+const confirmAgreeCheckbox = document.getElementById('confirmation-agreement');
+
+confirmAgreeCheckbox.addEventListener("change", () => {
+    if (confirmAgreeCheckbox.checked) {
+        submitBtn.disabled = false;
+    } else {
+        submitBtn.disabled = true;
+    }
+})
+
+document.addEventListener("change", updateNextButton);
+
+function updateNextButton() {
+    var emptyFieldsLength = 0;
+    currentSectionElements.forEach(element => {
+        if (element.value === "" && element.hasAttribute('required')) {
+            emptyFieldsLength += 1;
+        }
+    });
+
+    if (emptyFieldsLength === 0) {
+        nextBtn.disabled = false;
+    } else {
+        nextBtn.disabled = true;
+    }
+};
 
 async function changeStep(direction, isValidated = true) {
     if (isValidated && direction === 1 && !await(validateCurrentStep(currentStep))) {
         return;
     }
 
+    if (document.getElementById('applyBtn').style.display === 'block') document.getElementById('applyBtn').style.display = 'none';
+
     saveFormData();
 
 
-    document.getElementById(`section${currentStep}`).classList.remove('active')
+    document.getElementById(`section${currentStep}`).classList.remove('active');
+    document.getElementById(`section${currentStep}`).classList.remove('missing');
 
     currentStep += direction;
 
     if (document.getElementById(`section${currentStep}`) == null) {
         currentStep -= direction;
     }
-    document.getElementById(`section${currentStep}`).classList.add('active')
+    document.getElementById(`section${currentStep}`).classList.add('active');
+    currentSectionElements = document.getElementById(`section${currentStep}`).querySelectorAll('input, select, textarea');
+    updateNextButton();
 
-    loadFormData();
+
+    // loadFormData();
 
     if (currentStep === totalSteps) {
         showPreview();
@@ -962,37 +1113,41 @@ async function changeStep(direction, isValidated = true) {
     document.getElementById('nextBtn').style.display = (currentStep === 1 || currentStep === totalSteps) ? 'none' : 'flex';
     document.getElementById('submitBtn').style.display = (currentStep === totalSteps ? 'flex' : 'none');
 
-    localStorage.setItem("lastStep", currentStep);
+    // localStorage.setItem("lastStep", currentStep);
     updateProgress();
 }
 
-function previewColumnData(column, rowCellData, targetElement) {
+function previewColumnData(column, rowCellData, targetElement, targetElementMobile) {
     var previewData;
     switch (column) {
         case "socialplatform":
             previewData = platformList.find(p => p["utm_id"] === Number(rowCellData[column]));
             targetElement.innerHTML = previewData != null ? previewData["utm_name"] : "";
+            targetElementMobile.innerHTML = previewData != null ? previewData["utm_name"] : "";
             break;
         case "sociallink":
             previewData = linkList.find(p => p["utm_id"] === Number(rowCellData["socialplatform"]));
             targetElement.innerHTML = `${previewData != null ? previewData["link"] : ""}${rowCellData[column]}`;
+            targetElementMobile.innerHTML = `${previewData != null ? previewData["link"] : ""}${rowCellData[column]}`;
             break;
         case "level":
             previewData = educationLevels.find(edu => edu["edu_id"] === Number(rowCellData[column]));
             targetElement.innerHTML = previewData != null ? previewData["edu_name"] : "";
+            targetElementMobile.innerHTML = previewData != null ? previewData["edu_name"] : "";
             break;
         case "sick":
             previewData = medicalList.find(h => h["medical_id"] === Number(rowCellData[column]));
             targetElement.innerHTML = previewData != null ? previewData["medical_name"] : "";
+            targetElementMobile.innerHTML = previewData != null ? previewData["medical_name"] : "";
             break;
         default:
             targetElement.innerHTML = rowCellData[column] ?? '';
+            targetElementMobile.innerHTML = rowCellData[column] ?? '';
             break;
     }
 };
 
 async function showPreview() {
-    console.log(formData);
     const test = document.getElementById('preview-screen');
     const numeralInputs = document.getElementsByClassName('numeral');
     const dateInputs = document.getElementsByClassName('date');
@@ -1058,42 +1213,60 @@ async function showPreview() {
             };
 
             var firstRow = document.getElementById(`${data[0]}Prev-1`);
+            var firstRowMobile = document.getElementById(`${data[0]}Prev-mobile-1`);
 
-            if (firstRow == null) return;
+            if (firstRow == null || firstRowMobile == null) return;
 
             var table = firstRow.parentElement;
+            var tableMobile = firstRowMobile.parentElement;
 
             Object.keys(cellData).forEach(e => {
                 var rowCellData = cellData[e];
                 targetElement = document.getElementById(`${data[0]}Prev-${e}`);
+                var targetElementMobile = document.getElementById(`mobile-${data[0]}Prev-${e}`);
                 
                 Object.keys(rowCellData).forEach(column => {
                     // if there is no table row for the cell, create a new one
-                    if (targetElement == null) {
+                    if (targetElement == null && targetElementMobile == null) {
                         var newElement = firstRow.cloneNode(true);
+                        var newElementMobile = firstRowMobile.cloneNode(true);
+
                         newElement.id = newElement.id.replace('-1', `-${e}`);
+                        newElementMobile.id = newElementMobile.id.replace('-1', `-${e}`);
+
                         [...newElement.children].forEach(row => {
                             var cellElement;
                             Object.keys(rowCellData).forEach(col => {
                                 cellElement = row.querySelector(`[id*=${col}-1Prev]`);
                                 if (cellElement) cellElement.id = cellElement.id.replace('-1', `-${e}`);
                             })
-                        })
+                        });
+                        [...newElementMobile.children].forEach(row => {
+                            var cellElement;
+                            Object.keys(rowCellData).forEach(col => {
+                                cellElement = row.querySelector(`[id*=${col}-1Prev]`);
+                                if (cellElement) cellElement.id = cellElement.id.replace('-1', `-${e}`);
+                            })
+                        });
                         table.appendChild(newElement);
+                        tableMobile.appendChild(newElementMobile);
 
                         targetElement = document.querySelector(`[id*=${column}-${e}Prev]`);
+                        targetElementMobile = document.querySelector(`[id*=mobile-${column}-${e}Prev]`);
 
                         if (Object.keys(rowCellData[column]).includes('file')) {
                             targetElement.innerHTML = rowCellData[column]['file_name'] ?? '';
                         } else {
-                            previewColumnData(column, rowCellData, targetElement);
+                            previewColumnData(column, rowCellData, targetElement, targetElementMobile);
                         }
                     } else {
                         targetElement = document.querySelector(`[id*=${column}-${e}Prev]`);
+                        targetElementMobile = document.querySelector(`[id*=mobile-${column}-${e}Prev]`);
+
                         if (Object.keys(rowCellData[column]).includes('file')) {
                             targetElement.innerHTML = rowCellData[column]['file_name'] ?? '';
                         } else {
-                            previewColumnData(column, rowCellData, targetElement);
+                            previewColumnData(column, rowCellData, targetElement, targetElementMobile);
                         }
                     }
                 })
@@ -1129,7 +1302,12 @@ function openTab(content) {
         url = URL.createObjectURL(content);
     } else if (content instanceof HTMLElement) {
         if (content.innerHTML === "") return;
-        url = content.innerHTML;
+
+        let value = content.innerHTML.trim();
+        if (!/^[a-zA-Z][a-zA-Z\d+.-]*:/.test(value)) {
+            value = 'https://' + value;
+        }
+        url = value;
     } else if (content instanceof URL) {
         url = content.href;
     } else if (typeof content === "string") {
@@ -1150,103 +1328,132 @@ function checkForm(form) {
     for (var i = 0; i < inputs.length; i++) {
         if (inputs[i].hasAttribute('required')) {
             if (inputs[i].value == '') {
-                alert('Please fill all required fields');
+                notificationHandler('Please fill all required fields!', "warning");
                 return false;
             }
         }
     }
-    console.log('form data:', formData);
-    submitForm();
+    formatData(formData);
     return true;
 }
 
+function formatDate(date) {
+    var parsedDate = new Date(Date.parse(date));
+    var formattedDate = parsedDate.toLocaleDateString("en-US", {year:'numeric', month:'2-digit', day:'2-digit'}).split("/");
+    var newDate =`${formattedDate[2]}/${formattedDate[0]}/${formattedDate[1]}`;
+    return date != "" ? newDate : "";
+}
 
-async function submitForm() {
+async function formatData(data) {
     submitData = {
-        "job_id": formData["job_id"],
-        "name": formData["name"],
-        "email": formData["email"],
-        "phone": `(${formData["countryCode"]})${formData["phone"]}`,
-        "gender": formData["gender"],
-        "birthPlace": formData["birthPlace"],
-        "dob": formData["dob"],
-        "nationality": formData["nationality"],
-        "social_media": Object.values(formData['social'] || {}).map(s => ({
+        "job_id": data["job_id"],
+        "name": data["name"],
+        "email": data["email"],
+        "phone": `(${data["countryCode"]}) ${data["phone"]}`,
+        "gender": data["gender"],
+        "birth_place": data["birthPlace"],
+        "dob": formatDate(data["dob"]),
+        "nationality": data["nationality"],
+        "expected_salary": data["expectedSalary"],
+        "available_date": formatDate(data["availableDate"]),
+        "city_assigned_consent": data["cityAssignedConsent"],
+        "country_assigned_consent": data["countryAssignedConsent"],
+        "quick_questions":[
+            {"question": "Are you willing to let us contact your previous employer for reference?", "answer": data["Qq1"],},
+            {"question": "Have you ever been involved in any legal case?", "answer": data["Qq2"],},
+            {"question": "Have you previously applied to PT Kapit Mas?", "answer": data["Qq3"],},
+            {"question": "Where did you first learn about the job vacancy at PT Kapit Mas?", "answer": data["Qq4"],},
+            {"question": "Please provide details of involved case", "answer": data["Qq2details"],},
+            {"question": "Please provide details of job vacancy knowledge", "answer": data["Qq4details"],},
+        ],
+        "recent_photo": await base64(data["recentPhoto"]["file"]),
+        "resume": {
+            "document": await base64(data["resume"]["file"]),
+            "mime_type": data["resume"]["mime_type"],
+            "file_name": `2.${data["resume"]["file_name"]}`,
+        },
+        "portofolio": data["portofolio"],
+    };
+
+    if (data["hasSocialMedia"] === "on") {
+        submitData["social_media"] = Object.values(data['social'] || {}).map(s => ({
             "platform": s["socialplatform"],
-            "link": s["sociallink"],
-        })),
-        "educational_bg": await Promise.all(Object.values(formData['edu'] || {}).map(async (e) => ({
-            "level": e["level"],
-            "level_name": educationLevels.length != 0 ? (educationLevels.find(edu => edu["edu_id"] === Number(e["level"])) ? educationLevels.find(edu => edu["edu_id"] === Number(e["level"]))["edu_name"] : "") : "",
+            "link": `${linkList.find(p => p["utm_id"] === Number(s["socialplatform"]))["link"]}${s["sociallink"]}`,
+        }));
+    }
+
+    if (data["hasEduBackground"] === "on") {
+        submitData["educational_bg"] = await Promise.all(Object.values(data['edu'] || {}).map(async (e) => ({
+            "edu_id": e["level"],
+            "level": educationLevels.length != 0 ? (educationLevels.find(edu => edu["edu_id"] === Number(e["level"])) ? educationLevels.find(edu => edu["edu_id"] === Number(e["level"]))["edu_name"] : "") : "",
             "school_name": e["schoolname"],
-            "start": e["edustartperiod"],
-            "end": e["eduendperiod"],
+            "start": formatDate(e["edustartperiod"]),
+            "end": formatDate(e["eduendperiod"]),
             "remark": e["remark"],
             "max_remark": e["totalscore"],
             "document": await base64(e["edudocument"]["file"]),
             "mime_type": e["edudocument"]["mime_type"],
             "file_name": e["edudocument"]["file_name"],
-        }))),
-        "work_exp": Object.values(formData['workExp'] || {}).map(w => ({
+        })));
+    }
+
+    if (data["hasWorkExp"] === "on") {
+        submitData["work_exp"] = Object.values(data['workExp'] || {}).map(w => ({
             "company_name": w["company"],
             "position": w["jobtitle"],
-            "start": w["workstartperiod"],
-            "end": w["workendperiod"],
+            "start": formatDate(w["workstartperiod"]),
+            "end": formatDate(w["workendperiod"]),
             "takehomepay": w["takehomepay"],
             "description": w["jobdesc"],
-        })),
-        "training": await Promise.all(Object.values(formData["training"] || {}).map(async (t) => ({
+        }));
+    }
+
+    if (data["hasTraining"] === "on") {
+        submitData["training"] = await Promise.all(Object.values(data["training"] || {}).map(async (t) => ({
             "institute": t["institute"],
             "scope": t["scope"],
             "description": t["trainingdesc"],
-            "start": t["trainingstartperiod"],
-            "end": t["trainingendperiod"],
+            "start": formatDate(t["trainingstartperiod"]),
+            "end": formatDate(t["trainingendperiod"]),
             "document": await base64(t["trainingdoc"]["file"]),
             "mime_type": t["trainingdoc"]["mime_type"],
             "file_name": t["trainingdoc"]["file_name"],
-        }))),
-        "expected_salary": formData["expectedSalary"],
-        "available_date": formData["availableDate"],
-        "city_assigned_consent": formData["cityAssignedConsent"],
-        "country_assigned_consent": formData["countryAssignedConsent"],
-        "health": Object.values(formData["health"] || {}).map(h => ({
+        })));
+    }
+
+    if (data["hasHealth"] === "on") {
+        submitData["health"] = Object.values(data["health"] || {}).map(h => ({
             "sickness": h["sick"],
             "description": h["healthdescription"],
-        })),
-        "quick_questions":[
-            {"question": "Are you willing to let us contact your previous employer for reference?", "answer": formData["Qq1"],},
-            {"question": "Have you ever been involved in any legal case?", "answer": formData["Qq2"],},
-            {"question": "Have you previously applied to PT Kapit Mas?", "answer": formData["Qq3"],},
-            {"question": "Where did you first learn about the job vacancy at PT Kapit Mas?", "answer": formData["Qq4"],},
-            {"question": "Please provide details of involved case", "answer": formData["Qq2details"],},
-            {"question": "Please provide details of job vacancy knowledge", "answer": formData["Qq4details"],},
-        ],
-        "recent_photo": {
-            "document": await base64(formData["recentPhoto"]["file"]),
-            "mime_type": formData["recentPhoto"]["mime_type"],
-            "file_name": `1.${formData["recentPhoto"]["file_name"]}`,
-        },
-        "resume": {
-            "document": await base64(formData["resume"]["file"]),
-            "mime_type": formData["resume"]["mime_type"],
-            "file_name": `2.${formData["resume"]["file_name"]}`,
-        },
-        "portofolio": formData["portofolio"],
-    };
+        }));
+    }
 
-    fetch("http://192.168.1.8/applicant/apply", {
-        method: 'POST',
-        body: JSON.stringify(submitData),
-    }).then((response) => {
-        console.log(response);
+    submitForm();
+}
+
+async function submitForm() {
+    const formSubmit = new FormData();
+    for (var key in submitData) {
+        if (typeof submitData[key] === "object") {
+            formSubmit.append(key, JSON.stringify(submitData[key]));
+            continue;
+        }
+        formSubmit.append(key, submitData[key]);
+    }
+    
+    submitApplication(formSubmit).then((res) => {
+        console.log(res, JSON.parse(res)["message"]);
+    
+        document.getElementsByClassName('page')[0].classList.add('complete');
+        document.getElementById('success-panel').style.display = 'block';
+        document.getElementById('sidebar').style.display = 'none';
+        document.getElementById('applicationForm').style.display = 'none';
+
+        localStorage.clear();
+    }).catch((e) => {
+        console.log(e);
+        notificationHandler("We are not able to submit your application, please try again later.", "warning");
     });
-
-    console.log('submitted:', formData);
-
-    document.getElementsByClassName('page')[0].classList.add('complete');
-    document.getElementById('success-panel').style.display = 'block';
-    document.getElementById('sidebar').style.display = 'none';
-    document.getElementById('applicationForm').style.display = 'none';
 }
 
 function addTableRow(tableId, tableRow, button) {
@@ -1339,6 +1546,10 @@ function addTableRow(tableId, tableRow, button) {
     
     tbody.appendChild(addRowButton);
     mobileRow.parentElement.appendChild(mobileAddButton);
+
+    // update next button status
+    currentSectionElements = document.getElementById(`section${currentStep}`).querySelectorAll('input, select, textarea');
+    updateNextButton();
 }
 
 function removeTableRow(tableId, obj) {
@@ -1420,6 +1631,10 @@ function removeTableRow(tableId, obj) {
             })
         }
     })
+
+    // update next button status
+    currentSectionElements = document.getElementById(`section${currentStep}`).querySelectorAll('input, select, textarea');
+    updateNextButton();
 }
 
 let isDragging = false;
@@ -1428,17 +1643,24 @@ const bottomSheet = document.getElementById('bottom-sheet');
 const darkenBg = document.getElementById('background');
 var mobileSelectedRow;
 
+// close bottom sheet if switched from mobile to desktop ui
+window.addEventListener("resize", () => {
+    if (window.innerWidth > 900 && bottomSheet.classList.contains('active')) {
+        toggleBottomSheet();
+    }
+})
+
 function toggleBottomSheet(element) {
     var sheetBody = bottomSheet.querySelector('.sheet-body');
     var tableForm;
     if (element) tableForm = document.getElementById(element.id.replace('mobile', 'row'));
 
     bottomSheet.style.height = "500px";
-    // darkenBg.classList.remove('active');
+    darkenBg.classList.remove('active');
     if (bottomSheet.classList.contains('active')) {
         mobileSelectedRow = "";
         bottomSheet.classList.remove('active');
-        // darkenBg.classList.remove('active');
+        darkenBg.classList.remove('active');
     } else {
         darkenBg.classList.add('active');
         mobileSelectedRow = element;
@@ -1460,9 +1682,9 @@ function toggleBottomSheet(element) {
                 </div>
                 <div class="field">
                     <label for="sociallink-mobile">Link Platform</label>
-                    <input id="sociallink-mobile" type="text" placeholder="Input Link">
+                    <input id="sociallink-mobile" type="text" onfocus="this.classList.remove('missing')" placeholder="Input Link">
                 </div>
-                <button type="Add" onclick="mobileAddData('${element.id}')">Add</button>
+                <button class="btn" disabled type="Add" onclick="mobileAddData('${element.id}')">Add</button>
                 `;
                 sheetBody.querySelector('[id="socialplatform-mobile"]').innerHTML = `<option value="">Choose Platform</option>`;
                 Object.values(platformList).forEach(platform => {
@@ -1486,23 +1708,23 @@ function toggleBottomSheet(element) {
                 </div>
                 <div class="field">
                     <label for="schoolname-mobile">School Name</label>
-                    <input id="schoolname-mobile" type="text" placeholder="Input Name">
+                    <input id="schoolname-mobile" type="text" onfocus="this.classList.remove('missing')" placeholder="Input Name">
                 </div>
                 <div class="row">
                     <div class="field">
                         <label for="edustartperiod-mobile">Start Periode Study</label>
-                        <input id="edustartperiod-mobile" type="date">
+                        <input id="edustartperiod-mobile" onfocus="this.classList.remove('missing')" type="date">
                     </div>
                     <div class="field">
                         <label for="eduendperiod-mobile">Until Periode Study</label>
-                        <input id="eduendperiod-mobile" type="date">
+                        <input id="eduendperiod-mobile" type="date" onfocus="this.classList.remove('missing')">
                     </div>
                 </div>
                 <label for="edustartperiod-mobile">Start Periode Study</label>
                 <div class="row fixed field">
-                    <input id="remark-mobile" type="number" min="0" placeholder="0">
+                    <input id="remark-mobile" type="number" min="0" placeholder="0" onfocus="this.classList.remove('missing')">
                     from
-                    <input id="totalscore-mobile" type="number" min="0" placeholder="0">
+                    <input id="totalscore-mobile" type="number" min="0" placeholder="0" onfocus="this.classList.remove('missing')">
                 </div>
                 <div class="field">
                     <label for="edudocument-mobile">Upload Document</label>
@@ -1518,7 +1740,7 @@ function toggleBottomSheet(element) {
                     </div>
                     <p class="text-secondary">Max. Size 2MB with format .PDF</p>
                 </div>
-                <button type="Add" onclick="mobileAddData('${element.id}')">Add</button>
+                <button class="btn" disabled type="Add" onclick="mobileAddData('${element.id}')">Add</button>
                 `;
                 sheetBody.querySelector('[id="level-mobile"]').innerHTML = `<option value="">Choose Level</option>`;
                 Object.values(educationLevels).forEach(platform => {
@@ -1536,20 +1758,20 @@ function toggleBottomSheet(element) {
                 </div>
                 <div class="field">
                     <label for="company-mobile">Company Name</label>
-                    <input id="company-mobile" type="text" placeholder="Input Name">
+                    <input id="company-mobile" type="text" onfocus="this.classList.remove('missing')" placeholder="Input Name">
                 </div>
                 <div class="field">
                     <label for="jobtitle-mobile">Job Title</label>
-                    <input id="jobtitle-mobile" type="text" placeholder="Input Name">
+                    <input id="jobtitle-mobile" type="text" onfocus="this.classList.remove('missing')" placeholder="Input Name">
                 </div>
                 <div class="row">
                     <div class="field">
                         <label for="workstartperiod-mobile">Start Periode</label>
-                        <input id="workstartperiod-mobile" type="date">
+                        <input id="workstartperiod-mobile" onfocus="this.classList.remove('missing')" type="date">
                     </div>
                     <div class="field">
                         <label for="workendperiod-mobile">End Periode</label>
-                        <input id="workendperiod-mobile" type="date">
+                        <input id="workendperiod-mobile" onfocus="this.classList.remove('missing')" type="date">
                     </div>
                 </div>
                 <div class="field">
@@ -1564,9 +1786,9 @@ function toggleBottomSheet(element) {
                 </div>
                 <div class="field">
                     <label for="jobdesc-mobile">Description</label>
-                    <textarea maxlength="350" id="jobdesc-mobile" onfocus="this.classList.remove('missing')"></textarea>
+                    <textarea maxlength="350" id="jobdesc-mobile" required onfocus="this.classList.remove('missing')"></textarea>
                 </div>
-                <button type="Add" onclick="mobileAddData('${element.id}')">Add</button>
+                <button class="btn" disabled type="Add" onclick="mobileAddData('${element.id}')">Add</button>
                 `;
                 break;
             case "training":
@@ -1581,20 +1803,20 @@ function toggleBottomSheet(element) {
                 <div class="row">
                     <div class="field">
                         <label for="trainingstartperiod-mobile">Start Periode</label>
-                        <input id="trainingstartperiod-mobile" type="date">
+                        <input id="trainingstartperiod-mobile" type="date" onfocus="this.classList.remove('missing')">
                     </div>
                     <div class="field">
                         <label for="trainingendperiod-mobile">End Periode</label>
-                        <input id="trainingendperiod-mobile" type="date">
+                        <input id="trainingendperiod-mobile" type="date" onfocus="this.classList.remove('missing')">
                     </div>
                 </div>
                 <div class="field">
                     <label for="institute-mobile">Institute Name</label>
-                    <input id="institute-mobile" type="text" placeholder="Input Name">
+                    <input id="institute-mobile" type="text" placeholder="Input Name" onfocus="this.classList.remove('missing')">
                 </div>
                 <div class="field">
                     <label for="scope-mobile">Scope Training</label>
-                    <input id="scope-mobile" type="text" placeholder="Input Name">
+                    <input id="scope-mobile" type="text" placeholder="Input Name" onfocus="this.classList.remove('missing')">
                 </div>
                 <div class="field">
                     <label for="trainingdesc-mobile">Description</label>
@@ -1614,7 +1836,7 @@ function toggleBottomSheet(element) {
                     </div>
                     <p class="text-secondary">Max. Size 2MB with format .PDF</p>
                 </div>
-                <button type="Add" onclick="mobileAddData('${element.id}')">Add</button>
+                <button class="btn" disabled type="Add" onclick="mobileAddData('${element.id}')">Add</button>
                 `;
                 break;
             case "health":
@@ -1634,9 +1856,9 @@ function toggleBottomSheet(element) {
                 </div>
                 <div class="field">
                     <label for="healthdescription-mobile">Description</label>
-                    <textarea maxlength="350" id="healthdescription-mobile" type="text" placeholder="Input Description"></textarea>
+                    <textarea maxlength="350" id="healthdescription-mobile" onfocus="this.classList.remove('missing')" type="text" placeholder="Input Description"></textarea>
                 </div>
-                <button type="Add" onclick="mobileAddData('${element.id}')">Add</button>
+                <button class="btn" disabled type="Add" onclick="mobileAddData('${element.id}')">Add</button>
                 `;
                 sheetBody.querySelector('[id="sick-mobile"]').innerHTML = `<option value="">Choose Platform</option>`;
                 Object.values(medicalList).forEach(platform => {
@@ -1667,15 +1889,16 @@ function toggleBottomSheet(element) {
     }
 }
 
-console.log(formData);
-
 function mobileAddData(element) {
     var formElement = document.getElementById(element.replace('mobile', 'row'));
     var sheetInputs = bottomSheet.querySelectorAll('input, select, textarea');
     var hasEmptyFields = false;
 
     [...sheetInputs].forEach(input => {
-        if (input.value === "") hasEmptyFields = true;
+        if (input.value === "") {
+            hasEmptyFields = true;
+            input.classList.add('missing');
+        };
         if (!hasEmptyFields) {
             var formInputId = input.id.replace("mobile", formElement.id.split('-')[2]);
             var formInput = formElement.querySelector(`[id="${formInputId}"]`);
@@ -1697,9 +1920,29 @@ function mobileAddData(element) {
     if (!hasEmptyFields) {
         toggleBottomSheet();
     } else {
-        alert('Please fill all required fields');
+        notificationHandler("Please input required fields!", "warning");
     }
 }
+
+bottomSheet.addEventListener("change", toggleBottomSheetButton);
+
+function toggleBottomSheetButton() {
+    const bottomSheetInputs = bottomSheet.querySelectorAll('input, select, textarea');
+
+    const addBtn = bottomSheet.querySelector('.btn');
+    var emptyFieldsLength = 0;
+    bottomSheetInputs.forEach(element => {
+        if (element.value === "" && element.hasAttribute('required')) {
+            emptyFieldsLength += 1;
+        }
+    });
+
+    if (emptyFieldsLength === 0) {
+        addBtn.disabled = false;
+    } else {
+        addBtn.disabled = true;
+    }
+};
 
 document.querySelector('.sheet-grabber').addEventListener("touchstart", startDragging);
 document.querySelector('.sheet-grabber').addEventListener("mousedown", startDragging);

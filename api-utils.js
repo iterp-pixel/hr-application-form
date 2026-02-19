@@ -11,7 +11,6 @@ async function apiRequest(url, options = {}) {
     try {
         const response = await fetch(url, {
             ...options,
-            signal: controller.signal
         });
 
         clearTimeout(timeoutId);
@@ -139,7 +138,7 @@ async function submitApplication(formData) {
         return response;
     } catch (error) {
         console.error('Error submitting application:', error);
-        notificationHandler(`Submission failed: ${error.message}`, 'error');
+        notificationHandler(`Submission failed: ${error.message}`, 'warning');
         throw error;
     }
 }
