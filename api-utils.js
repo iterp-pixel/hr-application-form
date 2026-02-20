@@ -179,7 +179,7 @@ function fileOnChanged(self) {
         const validation = validateFile(file, fileType);
         
         if (!validation.valid) {
-            notificationHandler(validation.error, 'error');
+            notificationHandler(validation.error, 'warning');
             self.value = ''; // Clear the invalid file
             label.textContent = 'No file chosen';
             button.innerHTML = "<img src='assets/icons/upload-icon.svg' alt='Upload'>";

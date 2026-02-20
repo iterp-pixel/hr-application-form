@@ -5,6 +5,8 @@
   --text-secondary: #6b7280;
   --text-label: #4B5563;
   --bg-soft: #f9fafb;
+  --error: #ff4d4f;
+  --success: #4CAF50;
 }
 
 * {
@@ -134,12 +136,7 @@ body {
 }
 
 .panel-notification {
-  display: none;
-  animation: fadeOut 0.3s ease;
-}
-
-.panel-notification.active {
-  display: block;
+  opacity: 0;
   padding: 12px;
   position: absolute;
   width: 98%;
@@ -147,11 +144,31 @@ body {
   top: 0px;
   max-height: max-content;
   z-index: 10000;
-  background-color: #ff4d4f;
+  background-color: var(--bg-soft);
   border-radius: 10px;
-  animation: fadeIn 0.3s ease;
+  border-bottom: 5px solid var(--primary);
+  color: var(--text-primary);
   font-weight: 600;
-  color: var(--bg-soft);
+  box-shadow: 0 0px 16px rgb(182 190 198 / 60%);
+  transition: all 0.2s ease;
+}
+
+.panel-notification.error {
+  border-bottom: 5px solid var(--error);
+}
+
+.panel-notification.info {  
+  border-bottom: 5px solid var(--success);
+}
+
+.panel-notification.active {
+  opacity: 100;
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+.panel-notification.fade-out {
+  animation: fadeOut 0.3s ease;
 }
 
 .panel.complete {
@@ -540,21 +557,21 @@ button:disabled {
     transform: translateY(10px);
   }
 
-  90% {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
 @keyframes fadeOut {
-  from {
+  0% {
     opacity: 1;
     transform: translateY(0px);
   }
 
-  to {
+  90% {
     opacity: 0;
-    transform: translateY(10);
+    transform: translateY(10px);
   }
 }
 
@@ -1061,7 +1078,8 @@ h3 {
   .topbar h2 {display: block;}
 
   .topbar-entry.active {
-    font-weight: 600;
+    font-weight: bold;
+    text-decoration: underline;
   }
 
   .topbar-entry.completed {

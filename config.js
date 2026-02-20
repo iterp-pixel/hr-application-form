@@ -1,4 +1,3 @@
-// API Config
 const API_CONFIG = {
     baseURL: 'http://192.168.1.8',
     endpoints: {
@@ -30,12 +29,19 @@ const API_CONFIG = {
     }
 }
 
-// Helper function to get full API URL
+const linkList = [
+    {"utm_id": 4, "link": "www.facebook.com/"},
+    {"utm_id": 5, "link": "www.x.com/"},
+    {"utm_id": 6, "link": "www.linkedin.com/in/"},
+    {"utm_id": 15, "link": "www.instagram.com/"},
+];
+
+const phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
+
 function getApiUrl(endpoint) {
     return `${API_CONFIG.baseURL}${API_CONFIG.endpoints[endpoint] || endpoint}`;
 }
 
-// Helper function to validate file size and type
 function validateFile(file, type) {
     const config = API_CONFIG.fileUpload[type];
     if (!config) {
@@ -61,4 +67,30 @@ function validateFile(file, type) {
     }
     
     return { valid: true };
+}
+
+function validateDateRange(periodStarts, periodEnds) {
+    var hasInvalidField = false;
+    periodStarts.forEach(inp => {
+        var start = Date.parse(inp.value);
+        var end = Date.parse(periodEnds[periodStarts.indexOf(inp)].value);
+        if (start > end) {
+            fieldMissing(inp);
+            fieldMissing(periodEnds[periodStarts.indexOf(inp)]);
+            notificationHandler("End date period cannot be bigger than start date period.", "error");
+            hasInvalidField = true;
+            return;
+        }
+    });
+
+    return hasInvalidField;
+}
+
+function validatePhoneNumber(number) {
+    try {
+        const parsed = phoneUtil.parse(number);
+        return phoneUtil.isValidNumber(parsed);
+    } catch {
+        return false;
+    }
 }

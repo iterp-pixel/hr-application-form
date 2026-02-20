@@ -1,6 +1,8 @@
+// TODO: Remove debug tools before deployment
 let currentStep = 1;
 const totalSteps = 11;
 const formData = {};
+var submitData = {};
 const countryData = {};
 const jobList = {};
 const countryList = [];
@@ -9,12 +11,20 @@ const platformList = [];
 const medicalList = [];
 let selectedJob = "";
 var topBarExpanded = false;
-const linkList = [
-    {"utm_id": 4, "link": "www.facebook.com/"},
-    {"utm_id": 5, "link": "www.x.com/"},
-    {"utm_id": 6, "link": "www.linkedin.com/in/"},
-    {"utm_id": 15, "link": "www.instagram.com/"},
-];
+var notificationTimer;
+
+// element variables
+const splashScreen = document.getElementById("splash-screen");
+const phoneCountryCode = document.getElementById('countryCode');
+const nationalityList = document.getElementById('nationality');
+const countryIcon = document.getElementById('countryIcon');
+const countryIconPrev = document.getElementById('countryIconPrev');
+const notification = document.getElementById('notification');
+const nextBtn = document.getElementById('nextBtn');
+const submitBtn = document.getElementById('submitBtn');
+const confirmAgreeCheckbox = document.getElementById('confirmation-agreement');
+
+var currentSectionElements = document.getElementById('section1').querySelectorAll('input, select, textarea');
 
 // initialize form
 document.getElementById(`section${currentStep}`).classList.add('active');
@@ -22,13 +32,14 @@ document.getElementById('prevBtn').style.display = currentStep === 1 ? 'none' : 
 document.getElementById('nextBtn').style.display = (currentStep === 1 || currentStep === totalSteps) ? 'none' : 'flex';
 document.getElementById('submitBtn').style.display = (currentStep === totalSteps ? 'flex' : 'none');
 
-
+// Check applicant form
 const formCheck = new FormData();
-formCheck.append("name", "Test Guy");
-formCheck.append("job_id", 8);
-formCheck.append("email", "test.guy@example.com");
-formCheck.append("phone", "(62) 0812345678");
+formCheck.append("name", "");
+formCheck.append("job_id", 0);
+formCheck.append("email", "");
+formCheck.append("phone", "");
 
+// debug submit
 const dummyData = {
     "job_id": 1,
     "name": "Joseph",
@@ -116,14 +127,6 @@ const dummyData = {
             "healthdescription": "sick ouch"
         }
     ],
-    // "quick_questions": [
-    //     {"question": "Are you willing to let us contact your previous employer for reference?", "answer": "Yes",},
-    //     {"question": "Have you ever been involved in any legal case?", "answer": "No",},
-    //     {"question": "Have you previously applied to PT Kapit Mas?", "answer": "No",},
-    //     {"question": "Where did you first learn about the job vacancy at PT Kapit Mas?", "answer": "LinkedIn",},
-    //     {"question": "Please provide details of involved case", "answer": "",},
-    //     {"question": "Please provide details of job vacancy knowledge", "answer": "",},
-    // ],
     "Qq1": "Yes",
     "Qq2": "Yes",
     "Qq2details": "Banana",
@@ -156,7 +159,6 @@ function fillDummyData() {
 }
 
 // splash screen
-const splashScreen = document.getElementById("splash-screen");
 document.querySelector(".layout").classList.add("splash");
 document.getElementById("splash-screen").addEventListener("animationend", () => {
     document.getElementById("splash-screen").style.display = "none";
@@ -173,7 +175,6 @@ document.getElementById("splash-screen").addEventListener("animationend", () => 
     }
 })
 
-var submitData = {};
 // var submitData = {
 //     "job_id": 1,
 //     "name": "John Doe",
@@ -252,12 +253,7 @@ var submitData = {};
 //     "portofolio": "www.porto.com",
 // };
 
-// json handling
-const phoneCountryCode = document.getElementById('countryCode');
-const nationalityList = document.getElementById('nationality');
-const countryIcon = document.getElementById('countryIcon');
-const countryIconPrev = document.getElementById('countryIconPrev');
-
+// api fetch handling
 function fetchData() {
     fetchCountryCode().then((response) => {
         const data = JSON.parse(response)['country_list'];
@@ -284,8 +280,8 @@ function fetchData() {
                 nationalityList.value = formData["countryCode"];
             };
         }
-    }).catch((e) => {
-        notificationHandler(`Country; Could not fetch data`, "warning");
+    }).catch(() => {
+        notificationHandler(`Country; Could not fetch data`, "error");
     });
 
     fetchJobList().then((response) => {
@@ -311,10 +307,10 @@ function fetchData() {
             <p>${job['job_description']}</p>`;
             jobListElement.appendChild(newEntry);
         })
-    }).catch((e) => {
+    }).catch(() => {
         document.getElementById('loading-job-display').style.display = 'none';
         document.getElementById('no-job-display').style.display = 'flex';
-        notificationHandler(`Jobs; Could not fetch data`, "warning");
+        notificationHandler(`Jobs; Could not fetch data`, "error");
     });
 
     fetchEducationLevel().then((response) => {
@@ -341,8 +337,8 @@ function fetchData() {
             
             toggleFieldEndDate(document.getElementById('level-1'));
         };
-    }).catch((e) => {
-        notificationHandler(`Education; Could not fetch data`, "warning");
+    }).catch(() => {
+        notificationHandler(`Education; Could not fetch data`, "error");
     })
 
     fetchSocialPlatform().then((response) => {
@@ -368,8 +364,8 @@ function fetchData() {
                 updateSocialPlatforms(socialElement.id, socialElement.value);
             })
         };
-    }).catch((e) => {
-        notificationHandler(`Platforms; Could not fetch data`, "warning");
+    }).catch(() => {
+        notificationHandler(`Platforms; Could not fetch data`, "error");
     })
 
     fetchMedicalList().then((response) => {
@@ -394,11 +390,12 @@ function fetchData() {
                 healthElement.value = formData["health"][e]["sick"];
             })
         };
-    }).catch((e) => {
-        notificationHandler(`Medical; Could not fetch data`, "warning");
+    }).catch(() => {
+        notificationHandler(`Medical; Could not fetch data`, "error");
     })
 }
 
+// on phone country code change function to change the ui flag icon
 function changeCountryIcon() {
     var flag;
 
@@ -453,43 +450,6 @@ function toggleSection(self, content, id) {
     }
 }
 
-// file upload handler
-function fileUploadHandler(self) {
-    // get parent and then children list
-    var parent = self.parentElement;
-    var elements = [...parent.children];
-
-    var input = elements[2];
-    var label = elements[0];
-
-    if (input.files.length) {
-        input.value = '';
-        label.textContent = "No file chosen";
-        self.innerHTML = "<img src='assets/icons/upload-icon.svg' alt='Upload'>"
-    } else {
-        input.click();
-    }
-}
-
-// custom input type file logic
-function fileOnChanged(self) {
-    var parent = self.parentElement;
-    var elements = [...parent.children];
-
-    var button = elements[1];
-    var label = elements[0];
-
-    if (self.files.length) {
-        label.textContent = self.files[0].name;
-        self.classList.remove('missing');
-        parent.classList.remove('missing');
-        button.innerHTML = "<img src='assets/icons/cancel-icon.svg' alt='x'>"
-    } else {
-        label.textContent = 'No file chosen';
-        button.innerHTML = "<img src='assets/icons/upload-icon.svg' alt='x'>"
-    }
-}
-
 // quick question field toggler
 function toggleField(self, id) {
     var value = self.value;
@@ -505,7 +465,7 @@ function toggleField(self, id) {
     }
 }
 
-// toggle top bar
+// toggle top bar for mobile
 function toggleTopBar() {
     var topBar = document.getElementById('topbar');
 
@@ -530,9 +490,9 @@ function toggleTopBar() {
         })
         topBarExpanded = true;
     }
-
 }
 
+// Update form progress when pressing next button
 function updateProgress() {
     var progressElement = document.getElementById('step-progress');
     var progressTitle = document.getElementById('step-progress-title');
@@ -559,6 +519,7 @@ function updateProgress() {
     }
 }
 
+// client-side validation per form sections
 async function validateCurrentStep(step) {
     const currentSection = document.getElementById(`section${currentStep}`);
     const allInputs = currentSection.querySelectorAll('input, select, textarea');
@@ -574,7 +535,6 @@ async function validateCurrentStep(step) {
 
     for (var input of requiredInputs) {
         if (!input.value.trim()) {
-            // input.focus();
             input.classList.add('missing');
             validationMessage = "Please fill all required fields!";
             hasInvalidInput = true;
@@ -589,35 +549,42 @@ async function validateCurrentStep(step) {
     if (hasInvalidInput == false) {
         return true;
     } else {
-        if (!hasValidatedSection) notificationHandler(validationMessage, "warning");
+        if (!hasValidatedSection) notificationHandler(validationMessage, "error");
         return false;
     }
 }
 
+// Notification animation and toggling
+notification.addEventListener("animationend", (e) => {
+    if (e.animationName === "fadeOut") notification.classList.remove("fade-out");
+})
 function notificationHandler(message, status) {
-    var notification = document.getElementById('notification');
-    var backgroundColor;
+    notification.classList.remove("active", "error", "info");
+    if (notificationTimer) {
+        window.clearTimeout(notificationTimer);
+    };
+
     switch (status) {
         case "info": 
-            backgroundColor = '#4CAF50';
+            notification.classList.add("info");
             break;
-        case "warning": 
-            backgroundColor = '#ff4d4f';
+        case "error": 
+            notification.classList.add("error");
             break;
         default: 
-            backgroundColor = '#4CAF50';
             break;
     }
 
-    notification.style.backgroundColor = backgroundColor;
     notification.innerHTML = message;
     notification.classList.add("active");
-
-    setTimeout(() => {
-        notification.classList.remove("active");
+    
+    notificationTimer = window.setTimeout(() => {
+        notification.classList.remove("active", "error", "info");
+        notification.classList.add("fade-out");
     }, 5000);
 }
 
+// update field input css if user tries to submit without data
 function fieldMissing(element) {
     element.classList.add('missing');
 }
@@ -627,6 +594,7 @@ function toggleFieldEndDate(element) {
     const baseId = element.id.split('-')[0];
     const group = document.querySelectorAll(`select[id*="${baseId}"], input[id*="${baseId}"]`);
     var maxValue;
+
     if (group.length === 1) {
         maxValue = element.type === 'date' ? Date.parse(group[0].value) : Number(group[0].value);
     } else {
@@ -634,7 +602,6 @@ function toggleFieldEndDate(element) {
         maxValue = Math.max(...values);
     }
 
-    
     group.forEach(e => {
         const target = e.parentElement.parentElement.parentElement.querySelector(`input[id*="endperiod-${e.id.split('-')[1]}"]`);
         var value = e.type === 'date' ? Date.parse(e.value) : Number(e.value);
@@ -647,6 +614,7 @@ function toggleFieldEndDate(element) {
     })
 }
 
+// Extra client-side validation
 async function sectionValidator(step) {
     let hasInvalidField = false;
     var validImageTypes = ["image/png", "image/jpg"];
@@ -659,18 +627,19 @@ async function sectionValidator(step) {
             // personal information
             if (!/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(document.getElementById('email').value)) {
                 fieldMissing(document.getElementById('email'));
-                notificationHandler("Please fill in a valid email address.", "warning");
+                notificationHandler("Please fill in a valid email address.", "error");
                 return true;
             }
-            if (!/^[0-9]*$/.test(document.getElementById('phone').value)) {
+            
+            if (!validatePhoneNumber(`(+${document.getElementById('countryCode').value}) ${document.getElementById('phone').value}`)) {
                 fieldMissing(document.getElementById('phone'));
-                notificationHandler("Please fill in a valid phone number (e.g. 123xxxx)", "warning");
+                notificationHandler("Please fill in a valid phone number", "error");
                 return true;
             }
 
             if (selectedDate.getFullYear() > (currentDate.getFullYear() - 13)) {
                 fieldMissing(document.getElementById('dob'));
-                notificationHandler("You need to be at least 13 years old to apply.", "warning");
+                notificationHandler("You need to be at least 13 years old to apply.", "error");
                 return true;
             }    
             
@@ -680,7 +649,7 @@ async function sectionValidator(step) {
                     notificationHandler(response["message"], "info");
                     return false;
                 } else {
-                    notificationHandler(response["message"], "warning");
+                    notificationHandler(response["message"], "error");
                     return true;
                 }
             });
@@ -692,17 +661,8 @@ async function sectionValidator(step) {
             var remarks = [...document.getElementById('eduTable').querySelectorAll('[id*=remark]')];
             var totalRemarks = [...document.getElementById('eduTable').querySelectorAll('[id*=totalscore]')];
 
-            periodStarts.forEach(inp => {
-                var start = Date.parse(inp.value);
-                var end = Date.parse(periodEnds[periodStarts.indexOf(inp)].value);
-                if (start > end) {
-                    fieldMissing(inp);
-                    fieldMissing(periodEnds[periodStarts.indexOf(inp)]);
-                    notificationHandler("Start date period cannot be bigger than end date period.", "warning");
-                    hasInvalidField = true;
-                    return;
-                }
-            });
+            hasInvalidField = validateDateRange(periodStarts, periodEnds);
+            
             if (hasInvalidField) return hasInvalidField;
             remarks.forEach(inp => {
                 var remark = Number(inp.value);
@@ -710,14 +670,14 @@ async function sectionValidator(step) {
                 if (remark < 0 || total < 0) {
                     fieldMissing(inp);
                     fieldMissing(totalRemarks[remarks.indexOf(inp)]);
-                    notificationHandler("Grade cannot be less than 0.", "warning");
+                    notificationHandler("Grade cannot be less than 0.", "error");
                     hasInvalidField = true;
                     return;
                 }
                 if (remark > total) {
                     fieldMissing(inp);
                     fieldMissing(totalRemarks[remarks.indexOf(inp)]);
-                    notificationHandler("Grade cannot be bigger than max grade.", "warning");
+                    notificationHandler("Grade cannot be bigger than max grade.", "error");
                     hasInvalidField = true;
                     return;
                 }
@@ -727,7 +687,7 @@ async function sectionValidator(step) {
             inputs.forEach(inp => {
                 if ((inp.files[0].size) > 2097152 || inp.files[0].type != "application/pdf") {
                     fieldMissing(inp);
-                    notificationHandler("Attachment(s) is either bigger than 2MB or not the correct file type", "warning");
+                    notificationHandler("Attachment(s) is either bigger than 2MB or not the correct file type", "error");
                     hasInvalidField = true;
                     return;
                 }
@@ -738,22 +698,14 @@ async function sectionValidator(step) {
             var periodStarts = [...document.getElementById('workExpTable').querySelectorAll('[id*=workstartperiod]')];
             var periodEnds = [...document.getElementById('workExpTable').querySelectorAll('[id*=workendperiod]')];
             var takeHomePay = [...document.getElementById('workExpTable').querySelectorAll('[id*=takehomepay]')];
-            periodStarts.forEach(inp => {
-                var start = Date.parse(inp.value);
-                var end = Date.parse(periodEnds[periodStarts.indexOf(inp)].value);
-                if (start > end) {
-                    fieldMissing(inp);
-                    fieldMissing(periodEnds[periodStarts.indexOf(inp)]);
-                    notificationHandler("Start date period cannot be bigger than end date period.", "warning");
-                    hasInvalidField = true;
-                    return;
-                }
-            })
+
+            hasInvalidField = validateDateRange(periodStarts, periodEnds);
+
             if (hasInvalidField) return hasInvalidField;
             takeHomePay.forEach(inp => {
                 if (inp.value < 0) {
                     fieldMissing(inp);
-                    notificationHandler("Take home pay cannot be less than 0.", "warning");
+                    notificationHandler("Take home pay cannot be less than 0.", "error");
                     hasInvalidField = true;
                     return;
                 }
@@ -764,23 +716,14 @@ async function sectionValidator(step) {
             var periodStarts = [...document.getElementById('trainingTable').querySelectorAll('[id*=trainingstartperiod]')];
             var periodEnds = [...document.getElementById('trainingTable').querySelectorAll('[id*=trainingendperiod]')];
 
-            periodStarts.forEach(inp => {
-                var start = Date.parse(inp.value);
-                var end = Date.parse(periodEnds[periodStarts.indexOf(inp)].value);
-                if (start > end) {
-                    fieldMissing(inp);
-                    fieldMissing(periodEnds[periodStarts.indexOf(inp)]);
-                    notificationHandler("Start date period cannot be bigger than end date period.", "warning");
-                    hasInvalidField = true;
-                    return;
-                }
-            })
+            hasInvalidField = validateDateRange(periodStarts, periodEnds);
+
             if (hasInvalidField) return hasInvalidField;
             var inputs = document.getElementById('trainingTable').querySelectorAll('input[type="file"][required]');
             inputs.forEach(inp => {
                 if ((inp.files[0].size) > 2097152 || inp.files[0].type != "application/pdf") {
                     fieldMissing(inp);
-                    notificationHandler("Attachment(s) is either bigger than 2MB or not the correct file type.", "warning");
+                    notificationHandler("Attachment(s) is either bigger than 2MB or not the correct file type.", "error");
                     hasInvalidField = true;
                     return;
                 }
@@ -790,12 +733,12 @@ async function sectionValidator(step) {
             // job expectations
             if (Number(document.getElementById('expectedSalary').value) < 0) {
                 fieldMissing(document.getElementById('expectedSalary'));
-                notificationHandler("Expected salary cannot be less than 0.", "warning");
+                notificationHandler("Expected salary cannot be less than 0.", "error");
                 return true;
             }
             if (Date.parse(document.getElementById('availableDate').value) < Date.now()) {
                 fieldMissing(document.getElementById('availableDate'));
-                notificationHandler("Available date cannot be before today.", "warning");
+                notificationHandler("Available date cannot be before today.", "error");
                 return true;
             }
             break;
@@ -804,12 +747,12 @@ async function sectionValidator(step) {
             var resume = document.getElementById('resume');
             if ((recentPhoto.files[0].size) > 1048576 || (!validImageTypes.includes(recentPhoto.files[0].type))) {
                 fieldMissing(recentPhoto);
-                notificationHandler("Recent photo is either bigger than 1MB or not the correct file type.", "warning");
+                notificationHandler("Recent photo is either bigger than 1MB or not the correct file type.", "error");
                 return true;
             }
             if ((resume.files[0].size) > 2097152 || resume.files[0].type != "application/pdf") {
                 fieldMissing(resume);
-                notificationHandler("Resume is either bigger than 2MB or not the correct file type.", "warning");
+                notificationHandler("Resume is either bigger than 2MB or not the correct file type.", "error");
                 return true;
             }
             break;
@@ -821,15 +764,15 @@ async function sectionValidator(step) {
     return hasInvalidField;
 }
 
-const base64 = file => new Promise((resolve, reject) => {
+// file blob to base64 converter
+const base64 = file => new Promise((resolve) => {
     try {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = () => {
             resolve(reader.result.split(',')[1]);
         };
-    } catch(error) {
-        // reader.onerror = reject;
+    } catch {
         resolve("");
     }
 }) 
@@ -857,8 +800,15 @@ function saveFormData() {
     var currentIndex = 1;
     var tableData = {};
     var rowData = {};
+
+    // checks each inputs to save
     inputs.forEach(input => {
         if (input.id) {
+            if (input.id === "phone") {
+                formData[input.id] = phoneUtil.parse(`(+${phoneCountryCode.value})${input.value}`).values_[2];
+                return;
+            }
+            // recursive input saving for table form sections
             if (isGroupingData) {
                 if (input.id.includes('-')) {
                     var column = input.id.split('-')[0];
@@ -890,8 +840,8 @@ function saveFormData() {
         formData[table.id.replace('Table', '')] = tableData;
     }
 
+    // saving to localStorage everytime user clicks next
     var formCatalyst = cleanDataStructure(formData);
-
     localStorage.setItem("formData", JSON.stringify(formCatalyst));
 }
 
@@ -961,40 +911,14 @@ async function closeRestoreWindow(value) {
     document.querySelector('.layout').style.display = 'flex';
 }
 
-function loadFormData() {
-    const currentSection = document.getElementById(`section${currentStep}`);
-    const inputs = currentSection.querySelectorAll('input, select, textarea');
-
-    inputs.forEach(input => {
-        if (input.name && formData[input.name]) {
-            if (input.type === 'file') {
-                console.log(formData[input.name]["file"]);
-                // if (formData[input.name]["file"].files[0].length) {
-                //     const dt = new DataTransfer();
-                //     dt.items.add(formData[input.name]["file"].files[0]);
-                //     input.files = dt.files;
-                //     fileOnChanged(input);
-                // }
-                return;
-            }
-            input.value = formData[input.name];
-        }
-    })
-}
-
 function findJob(id) {
     var job = Object.values(jobList).find(v => v["jobs_id"] === id);
     return job ?? null;
 }
 
 function updateSocialPlatforms(id, value) {
-    var link;
-
-    linkList.forEach(platform => {
-        if (platform["utm_id"] === Number(value)) {
-            link = platform["link"];
-        }
-    });
+    var platform = linkList.find(p => p["utm_id"] === Number(value));
+    var link = platform ? platform["link"] : null;
 
     document.getElementsByClassName('link-header')[Number(id.split('-')[1])-1].innerHTML = link ?? 'www.link.com/';
 
@@ -1050,10 +974,6 @@ function selectJobPosition(id) {
     changeStep(1);
     document.getElementById('applyBtn').style.display = 'none';
 }
-var currentSectionElements = document.getElementById('section1').querySelectorAll('input, select, textarea');
-const nextBtn = document.getElementById('nextBtn');
-const submitBtn = document.getElementById('submitBtn');
-const confirmAgreeCheckbox = document.getElementById('confirmation-agreement');
 
 confirmAgreeCheckbox.addEventListener("change", () => {
     if (confirmAgreeCheckbox.checked) {
@@ -1101,9 +1021,6 @@ async function changeStep(direction, isValidated = true) {
     document.getElementById(`section${currentStep}`).classList.add('active');
     currentSectionElements = document.getElementById(`section${currentStep}`).querySelectorAll('input, select, textarea');
     updateNextButton();
-
-
-    // loadFormData();
 
     if (currentStep === totalSteps) {
         showPreview();
@@ -1164,7 +1081,6 @@ async function showPreview() {
             targetElement.innerHTML = job ? job['jobs_name'] : '';
             return;
         }
-
 
         // show nationality
         if (data[0] === 'nationality') {
@@ -1250,32 +1166,19 @@ async function showPreview() {
                         });
                         table.appendChild(newElement);
                         tableMobile.appendChild(newElementMobile);
+                    }
+                    targetElement = document.querySelector(`[id*=${column}-${e}Prev]`);
+                    targetElementMobile = document.querySelector(`[id*=mobile-${column}-${e}Prev]`);
 
-                        targetElement = document.querySelector(`[id*=${column}-${e}Prev]`);
-                        targetElementMobile = document.querySelector(`[id*=mobile-${column}-${e}Prev]`);
-
-                        if (Object.keys(rowCellData[column]).includes('file')) {
-                            targetElement.innerHTML = rowCellData[column]['file_name'] ?? '';
-                        } else {
-                            previewColumnData(column, rowCellData, targetElement, targetElementMobile);
-                        }
+                    if (Object.keys(rowCellData[column]).includes('file')) {
+                        targetElement.innerHTML = rowCellData[column]['file_name'] ?? '';
                     } else {
-                        targetElement = document.querySelector(`[id*=${column}-${e}Prev]`);
-                        targetElementMobile = document.querySelector(`[id*=mobile-${column}-${e}Prev]`);
-
-                        if (Object.keys(rowCellData[column]).includes('file')) {
-                            targetElement.innerHTML = rowCellData[column]['file_name'] ?? '';
-                        } else {
-                            previewColumnData(column, rowCellData, targetElement, targetElementMobile);
-                        }
+                        previewColumnData(column, rowCellData, targetElement, targetElementMobile);
                     }
                 })
             })
 
         }
-
-        // show data debug
-        // test.innerHTML += `<div>${data[0]} : ${cellData}</div>`;
     });
 
     // format preview
@@ -1328,7 +1231,7 @@ function checkForm(form) {
     for (var i = 0; i < inputs.length; i++) {
         if (inputs[i].hasAttribute('required')) {
             if (inputs[i].value == '') {
-                notificationHandler('Please fill all required fields!', "warning");
+                notificationHandler('Please fill all required fields!', "error");
                 return false;
             }
         }
@@ -1345,11 +1248,12 @@ function formatDate(date) {
 }
 
 async function formatData(data) {
+    var parsedPhoneNumber = phoneUtil.parse(data["phone"]).values_[2];
     submitData = {
         "job_id": data["job_id"],
         "name": data["name"],
         "email": data["email"],
-        "phone": `(${data["countryCode"]}) ${data["phone"]}`,
+        "phone": `(+${data["countryCode"]}) ${parsedPhoneNumber}`,
         "gender": data["gender"],
         "birth_place": data["birthPlace"],
         "dob": formatDate(data["dob"]),
@@ -1452,7 +1356,7 @@ async function submitForm() {
         localStorage.clear();
     }).catch((e) => {
         console.log(e);
-        notificationHandler("We are not able to submit your application, please try again later.", "warning");
+        notificationHandler("We are not able to submit your application, please try again later.", "error");
     });
 }
 
@@ -1563,7 +1467,7 @@ function removeTableRow(tableId, obj) {
     // const content = [...rows.children];
 
     if (rows.length <= 1) {
-        notificationHandler("Cannot delete the only entry", "warning");
+        notificationHandler("Cannot delete the only entry", "error");
         return;
     }
 
@@ -1920,7 +1824,7 @@ function mobileAddData(element) {
     if (!hasEmptyFields) {
         toggleBottomSheet();
     } else {
-        notificationHandler("Please input required fields!", "warning");
+        notificationHandler("Please input required fields!", "error");
     }
 }
 
