@@ -9,10 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <script src="https://unpkg.com/google-libphonenumber@3.2.27/dist/libphonenumber.js"></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="/favicon.png">
 </head>
 
 <body>
-    <div id="notification" class="panel-notification"></div>
+    <div id="notification" class="notification-holder"></div>
     <div class="page" style="position: relative; z-index: 1;">
         <div id="restoreForm" class="restore-form">
             <div class="panel">
@@ -20,7 +21,10 @@
                     <h2>Restore previous session?</h2>
                     <button type="button" class="close-btn" onclick="closeRestoreWindow(false)"><img src="assets/icons/cancel-icon.svg" alt="X"></button>
                 </div>
-                <p>We've found an application draft. Would you like to restore it to the current form? (You would need to reupload missing attachments after)</p>
+                <span>
+                    <p>We've found an application draft. Would you like to restore it to the current form?</p>
+                    <p>(You would need to reupload missing attachments after)</p>
+                </span>
                 <div class="row fixed">
                     <button type="button" onclick="closeRestoreWindow(true)" class="btn">Yes</button>
                     <button type="button" onclick="closeRestoreWindow(false)" class="btn-outline">No</button>
@@ -55,7 +59,7 @@
 
             <!-- top bar for mobile ui -->
             <div class="topbar" id="topbar" style="display: none;">
-                <div class="row">
+                <div class="row sticky-title topbar-header">
                     <div>
                         <span id="step-progress" class="step-progress"></span>
                         <div id="step-progress-title"></div>
@@ -134,12 +138,7 @@
                         <img src="assets/icons/completed-step.svg" alt="Done">
                     </div>
                 </div>
-                <!-- <button type="button" onclick="submitForm()">Submit dummy data</button>
-                <button type="button" onclick="dummySubmit()">Submit from raw formdata dummy</button>
-                <button type="button" onclick="fillDummyData()">Fill dummy data</button> -->
-                <!-- <button type="button" onclick="notificationHandler('info message', 'info')">Notif info</button>
-                <button type="button" onclick="notificationHandler('warning message', 'warning')">Notif warning</button> -->
-                <!-- <button type="button" onclick="localStorage.clear()">Clear local storage</button> -->
+                <button onclick="notificationHandler('Test')">Notify!</button>
             </aside>
 
             <!-- Main panel -->
@@ -174,7 +173,7 @@
                         <!-- Job index -->
                         <div class="panel-body" id="job-index" style="display: none;">
                             <div class="row" class="sticky-title">
-                                <div class="row narrow">
+                                <div class="row fixed">
                                     <div class="panel-title">
                                         <button class="back-btn" type="button" onclick="backToJobList()">
                                             <div class="row narrow fixed">
@@ -367,7 +366,7 @@
                                 <p>
                                     Please provide details of your educational history, starting from your most recent
                                     degree or qualification. Include the school name, study period, and any relevant
-                                    notes.
+                                    notes. (If you are currently in education, please leave the end period of your latest education as blank)
                                 </p>
                             </div>
                             <div data-svg-wrapper style="position: relative">
@@ -494,7 +493,7 @@
                                 <h2>Work Experience</h2>
                                 <p>
                                     Please provide details of your previous work experience. Include your job title,
-                                    company name, employment period, take-home pay, and key job responsibilities.
+                                    company name, employment period, take-home pay, and key job responsibilities. (If you are currently working, please leave the end period of your latest work experience as blank)
                                 </p>
                             </div>
                             <img class="company-logo" src="assets/icons/company-icon.svg" alt="logo">
@@ -1429,12 +1428,11 @@
 
                     <!-- buttons -->
                     <div class="row" id="buttonGroup">
-                        <button class="btn-outline" type="button" id="applyBtn" style="display: none;" onclick="selectJobPosition(selectedJob)">Apply</button>
+                        <button class="btn" type="button" id="applyBtn" style="display: none;" onclick="selectJobPosition(selectedJob)">Apply</button>
                         <button class="btn-outline" type="button" id="prevBtn" onclick="changeStep(-1)"
                             style="display: none;" aria-label="Go to previous step">Previous</button>
                         <button class="btn" type="button" id="nextBtn" style="display: none;" onclick="changeStep(1)" aria-label="Go to next step" disabled>Next</button>
                         <button class="btn" type="button" style="display: none;" onclick="checkForm(this.parentElement.parentElement)" id="submitBtn" aria-label="Submit application" disabled>Submit</button>
-                        <button class="btn" type="button" style="display: flex;" onclick="changeStep(1, false)">Skip</button>
                     </div>
                 </div>
 

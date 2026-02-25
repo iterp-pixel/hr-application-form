@@ -11,7 +11,6 @@ const platformList = [];
 const medicalList = [];
 let selectedJob = "";
 var topBarExpanded = false;
-var notificationTimer;
 
 // element variables
 const splashScreen = document.getElementById("splash-screen");
@@ -23,6 +22,7 @@ const notification = document.getElementById('notification');
 const nextBtn = document.getElementById('nextBtn');
 const submitBtn = document.getElementById('submitBtn');
 const confirmAgreeCheckbox = document.getElementById('confirmation-agreement');
+const topBar = document.getElementById('topbar');
 
 var currentSectionElements = document.getElementById('section1').querySelectorAll('input, select, textarea');
 
@@ -39,131 +39,12 @@ formCheck.append("job_id", 0);
 formCheck.append("email", "");
 formCheck.append("phone", "");
 
-// debug submit
-const dummyData = {
-    "job_id": 1,
-    "name": "Joseph",
-    "gender": "male",
-    "email": "email@example.com",
-    "countryCode": "62",
-    "phone": "89147951",
-    "birthPlace": "Jakarta",
-    "dob": "1998/12/3",
-    "nationality": 1,
-    "hasSocialMedia": "on",
-    "social": [
-        {
-            "socialplatform": 5,
-            "sociallink": "www.twitter.com/banana"
-        }
-    ],
-    "hasEduBackground": "on",
-    "edu": [
-        {
-            "level": 1,
-            "schoolname": "SD Harapan Bangsa",
-            "edustartperiod": "2002/6/1",
-            "eduendperiod": "2009/6/2",
-            "remark": 70,
-            "totalscore": 90,
-            "edudocument": {
-                "file_name": "document.pdf",
-                "mime_type": "application/pdf",
-                "file": "",
-            }
-        },
-        {
-            "level": 1,
-            "schoolname": "SD Harapan Bangsa",
-            "edustartperiod": "2002/6/1",
-            "eduendperiod": "2009/6/2",
-            "remark": 70,
-            "totalscore": 90,
-            "edudocument": {
-                "file_name": "document.pdf",
-                "mime_type": "application/pdf",
-                "file": "",
-            }
-        }
-    ],
-    "hasWorkExp": "on",
-    "workExp": [
-        {
-            "workstartperiod": "2018/2/10",
-            "workendperiod": "2019/3/12",
-            "company": "Corpo",
-            "jobtitle": "Banana",
-            "takehomepay": 1000000,
-            "jobdesc": "Banana"
-        }
-    ],
-    "hasTraining": "on",
-    "training": [
-        {
-            "trainingstartperiod": "2025/1/1",
-            "trainingendperiod": "2025/2/1",
-            "institute": "Training o",
-            "scope": "buss",
-            "trainingdesc": "boasf",
-            "trainingdoc": {
-                "file_name": "training.pdf",
-                "mime_type": "application/pdf",
-                "file": "",
-            }
-        }
-    ],
-    "expectedSalary": 10000000,
-    "availableDate": "2026/3/1",
-    "cityAssignedConsent": "Yes",
-    "countryAssignedConsent": "Yes",
-    "hasHealth": "on",
-    "health": [
-        {
-            "sick": 1,
-            "healthdescription": "hhoohohoho"
-        },
-        {
-            "sick": 2,
-            "healthdescription": "sick ouch"
-        }
-    ],
-    "Qq1": "Yes",
-    "Qq2": "Yes",
-    "Qq2details": "Banana",
-    "Qq3": "No",
-    "Qq4": "Other",
-    "Qq4details": "Banana",
-    "recentPhoto": {
-        "file_name": "photo.png",
-        "mime_type": "image/png",
-        "document": "",
-    },
-    "resume": {
-        "file_name": "resume.pdf",
-        "mime_type": "application/pdf",
-        "document": "",
-    },
-    "portofolio": "www.porto.com"
-}
-
-function dummySubmit() {
-    formatData(dummyData);
-}
-
-function fillDummyData() {
-    Object.keys(dummyData).forEach(key => {
-        if (document.getElementById(key)) {
-            document.getElementById(key).value = dummyData[key];
-        }
-    })
-}
-
 // splash screen
 document.querySelector(".layout").classList.add("splash");
 document.getElementById("splash-screen").addEventListener("animationend", () => {
     document.getElementById("splash-screen").style.display = "none";
     document.querySelector(".layout").classList.remove("splash");
-    document.getElementById('topbar').style.display = 'block';
+    topBar.style.display = 'block';
     document.getElementById('sidebar').classList.add('active');
     document.getElementById('applicationForm').style.display = 'block';
 
@@ -174,84 +55,6 @@ document.getElementById("splash-screen").addEventListener("animationend", () => 
         fetchData();
     }
 })
-
-// var submitData = {
-//     "job_id": 1,
-//     "name": "John Doe",
-//     "email": "Email@example.com",
-//     "phone": "(62) 8120487531",
-//     "gender": "male",
-//     "birth_place": "Bandung",
-//     "dob": "2026/10/9",
-//     "nationality": 1,
-//     "social_media": [
-//         {
-//         "platform": 4,
-//         "link": "www.instagram.com",
-//         },
-//         {
-//         "platform": 2,
-//         "link": "www.insoan.com",
-//         },
-//     ],
-//     "educational_bg": [{
-//         "edu_id": 1,
-//         "level": "Elementary School",
-//         "school_name": "SD Tunas Cemerlang",
-//         "start": "2021/10/1",
-//         "end": "2025/10/12",
-//         "remark": 90,
-//         "max_remark": 100,
-//         "document": "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",
-//         "mime_type": "application/pdf",
-//         "file_name": "edu_document.pdf",
-//     }],
-//     "work_exp": [{
-//         "company_name": "Corpo",
-//         "position": "Job",
-//         "start": "2025/10/12",
-//         "end": "2026/2/23",
-//         "takehomepay": 9000000,
-//         "description": "Lorem Ipsum",
-//     }],
-//     "training": [{
-//         "institute": "training",
-//         "scope": "manager",
-//         "description": "Lorem ipsum",
-//         "start": "2023/8/23",
-//         "end": "2024/5/23",
-//         "document": "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",
-//         "mime_type": "application/pdf",
-//         "file_name": "training-doc.pdf",
-//     }],
-//     "expected_salary": 10000000,
-//     "available_date": "2026/3/1",
-//     "city_assigned_consent": "Yes",
-//     "country_assigned_consent": "Yes",
-//     "health": [{
-//         "sickness": 1,
-//         "description": "Lorem Ipsum",
-//     }],
-//     "quick_questions":[
-//         {"question": "Are you willing to let us contact your previous employer for reference?", "answer": "Yes",},
-//         {"question": "Have you ever been involved in any legal case?", "answer": "No",},
-//         {"question": "Have you previously applied to PT Kapit Mas?", "answer": "No",},
-//         {"question": "Where did you first learn about the job vacancy at PT Kapit Mas?", "answer": "LinkedIn",},
-//         {"question": "Please provide details of involved case", "answer": "",},
-//         {"question": "Please provide details of job vacancy knowledge", "answer": "",},
-//     ],
-//     "recent_photo": {
-//         "document": "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",
-//         "mime_type": "image/png",
-//         "file_name": "1.photo.png",
-//     },
-//     "resume": {
-//         "document": "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",
-//         "mime_type": "application/pdf",
-//         "file_name": "2.resume.pdf",
-//     },
-//     "portofolio": "www.porto.com",
-// };
 
 // api fetch handling
 function fetchData() {
@@ -333,6 +136,7 @@ function fetchData() {
                     eduLevelElement.innerHTML += `<option value=${level['edu_id']}>${level['edu_name']}</option>`;
                 });
                 eduLevelElement.value = formData["edu"][e]["level"];
+                updateMobileTable(eduLevelElement);
             })
             
             toggleFieldEndDate(document.getElementById('level-1'));
@@ -362,6 +166,7 @@ function fetchData() {
                 });
                 socialElement.value = formData["social"][e]["socialplatform"];
                 updateSocialPlatforms(socialElement.id, socialElement.value);
+                updateMobileTable(socialElement);
             })
         };
     }).catch(() => {
@@ -388,6 +193,7 @@ function fetchData() {
                     healthElement.innerHTML += `<option value="${health['medical_id']}">${health['medical_name']}</option>`;
                 })
                 healthElement.value = formData["health"][e]["sick"];
+                updateMobileTable(healthElement);
             })
         };
     }).catch(() => {
@@ -416,20 +222,16 @@ function changeCountryIcon() {
 
 // section checkboxes
 function toggleSection(self, content, id) {
+    console.log(self, content, id);
     const table = document.getElementById(id);
     const mobileTable = document.getElementById(table.id.replace('Table', 'MobileTable')).querySelector('tbody');
+    const contentElement = document.getElementById(content);
     const inputs = table.querySelectorAll('input, select, textarea');
-    if (self.checked) {
-        document.getElementById(content).style.display = 'block';
-        inputs.forEach(input => {
-            input.required = true;
-            if (input.parentElement.classList.contains('file-input-wrapper')) {
-                fileOnChanged(input);
-            }
-        })
-        self.value = 'on';
-    } else {
-        document.getElementById(content).style.display = 'none';
+
+    const onAnimationEnd = () => {
+        contentElement.style.display = 'none';
+        contentElement.removeEventListener("animationend", onAnimationEnd);
+
         inputs.forEach(input => {
             input.classList.remove('missing');
             if (input.parentElement.classList.contains('file-input-wrapper')) {
@@ -440,12 +242,32 @@ function toggleSection(self, content, id) {
             }
             input.value = '';
             input.required = false;
+            updateMobileTable(input);
         });
+        updateNextButton();
         [...mobileTable.children].forEach(child => {
             if (child.hasAttribute('id') && !child.id.includes('-1')) {
                 child.remove();
             }
         })
+
+    }
+    if (self.checked) {
+        contentElement.style.display = 'block';
+        contentElement.classList.remove("hidden");
+        inputs.forEach(input => {
+            input.required = true;
+            if (input.parentElement.classList.contains('file-input-wrapper')) {
+                fileOnChanged(input);
+            }
+        })
+        self.value = 'on';
+        updateNextButton();
+    } else {
+        contentElement.classList.add("hidden");
+        contentElement.removeEventListener("animationend", onAnimationEnd);
+        contentElement.addEventListener("animationend", onAnimationEnd);
+
         self.value = 'off';
     }
 }
@@ -465,17 +287,23 @@ function toggleField(self, id) {
     }
 }
 
-// toggle top bar for mobile
-function toggleTopBar() {
-    var topBar = document.getElementById('topbar');
-
-    if (topBarExpanded) {
+document.getElementById('topbar').addEventListener("transitionend", (e) => {
+    if (e.propertyName === "height" && e.target.style.height === "90px") {
+        topBar.scrollTop = 0;
         [...topBar.children].forEach(entry => {
             if (entry.classList.contains('topbar-entry')) {
                 topBar.removeChild(entry);
             }
         })
         topBarExpanded = false;
+    }
+})
+
+// toggle top bar for mobile
+function toggleTopBar() {
+    if (topBarExpanded) {
+        topBar.style.height = "90px";
+        topBar.style.overflow = "hidden";
     } else {
         var steps = document.querySelectorAll('[id*=step]');
         steps.forEach(step => {
@@ -488,6 +316,8 @@ function toggleTopBar() {
                 topBar.appendChild(entry);
             }
         })
+        topBar.style.height = "420px";
+        topBar.style.overflow = "auto";
         topBarExpanded = true;
     }
 }
@@ -559,28 +389,36 @@ notification.addEventListener("animationend", (e) => {
     if (e.animationName === "fadeOut") notification.classList.remove("fade-out");
 })
 function notificationHandler(message, status) {
-    notification.classList.remove("active", "error", "info");
-    if (notificationTimer) {
-        window.clearTimeout(notificationTimer);
-    };
+    const notificationElement = document.createElement('div');
+    notificationElement.classList.add('panel-notification');
+    // notification.classList.remove("active", "error", "info");
+
+    const onAnimationEnd = (e) => {
+        if (e.animationName === "fadeOutNotif") {
+            notificationElement.removeEventListener("animationend", onAnimationEnd);
+            notificationElement.remove();
+        };
+    }
 
     switch (status) {
-        case "info": 
-            notification.classList.add("info");
+        case "info":
+            notificationElement.classList.add("info");
             break;
-        case "error": 
-            notification.classList.add("error");
+        case "error":
+            notificationElement.classList.add("error");
             break;
-        default: 
+        default:
             break;
     }
 
-    notification.innerHTML = message;
-    notification.classList.add("active");
-    
-    notificationTimer = window.setTimeout(() => {
-        notification.classList.remove("active", "error", "info");
-        notification.classList.add("fade-out");
+    notificationElement.innerHTML = message;
+    notificationElement.classList.add("active");
+    notification.appendChild(notificationElement);
+
+    notificationElement._timer = window.setTimeout(() => {
+        notificationElement.classList.remove("active", "error", "info");
+        notificationElement.classList.add("fade-out");
+        notificationElement.addEventListener("animationend", onAnimationEnd);
     }, 5000);
 }
 
@@ -793,6 +631,11 @@ function inputTypeSaveHandler(input) {
     return input.value;
 }
 
+function autoSaveForm() {
+    notificationHandler("Autosaving...");
+    saveFormData();
+}
+
 function saveFormData() {
     const currentSection = document.getElementById(`section${currentStep}`);
     const isGroupingData = currentSection.classList.contains('grouped') ? true : false;
@@ -805,8 +648,12 @@ function saveFormData() {
     inputs.forEach(input => {
         if (input.id) {
             if (input.id === "phone") {
-                formData[input.id] = phoneUtil.parse(`(+${phoneCountryCode.value})${input.value}`).values_[2];
-                return;
+                try {
+                    formData[input.id] = phoneUtil.parse(`(+${phoneCountryCode.value}) ${input.value}`).values_[2];
+                    return;
+                } catch {
+                    formData[input.id] = input.value;
+                }
             }
             // recursive input saving for table form sections
             if (isGroupingData) {
@@ -866,6 +713,7 @@ function cleanDataStructure(value) {
 }
 
 async function closeRestoreWindow(value) {
+    fetchData();
     if (value) {
         const savedData = JSON.parse(localStorage.getItem("formData"));
 
@@ -888,9 +736,11 @@ async function closeRestoreWindow(value) {
                             tableCell = document.getElementById(`${cell[0]}-${data[0]}`);
                         };
                         tableCell.value = cell[1];
+                        updateMobileTable(tableCell);
                     })
                 })
             }
+            
             if (inputElement) {
                 inputElement.value = savedData[k]
                 if (inputElement.type === 'checkbox' && inputElement.id != "confirmation-agreement") {
@@ -900,15 +750,17 @@ async function closeRestoreWindow(value) {
             };
         });
 
-        toggleFieldEndDate(document.getElementById('workstartperiod-1'));
+        if (savedData["hasEduBackground"] === "on") toggleFieldEndDate(document.getElementById('edustartperiod-1'));
+        if (savedData["hasWorkExp"] === "on") toggleFieldEndDate(document.getElementById('workstartperiod-1'));
 
         notificationHandler("Previous draft restored.", "info");
     } else {
         localStorage.clear();
     }
-    fetchData();
     document.getElementById('restoreForm').style.display = 'none';
     document.querySelector('.layout').style.display = 'flex';
+    
+    setInterval(autoSaveForm, 1800000);
 }
 
 function findJob(id) {
@@ -943,9 +795,9 @@ function updateMobileTable(element) {
     if (mobileElement === null) return;
 
     if (element.tagName === 'SELECT') {
-        mobileElement.innerHTML = value != "" ? element.options[element.selectedIndex].innerHTML : "Null";
+        mobileElement.innerHTML = value != "" ? element.options[element.selectedIndex].innerHTML : "...";
     } else {
-        mobileElement.innerHTML = value != "" ? value : "null";
+        mobileElement.innerHTML = value != "" ? value : "...";
     }
 }
 
@@ -992,7 +844,7 @@ function updateNextButton() {
             emptyFieldsLength += 1;
         }
     });
-
+    
     if (emptyFieldsLength === 0) {
         nextBtn.disabled = false;
     } else {
@@ -1000,8 +852,8 @@ function updateNextButton() {
     }
 };
 
-async function changeStep(direction, isValidated = true) {
-    if (isValidated && direction === 1 && !await(validateCurrentStep(currentStep))) {
+async function changeStep(direction) {
+    if (direction === 1 && !await(validateCurrentStep(currentStep))) {
         return;
     }
 
@@ -1013,24 +865,18 @@ async function changeStep(direction, isValidated = true) {
     document.getElementById(`section${currentStep}`).classList.remove('active');
     document.getElementById(`section${currentStep}`).classList.remove('missing');
 
-    currentStep += direction;
+    if (document.getElementById(`section${currentStep + direction}`) != null) currentStep += direction;
 
-    if (document.getElementById(`section${currentStep}`) == null) {
-        currentStep -= direction;
-    }
     document.getElementById(`section${currentStep}`).classList.add('active');
     currentSectionElements = document.getElementById(`section${currentStep}`).querySelectorAll('input, select, textarea');
     updateNextButton();
 
-    if (currentStep === totalSteps) {
-        showPreview();
-    }
+    if (currentStep === totalSteps) showPreview();
 
     document.getElementById('prevBtn').style.display = currentStep === 1 ? 'none' : 'flex';
     document.getElementById('nextBtn').style.display = (currentStep === 1 || currentStep === totalSteps) ? 'none' : 'flex';
     document.getElementById('submitBtn').style.display = (currentStep === totalSteps ? 'flex' : 'none');
 
-    // localStorage.setItem("lastStep", currentStep);
     updateProgress();
 }
 
@@ -1248,7 +1094,13 @@ function formatDate(date) {
 }
 
 async function formatData(data) {
-    var parsedPhoneNumber = phoneUtil.parse(data["phone"]).values_[2];
+    var parsedPhoneNumber;
+    try {
+        parsedPhoneNumber = phoneUtil.parse(`(+${data["countryCode"]}) ${data["phone"]}`).values_[2];
+    } catch {
+        notificationHandler("Failed to submit application, please check your phone number");
+        return;
+    }
     submitData = {
         "job_id": data["job_id"],
         "name": data["name"],
@@ -1344,19 +1196,20 @@ async function submitForm() {
         }
         formSubmit.append(key, submitData[key]);
     }
-    
+    notificationHandler("Submitting your application...");
     submitApplication(formSubmit).then((res) => {
         console.log(res, JSON.parse(res)["message"]);
     
         document.getElementsByClassName('page')[0].classList.add('complete');
         document.getElementById('success-panel').style.display = 'block';
+        document.getElementById('topbar').style.display = 'none';
         document.getElementById('sidebar').style.display = 'none';
         document.getElementById('applicationForm').style.display = 'none';
 
         localStorage.clear();
     }).catch((e) => {
         console.log(e);
-        notificationHandler("We are not able to submit your application, please try again later.", "error");
+        notificationHandler("We were not able to submit your application, please try again later.", "error");
     });
 }
 
@@ -1380,8 +1233,7 @@ function addTableRow(tableId, tableRow, button) {
     newMobileRow.id = newMobileRow.id.replace('-1', `-${rowCount + 1}`);
     const content = [...newRow.children];
     content.forEach(row => {
-        var elements = [...row.children];
-        elements.forEach(element => {
+        [...row.children].forEach(element => {
             element.classList.remove('missing');
             
             if (element.hasAttribute('id')) {
@@ -1414,7 +1266,7 @@ function addTableRow(tableId, tableRow, button) {
                 [...element.children].forEach(e => {
                     if (e.hasAttribute('id')) {
                         e.id = e.id.replace('-1', `-${rowCount + 1}`);
-                        e.innerHTML = "Tap the edit icon";
+                        e.innerHTML = "...";
                     }
                 })
             }
@@ -1464,10 +1316,14 @@ function removeTableRow(tableId, obj) {
     const rows = table.querySelectorAll(`[id*="${rowIdHeader}"]`);
     const mobileTableRows = mobileRow.parentElement.querySelectorAll(`[id*=${mobileRow.id.split('-')[0]}-${mobileRow.id.split('-')[1]}]`);
     const selectedRowId = selectedRow.id.split('-')[2];
-    // const content = [...rows.children];
 
     if (rows.length <= 1) {
-        notificationHandler("Cannot delete the only entry", "error");
+        console.log(tableId);
+        const checkboxSection = document.getElementById(tableId).parentElement.parentElement.parentElement.querySelector('[id*=has]');
+        const sectionContent = document.getElementById(tableId).parentElement.parentElement.id;
+        const tableIdSection = tableId;
+        checkboxSection.checked = false;
+        toggleSection(checkboxSection, sectionContent, tableIdSection);
         return;
     }
 
@@ -1549,8 +1405,11 @@ var mobileSelectedRow;
 
 // close bottom sheet if switched from mobile to desktop ui
 window.addEventListener("resize", () => {
-    if (window.innerWidth > 900 && bottomSheet.classList.contains('active')) {
-        toggleBottomSheet();
+    if (window.innerWidth > 900) {
+        if (bottomSheet.classList.contains('active')) toggleBottomSheet();
+        if (document.querySelector('.page').classList.contains('complete')) document.querySelector('.layout').style.flexDirection = "column";
+    } else {
+        if (document.querySelector('.page').classList.contains('complete')) document.querySelector('.layout').style.flexDirection = "row";
     }
 })
 
@@ -1586,7 +1445,7 @@ function toggleBottomSheet(element) {
                 </div>
                 <div class="field">
                     <label for="sociallink-mobile">Link Platform</label>
-                    <input id="sociallink-mobile" type="text" onfocus="this.classList.remove('missing')" placeholder="Input Link">
+                    <input id="sociallink-mobile" type="text" onfocus="this.classList.remove('missing')" placeholder="Input Link" required>
                 </div>
                 <button class="btn" disabled type="Add" onclick="mobileAddData('${element.id}')">Add</button>
                 `;
@@ -1788,6 +1647,7 @@ function toggleBottomSheet(element) {
                 input.value = formInput.value;
             }
         })
+        toggleBottomSheetButton();
         bottomSheet.scrollTop = 0;
         bottomSheet.classList.add('active');
     }
@@ -1823,6 +1683,8 @@ function mobileAddData(element) {
     });
     if (!hasEmptyFields) {
         toggleBottomSheet();
+        currentSectionElements = document.getElementById(`section${currentStep}`).querySelectorAll('input, select, textarea');
+        updateNextButton();
     } else {
         notificationHandler("Please input required fields!", "error");
     }
@@ -1832,7 +1694,7 @@ bottomSheet.addEventListener("change", toggleBottomSheetButton);
 
 function toggleBottomSheetButton() {
     const bottomSheetInputs = bottomSheet.querySelectorAll('input, select, textarea');
-
+    
     const addBtn = bottomSheet.querySelector('.btn');
     var emptyFieldsLength = 0;
     bottomSheetInputs.forEach(element => {
