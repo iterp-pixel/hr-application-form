@@ -1,5 +1,5 @@
 const API_CONFIG = {
-    baseURL: 'http://192.168.1.8',
+    baseURL: 'http://192.168.1.252:8019',
     endpoints: {
         jobsList: '/applicant/jobs_list',
         countryList: '/applicant/res_country',
@@ -44,10 +44,7 @@ function getApiUrl(endpoint) {
 
 function validateFile(file, type) {
     const config = API_CONFIG.fileUpload[type];
-    if (!config) {
-        console.error(`Unknown file type: ${type}`);
-        return { valid: false, error: 'Unknown file type' };
-    }
+    if (!config) return { valid: false, error: 'Unknown file type' };
     
     // Check file size
     if (file.size > config.maxSize) {
