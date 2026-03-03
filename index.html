@@ -138,7 +138,6 @@
                         <img src="assets/icons/completed-step.svg" alt="Done">
                     </div>
                 </div>
-                <button onclick="notificationHandler('Test')">Notify!</button>
             </aside>
 
             <!-- Main panel -->
@@ -162,7 +161,10 @@
                                      <p></p>
                                  </button type="button">
                                  <div id="loading-job-display" class="panel-center" style="display:flex">
-                                     Loading Jobs...
+                                     <div class="row">
+                                        <div class="loading-icon"></div>
+                                        Loading data...
+                                     </div>
                                  </div>
                                  <div id="no-job-display" class="panel-center" style="display:none">
                                      No Open Job
@@ -299,18 +301,18 @@
                                         <tbody>
                                             <tr id="social-row-1">
                                                 <td>
-                                                    <select id="socialplatform-1" onchange="updateSocialPlatforms(this.id, this.value); updateMobileTable(this)" onfocus="this.classList.remove('missing')" required>
+                                                    <select id="socialplatform-1" onchange="updateSocialPlatforms(this); updateMobileTable(this)" onfocus="this.classList.remove('missing')" required>
                                                         <option value="">Choose Platform</option>
                                                     </select>
                                                 </td>
                                                 <td>
                                                     <span class="link-header">www.link.com/</span>
-                                                    <input id="sociallink-1" type="text" onfocus="this.classList.remove('missing')" onchange="updateMobileTable(this)" required
+                                                    <input style="padding-left: 110px;" id="sociallink-1" type="text" onfocus="this.classList.remove('missing')" onchange="updateMobileTable(this)" required
                                                         placeholder="Input here..." />
                                                 </td>
                                                 <td class="table-action">
                                                     <button type="button" onclick="removeTableRow('socialTable', this)"
-                                                        class="table-add-btn"><img src="assets/icons/trash-icon.svg"
+                                                        class="table-add-btn delete"><img src="assets/icons/trash-icon.svg"
                                                             alt="X"></button>
                                                 </td>
                                             </tr>
@@ -333,7 +335,7 @@
                                                     <div class="row fixed">
                                                         <h2 id="mobile-socialplatform-1">Tap the edit icon</h2>
                                                         <div class="mobile-button-group">
-                                                            <button type="button" onclick="removeTableRow('socialTable', document.getElementById('socialTable').getElementsByClassName('table-action')[1].firstElementChild)"><img src="assets/icons/trash-icon.svg" alt=""></button>
+                                                            <button type="button" onclick="removeTableRow('socialTable', document.getElementById('socialTable').getElementsByClassName('table-action')[Number(this.parentElement.parentElement.parentElement.parentElement.id.split('-')[2])].firstElementChild)"><img src="assets/icons/trash-icon.svg" alt=""></button>
                                                             <img src="assets/icons/dot-icon.svg" alt="">
                                                             <button type="button" onclick="toggleBottomSheet(this.parentElement.parentElement.parentElement.parentElement)"><img src="assets/icons/edit-icon.svg" alt=""></button>
                                                         </div>
@@ -427,7 +429,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="table-action">
-                                                    <button type="button" class="table-add-btn"
+                                                    <button type="button" class="table-add-btn delete"
                                                         onclick="removeTableRow('eduTable', this)">
                                                         <img src="assets/icons/trash-icon.svg" alt="X">
                                                     </button>
@@ -452,7 +454,7 @@
                                                     <div class="row fixed">
                                                         <h2 id="mobile-level-1">Tap the edit icon</h2>
                                                         <div class="mobile-button-group">
-                                                            <button type="button" onclick="removeTableRow('eduTable', document.getElementById('eduTable').getElementsByClassName('table-action')[1].firstElementChild)"><img src="assets/icons/trash-icon.svg" alt=""></button>
+                                                            <button type="button" onclick="removeTableRow('eduTable', document.getElementById('eduTable').getElementsByClassName('table-action')[Number(this.parentElement.parentElement.parentElement.parentElement.id.split('-')[2])].firstElementChild)"><img src="assets/icons/trash-icon.svg" alt=""></button>
                                                             <img src="assets/icons/dot-icon.svg" alt="">
                                                             <button type="button" onclick="toggleBottomSheet(this.parentElement.parentElement.parentElement.parentElement)"><img src="assets/icons/edit-icon.svg" alt=""></button>
                                                         </div>
@@ -542,7 +544,7 @@
                                                 </td>
                                                 <td class="table-action">
                                                     <button type="button" onclick="removeTableRow('workExpTable', this)"
-                                                        class="table-add-btn"><img src="assets/icons/trash-icon.svg"
+                                                        class="table-add-btn delete"><img src="assets/icons/trash-icon.svg"
                                                             alt="X"></button>
                                                 </td>
                                             </tr>
@@ -565,7 +567,7 @@
                                                     <div class="row fixed">
                                                         <h2 id="mobile-jobtitle-1">Tap the edit icon</h2>
                                                         <div class="mobile-button-group">
-                                                            <button type="button" onclick="removeTableRow('workExpTable', document.getElementById('workExpTable').getElementsByClassName('table-action')[1].firstElementChild)"><img src="assets/icons/trash-icon.svg" alt=""></button>
+                                                            <button type="button" onclick="removeTableRow('workExpTable', document.getElementById('workExpTable').getElementsByClassName('table-action')[Number(this.parentElement.parentElement.parentElement.parentElement.id.split('-')[2])].firstElementChild)"><img src="assets/icons/trash-icon.svg" alt=""></button>
                                                             <img src="assets/icons/dot-icon.svg" alt="">
                                                             <button type="button" onclick="toggleBottomSheet(this.parentElement.parentElement.parentElement.parentElement)"><img src="assets/icons/edit-icon.svg" alt=""></button>
                                                         </div>
@@ -670,7 +672,7 @@
                                                 <td class="table-action">
                                                     <button type="button"
                                                         onclick="removeTableRow('trainingTable', this)"
-                                                        class="table-add-btn"><img src="assets/icons/trash-icon.svg"
+                                                        class="table-add-btn delete"><img src="assets/icons/trash-icon.svg"
                                                             alt="X"></button>
                                                 </td>
                                             </tr>
@@ -693,7 +695,7 @@
                                                     <div class="row fixed">
                                                         <h2 id="mobile-scope-1">Tap the edit icon</h2>
                                                         <div class="mobile-button-group">
-                                                            <button type="button" onclick="removeTableRow('trainingTable', document.getElementById('trainingTable').getElementsByClassName('table-action')[1].firstElementChild)"><img src="assets/icons/trash-icon.svg" alt=""></button>
+                                                            <button type="button" onclick="removeTableRow('trainingTable', document.getElementById('trainingTable').getElementsByClassName('table-action')[Number(this.parentElement.parentElement.parentElement.parentElement.id.split('-')[2])].firstElementChild)"><img src="assets/icons/trash-icon.svg" alt=""></button>
                                                             <img src="assets/icons/dot-icon.svg" alt="">
                                                             <button type="button" onclick="toggleBottomSheet(this.parentElement.parentElement.parentElement.parentElement)"><img src="assets/icons/edit-icon.svg" alt=""></button>
                                                         </div>
@@ -819,7 +821,7 @@
                                                 </td>
                                                 <td class="table-action">
                                                     <button type="button" onclick="removeTableRow('healthTable', this)"
-                                                        class="table-add-btn"><img src="assets/icons/trash-icon.svg"
+                                                        class="table-add-btn delete"><img src="assets/icons/trash-icon.svg"
                                                             alt="X"></button>
                                                 </td>
                                             </tr>
@@ -842,7 +844,7 @@
                                                     <div class="row fixed">
                                                         <h2 id="mobile-sick-1">Tap the edit icon</h2>
                                                         <div class="mobile-button-group">
-                                                            <button type="button" onclick="removeTableRow('healthTable', document.getElementById('healthTable').getElementsByClassName('table-action')[1].firstElementChild)"><img src="assets/icons/trash-icon.svg" alt=""></button>
+                                                            <button type="button" onclick="removeTableRow('healthTable', document.getElementById('healthTable').getElementsByClassName('table-action')[Number(this.parentElement.parentElement.parentElement.parentElement.id.split('-')[2])].firstElementChild)"><img src="assets/icons/trash-icon.svg" alt=""></button>
                                                             <img src="assets/icons/dot-icon.svg" alt="">
                                                             <button type="button" onclick="toggleBottomSheet(this.parentElement.parentElement.parentElement.parentElement)"><img src="assets/icons/edit-icon.svg" alt=""></button>
                                                         </div>
@@ -1107,7 +1109,7 @@
                                                 <tr>
                                                     <th>Level</th>
                                                     <th>School Name</th>
-                                                    <th>Periode Study</th>
+                                                    <th>Study Period</th>
                                                     <th>Remarks</th>
                                                     <th>Document</th>
                                                     <th class="table-action"></th>
@@ -1379,7 +1381,7 @@
                                 <div class="row fixed">
                                     <div class="field">
                                         <div class="label">Recent Photo</div>
-                                        <div class="input-readonly row fixed">
+                                        <div class="input-readonly clip row fixed">
                                             <div id="recentPhotoPrev"></div>
                                             <button type="button" class="btn-link" onclick="openTab(formData['recentPhoto']['file'])">
                                                 <img src="assets/icons/new-tab-icon.svg" alt="View">
@@ -1391,7 +1393,7 @@
                                 <div class="row fixed">
                                     <div class="field">
                                         <div class="label">Curriculum Vitae (CV) / Resume</div>
-                                        <div class="input-readonly row fixed">
+                                        <div class="input-readonly clip row fixed">
                                             <div id="resumePrev"></div>
                                             <button type="button" class="btn-link" onclick="openTab(formData['resume']['file'])">
                                                 <img src="assets/icons/new-tab-icon.svg" alt="View">
@@ -1406,7 +1408,7 @@
                                             <div class="label">Portofolio</div>
                                             <p class="text-secondary">(Optional)</p>
                                         </div>
-                                        <div class="input-readonly row fixed">
+                                        <div class="input-readonly clip row fixed">
                                             <div id="portofolioPrev"></div>
                                             <button type="button" class="btn-link" onclick="openTab(formData['portofolio'])">
                                                 <img src="assets/icons/new-tab-icon.svg" alt="View">

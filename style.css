@@ -95,7 +95,8 @@ body {
   width: 4px;
   height: 28px;
   background: var(--primary);
-  border-radius: 2px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
   margin-right: 8px;
 }
 
@@ -562,6 +563,22 @@ button:disabled {
 
 }
 
+.loading-icon {
+  width: 50px;
+  height: 50px;
+  border: 10px solid var(--border);
+  border-top: 10px solid var(--primary);
+  border-radius: 100%;
+  animation: loading forwards 1s infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(-360deg);
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -623,6 +640,18 @@ button:disabled {
   font-size: 14px;
   font-weight: 700;
   color: var(--Color-Text-Button-Seccondary, #434E7E);
+}
+
+.link-header {
+  padding-left: 12px;
+  padding-top: 14.5px;
+  position: absolute;
+  z-index: 10;
+  color: var(--text-label);
+}
+
+.table-add-btn.delete {
+  min-width: 10px;
 }
 
 .table-add-btn:hover {
@@ -689,7 +718,7 @@ td {
   vertical-align: middle;
   font-size: 14px;
   white-space: nowrap;
-  /* overflow-y: auto; */
+  overflow: hidden;
 }
 
 td div {
@@ -835,8 +864,8 @@ table select {
 }
 
 .file-name {
-  min-width: 180px;
-  max-width: 260px;
+  width: 200px;
+  flex-basis: min-content;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -873,6 +902,18 @@ div.input-readonly {
   color: var(--text-primary);
   background: #F5F5F5;
   outline: none;
+}
+
+div.input-readonly.clip {
+  height: 45px;
+  width: 500px;
+  min-inline-size: -webkit-fill-available;
+}
+
+div.input-readonly.clip div {
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  overflow-x: hidden;
 }
 
 div.section-preview {
@@ -1001,6 +1042,7 @@ h3 {
 }
 
 .close-btn {
+  width: 10px;
   background-color: transparent;
 }
 
@@ -1050,6 +1092,10 @@ h3 {
   .bottom-sheet.active {
     display: block;
     animation: slideUp 0.3s ease;
+  }
+
+  .bottom-sheet-header {
+    align-items: baseline;
   }
 
   .bottom-sheet.close {
@@ -1142,8 +1188,7 @@ h3 {
     position: relative;
     z-index: 1;
     font-weight: bold;
-    text-decoration: underline;
-    background-color: var(--bg-soft);
+    background: linear-gradient(to top, var(--bg-soft), var(--bg-soft), var(--bg-soft), var(--bg-soft), var(--bg-soft), #edf7ed);
     box-shadow: 0 6px 8px rgba(182, 190, 198, 0.25);
     color: var(--text-primary);
   }

@@ -45,10 +45,8 @@ async function fetchJobList() {
         return await apiRequest(getApiUrl('jobsList'), {
             method: 'GET',
         });
-    } catch (error) {
-        console.error('Error fetching job list:', error);
+    } catch {
         notificationHandler('Failed to load job listings. Please refresh the page.', 'error');
-        throw error;
     }
 }
 
@@ -57,10 +55,8 @@ async function fetchCountryCode() {
         return await apiRequest(getApiUrl('countryList'), {
             method: 'GET',
         });
-    } catch (error) {
-        console.error('Error fetching country list:', error);
+    } catch {
         notificationHandler('Failed to load country list. Please refresh the page.', 'error');
-        throw error;
     }
 }
 
@@ -69,10 +65,8 @@ async function fetchEducationLevel() {
         return await apiRequest(getApiUrl('educationLevel'), {
             method: 'GET',
         });
-    } catch (error) {
-        console.error('Error fetching education levels:', error);
+    } catch {
         notificationHandler('Failed to load education levels. Please refresh the page.', 'error');
-        throw error;
     }
 }
 
@@ -81,10 +75,8 @@ async function fetchSocialPlatform() {
         return await apiRequest(getApiUrl('utmList'), {
             method: 'GET',
         });
-    } catch (error) {
-        console.error('Error fetching social platforms:', error);
+    } catch {
         notificationHandler('Failed to load social media platforms. Please refresh the page.', 'error');
-        throw error;
     }
 }
 
@@ -93,10 +85,8 @@ async function fetchMedicalList() {
         return await apiRequest(getApiUrl('medicalList'), {
             method: 'GET',
         });
-    } catch (error) {
-        console.error('Error fetching medical list:', error);
+    } catch {
         notificationHandler('Failed to load medical conditions list. Please refresh the page.', 'error');
-        throw error;
     }
 }
 
@@ -116,7 +106,7 @@ async function checkApplicant(formCheck, jobId) {
         });        
 
         return JSON.parse(response)[0];
-    } catch (error) {
+    } catch {
         return {
             message: `An error has occurred, please try again later.`,
             status: "reject"
@@ -136,9 +126,8 @@ async function submitApplication(formData) {
         });
         
         return response;
-    } catch (error) {
-        console.error('Error submitting application:', error);
-        notificationHandler(`Submission failed: ${error.message}`, 'warning');
+    } catch(error) {
+        notificationHandler(`Submission failed: ${error.message}`, 'error');
         throw error;
     }
 }
@@ -179,8 +168,8 @@ function fileOnChanged(self) {
         const validation = validateFile(file, fileType);
         
         if (!validation.valid) {
-            notificationHandler(validation.error, 'warning');
-            self.value = ''; // Clear the invalid file
+            notificationHandler(validation.error, 'error');
+            self.value = '';
             label.textContent = 'No file chosen';
             button.innerHTML = "<img src='assets/icons/upload-icon.svg' alt='Upload'>";
             return;

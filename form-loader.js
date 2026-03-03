@@ -1,19 +1,25 @@
 // TODO: Remove debug tools before deployment
-let currentStep = 1;
 const totalSteps = 11;
+
+let currentStep = 1;
+let topBarExpanded = false;
+let mobileSelectedRow = null;
+let isDragging = false;
+let startY, startBottom;
+
 const formData = {};
-var submitData = {};
+const submitData = {};
 const countryData = {};
 const jobList = {};
 const countryList = [];
 const educationLevels = [];
 const platformList = [];
 const medicalList = [];
-let selectedJob = "";
-var topBarExpanded = false;
+let selectedJob = '';
+
 
 // element variables
-const splashScreen = document.getElementById("splash-screen");
+const splashScreen = document.getElementById('splash-screen');
 const phoneCountryCode = document.getElementById('countryCode');
 const nationalityList = document.getElementById('nationality');
 const countryIcon = document.getElementById('countryIcon');
@@ -23,8 +29,10 @@ const nextBtn = document.getElementById('nextBtn');
 const submitBtn = document.getElementById('submitBtn');
 const confirmAgreeCheckbox = document.getElementById('confirmation-agreement');
 const topBar = document.getElementById('topbar');
+const bottomSheet = document.getElementById('bottom-sheet');
+const darkenBg = document.getElementById('background');
 
-var currentSectionElements = document.getElementById('section1').querySelectorAll('input, select, textarea');
+let currentSectionElements = document.getElementById('section1').querySelectorAll('input, select, textarea');
 
 // initialize form
 document.getElementById(`section${currentStep}`).classList.add('active');
@@ -165,7 +173,7 @@ function fetchData() {
                     socialElement.innerHTML += `<option value="${platform['utm_id']}">${platform['utm_name']}</option>`;
                 });
                 socialElement.value = formData["social"][e]["socialplatform"];
-                updateSocialPlatforms(socialElement.id, socialElement.value);
+                updateSocialPlatforms(socialElement);
                 updateMobileTable(socialElement);
             })
         };
@@ -203,26 +211,16 @@ function fetchData() {
 
 // on phone country code change function to change the ui flag icon
 function changeCountryIcon() {
-    var flag;
+    const selectedCode = phoneCountryCode.options[phoneCountryCode.selectedIndex].innerHTML.split('(')[1].replace(')', '');
+    const country = countryList.find(c => c['country_code'] === selectedCode);
+    const flag = country?.['country_flag'] ?? '';
 
-    [...countryList].forEach(country => {
-        if (country['country_code'] === phoneCountryCode.options[phoneCountryCode.selectedIndex].innerHTML.split('(')[1].replace(')', '')) {
-            flag = country['country_flag'];
-        }
-    });
-
-    if (flag) {
-        countryIcon.innerHTML = `<img width="100%" src="${flag}" alt='' />`;
-        countryIconPrev.innerHTML = `<img width="100%" src="${flag}" alt='' />`;
-    } else {
-        countryIcon.innerHTML = `<img width="100%" src="" alt='' />`;
-        countryIconPrev.innerHTML = `<img width="100%" src="" alt='' />`;
-    }
+    countryIcon.innerHTML = `<img width="100%" src="${flag}" alt='' />`;
+    countryIconPrev.innerHTML = `<img width="100%" src="${flag}" alt='' />`;
 }
 
 // section checkboxes
 function toggleSection(self, content, id) {
-    console.log(self, content, id);
     const table = document.getElementById(id);
     const mobileTable = document.getElementById(table.id.replace('Table', 'MobileTable')).querySelector('tbody');
     const contentElement = document.getElementById(content);
@@ -234,21 +232,19 @@ function toggleSection(self, content, id) {
 
         inputs.forEach(input => {
             input.classList.remove('missing');
-            if (input.parentElement.classList.contains('file-input-wrapper')) {
-                fileOnChanged(input);
-            }
+            if (input.parentElement.classList.contains('file-input-wrapper')) fileOnChanged(input);
+            input.required = false;
             if (!input.id.includes('-1')) {
                 input.parentElement.parentElement.remove();
+                return;
             }
             input.value = '';
-            input.required = false;
+            if (id === 'socialTable' && input.type === 'select-one') updateSocialPlatforms(input);
             updateMobileTable(input);
         });
         updateNextButton();
         [...mobileTable.children].forEach(child => {
-            if (child.hasAttribute('id') && !child.id.includes('-1')) {
-                child.remove();
-            }
+            if (child.id && !child.id.includes('-1')) child.remove();
         })
 
     }
@@ -257,9 +253,7 @@ function toggleSection(self, content, id) {
         contentElement.classList.remove("hidden");
         inputs.forEach(input => {
             input.required = true;
-            if (input.parentElement.classList.contains('file-input-wrapper')) {
-                fileOnChanged(input);
-            }
+            if (input.parentElement.classList.contains('file-input-wrapper')) fileOnChanged(input);
         })
         self.value = 'on';
         updateNextButton();
@@ -274,20 +268,15 @@ function toggleSection(self, content, id) {
 
 // quick question field toggler
 function toggleField(self, id) {
-    var value = self.value;
-    var field = document.getElementById(id);
-    var fieldRow = field.parentElement.parentElement;
-    if (value == 'Yes' || value == 'Others') {
-        fieldRow.style.display = 'block';
-        field.required = true;
-    } else {
-        fieldRow.style.display = 'none';
-        field.value = '';
-        field.required = false;
-    }
+    const field = document.getElementById(id);
+    const fieldRow = field.parentElement.parentElement;
+    const show = self.value == 'Yes' || self.value == 'Others';
+    fieldRow.style.display = show ? 'block' : 'none';
+    field.required = show;
+    if (!show) field.value = '';
 }
 
-document.getElementById('topbar').addEventListener("transitionend", (e) => {
+topBar.addEventListener("transitionend", (e) => {
     if (e.propertyName === "height" && e.target.style.height === "90px") {
         topBar.scrollTop = 0;
         [...topBar.children].forEach(entry => {
@@ -305,10 +294,9 @@ function toggleTopBar() {
         topBar.style.height = "90px";
         topBar.style.overflow = "hidden";
     } else {
-        var steps = document.querySelectorAll('[id*=step]');
-        steps.forEach(step => {
+        document.querySelectorAll('[id*=step]').forEach(step => {
             if (!step.id.includes('-')) {
-                var entry = document.createElement("div");
+                const entry = document.createElement("div");
                 entry.classList.add('topbar-entry');
                 entry.innerHTML = document.getElementById(`${step.id}`).innerHTML.split('<')[0].trim();
                 if (Number(step.id.split('p')[1]) === currentStep) entry.classList.add('active')
@@ -430,8 +418,21 @@ function fieldMissing(element) {
 // remove required attribute on end date input when it is the highest level (edu) or latest date (workExp)
 function toggleFieldEndDate(element) {
     const baseId = element.id.split('-')[0];
-    const group = document.querySelectorAll(`select[id*="${baseId}"], input[id*="${baseId}"]`);
+    const group = [...document.querySelectorAll(`select[id*="${baseId}"], input[id*="${baseId}"]`)];
     var maxValue;
+
+    if (element.id.includes("mobile")) {
+        const elFunction = bottomSheet.querySelector('button[type="Add"]').onclick.toString();
+        const match = elFunction.match(/mobileAddData\s*\(\s*['"]([^'"]+)['"]\s*\)/);
+        const index = match ? match[1].split('-')[2] : null;
+
+        const toRemove = group.find(e => e.id.split('-')[1] === index);
+        const pos = group.indexOf(toRemove);
+
+        if (pos !== -1) {
+            group.splice(pos, 1);
+        }
+    };
 
     if (group.length === 1) {
         maxValue = element.type === 'date' ? Date.parse(group[0].value) : Number(group[0].value);
@@ -443,13 +444,8 @@ function toggleFieldEndDate(element) {
     group.forEach(e => {
         const target = e.parentElement.parentElement.parentElement.querySelector(`input[id*="endperiod-${e.id.split('-')[1]}"]`);
         var value = e.type === 'date' ? Date.parse(e.value) : Number(e.value);
-        if (value === maxValue) {
-            target.required = false;
-        } else {
-            target.required = true;
-        };
-
-    })
+        target.required = !(value === maxValue);
+    })    
 }
 
 // Extra client-side validation
@@ -480,9 +476,12 @@ async function sectionValidator(step) {
                 notificationHandler("You need to be at least 13 years old to apply.", "error");
                 return true;
             }    
+
+            nextBtn.innerHTML = '<div class="loading-icon" style="width:30px;height:30px;border-width:3px"></div>';
             
             // check applicant if previously applied
             hasInvalidField = checkApplicant(formCheck, formData['job_id']).then((response) => {
+                nextBtn.innerHTML = 'Next';
                 if (response["state"] === "allow") {
                     notificationHandler(response["message"], "info");
                     return false;
@@ -617,17 +616,13 @@ const base64 = file => new Promise((resolve) => {
 
 function inputTypeSaveHandler(input) {
     if (input.type == 'file') {
-        var uploadData = {
+        return {
             'file_name': input.files[0] ? input.files[0].name : '',
             'mime_type':input.files[0] ? input.files[0].type : '',
             'file':input.files[0],
         };
-
-        return uploadData;
     }
-    if (input.type == 'number') {
-        return Number(input.value);
-    }
+    if (input.type == 'number') return Number(input.value);
     return input.value;
 }
 
@@ -689,7 +684,7 @@ function saveFormData() {
 
     // saving to localStorage everytime user clicks next
     var formCatalyst = cleanDataStructure(formData);
-    localStorage.setItem("formData", JSON.stringify(formCatalyst));
+    localStorage.setItem('formData', JSON.stringify(formCatalyst));
 }
 
 // clearing attachment input before putting in localStorage
@@ -734,6 +729,7 @@ async function closeRestoreWindow(value) {
                             var titleCaseSection = k.replace('Exp', "").charAt(0).toUpperCase() + k.substring(1).replace('Exp', "");
                             addTableRow(`${k}Table`, `${k.replace('Exp', "")}-row-1`, `add${titleCaseSection}Row`);
                             tableCell = document.getElementById(`${cell[0]}-${data[0]}`);
+
                         };
                         tableCell.value = cell[1];
                         updateMobileTable(tableCell);
@@ -768,24 +764,14 @@ function findJob(id) {
     return job ?? null;
 }
 
-function updateSocialPlatforms(id, value) {
-    var platform = linkList.find(p => p["utm_id"] === Number(value));
+function updateSocialPlatforms(element) {
+    const linkHeader = element.parentElement.parentElement.querySelector('.link-header');
+    const linkInput = element.parentElement.parentElement.querySelector('[id*=sociallink]');
+    var platform = linkList.find(p => p["utm_id"] === Number(element.value));
     var link = platform ? platform["link"] : null;
 
-    document.getElementsByClassName('link-header')[Number(id.split('-')[1])-1].innerHTML = link ?? 'www.link.com/';
-
-    // var inputs = document.querySelectorAll('select[id*=socialplatform]');
-    // var selectedPlatforms = Array.from(inputs).map(p => p.value).filter(v => v !== "");
-
-    // inputs.forEach(input => {
-    //     Array.from(input.options).forEach(option => {
-    //         option.disabled = false;
-
-    //         if (option.value !== "" && option.value !== input.value && selectedPlatforms.includes(option.value)) {
-    //             option.disabled = true;
-    //         }
-    //     })
-    // })
+    linkHeader.innerHTML = link ?? 'www.link.com/';
+    linkInput.style.paddingLeft = `${linkHeader.offsetWidth != 0 ? linkHeader.offsetWidth + 3 : 110}px`;
 }
 
 function updateMobileTable(element) {
@@ -793,6 +779,11 @@ function updateMobileTable(element) {
     var mobileElement = document.getElementById(`mobile-${element.id}`);
     
     if (mobileElement === null) return;
+
+    if (mobileElement.id.includes('endperiod') && value === '') {
+        mobileElement.innerHTML = 'Current';
+        return;
+    };
 
     if (element.tagName === 'SELECT') {
         mobileElement.innerHTML = value != "" ? element.options[element.selectedIndex].innerHTML : "...";
@@ -838,18 +829,8 @@ confirmAgreeCheckbox.addEventListener("change", () => {
 document.addEventListener("change", updateNextButton);
 
 function updateNextButton() {
-    var emptyFieldsLength = 0;
-    currentSectionElements.forEach(element => {
-        if (element.value === "" && element.hasAttribute('required')) {
-            emptyFieldsLength += 1;
-        }
-    });
-    
-    if (emptyFieldsLength === 0) {
-        nextBtn.disabled = false;
-    } else {
-        nextBtn.disabled = true;
-    }
+    const hasEmpty = [...currentSectionElements].some(element => element.value === '' && element.hasAttribute('required'));
+    nextBtn.disabled = hasEmpty;
 };
 
 async function changeStep(direction) {
@@ -857,25 +838,38 @@ async function changeStep(direction) {
         return;
     }
 
-    if (document.getElementById('applyBtn').style.display === 'block') document.getElementById('applyBtn').style.display = 'none';
-
     saveFormData();
 
+    var currentSection = document.getElementById(`section${currentStep}`);
 
-    document.getElementById(`section${currentStep}`).classList.remove('active');
-    document.getElementById(`section${currentStep}`).classList.remove('missing');
+    currentSection.classList.remove('active', 'missing');
 
-    if (document.getElementById(`section${currentStep + direction}`) != null) currentStep += direction;
+    if (document.getElementById(`section${currentStep + direction}`)) {
+        currentStep += direction;
+        currentSection = document.getElementById(`section${currentStep}`);
+    };
 
-    document.getElementById(`section${currentStep}`).classList.add('active');
-    currentSectionElements = document.getElementById(`section${currentStep}`).querySelectorAll('input, select, textarea');
+    if (direction === -1 && currentSection.id === "section1") {
+        document.getElementById('applyBtn').style.display = 'block';
+    } else {
+        document.getElementById('applyBtn').style.display = 'none';
+    }
+
+    currentSection.classList.add('active');
+    if (currentSection.id === 'section3' && !currentSection.classList.contains('initialized')) {
+        [...currentSection.querySelectorAll('select[id*=socialplatform]')].forEach(input => {
+            updateSocialPlatforms(input);
+        })
+        currentSection.classList.add('initialized');
+    }
+    currentSectionElements = currentSection.querySelectorAll('input, select, textarea');
     updateNextButton();
 
     if (currentStep === totalSteps) showPreview();
 
     document.getElementById('prevBtn').style.display = currentStep === 1 ? 'none' : 'flex';
-    document.getElementById('nextBtn').style.display = (currentStep === 1 || currentStep === totalSteps) ? 'none' : 'flex';
-    document.getElementById('submitBtn').style.display = (currentStep === totalSteps ? 'flex' : 'none');
+    nextBtn.style.display = (currentStep === 1 || currentStep === totalSteps) ? 'none' : 'flex';
+    submitBtn.style.display = (currentStep === totalSteps ? 'flex' : 'none');
 
     updateProgress();
 }
@@ -902,6 +896,11 @@ function previewColumnData(column, rowCellData, targetElement, targetElementMobi
             previewData = medicalList.find(h => h["medical_id"] === Number(rowCellData[column]));
             targetElement.innerHTML = previewData != null ? previewData["medical_name"] : "";
             targetElementMobile.innerHTML = previewData != null ? previewData["medical_name"] : "";
+            break;
+        case "workendperiod":
+        case "eduendperiod":
+            targetElement.innerHTML = (rowCellData[column] != '' ? rowCellData[column] : 'Current');
+            targetElementMobile.innerHTML = (rowCellData[column] != '' ? rowCellData[column] : 'Current');
             break;
         default:
             targetElement.innerHTML = rowCellData[column] ?? '';
@@ -1053,17 +1052,13 @@ function openTab(content) {
         if (content.innerHTML === "") return;
 
         let value = content.innerHTML.trim();
-        if (!/^[a-zA-Z][a-zA-Z\d+.-]*:/.test(value)) {
-            value = 'https://' + value;
-        }
+        if (!/^[a-zA-Z][a-zA-Z\d+.-]*:/.test(value)) value = 'https://' + value;
         url = value;
     } else if (content instanceof URL) {
         url = content.href;
     } else if (typeof content === "string") {
         let value = content.trim();
-        if (!/^[a-zA-Z][a-zA-Z\d+.-]*:/.test(value)) {
-            value = 'https://' + value;
-        }
+        if (!/^[a-zA-Z][a-zA-Z\d+.-]*:/.test(value)) value = 'https://' + value;
         url = value;
     } else {
         return;
@@ -1101,7 +1096,7 @@ async function formatData(data) {
         notificationHandler("Failed to submit application, please check your phone number");
         return;
     }
-    submitData = {
+    const result = {
         "job_id": data["job_id"],
         "name": data["name"],
         "email": data["email"],
@@ -1132,14 +1127,14 @@ async function formatData(data) {
     };
 
     if (data["hasSocialMedia"] === "on") {
-        submitData["social_media"] = Object.values(data['social'] || {}).map(s => ({
+        result["social_media"] = Object.values(data['social'] || {}).map(s => ({
             "platform": s["socialplatform"],
             "link": `${linkList.find(p => p["utm_id"] === Number(s["socialplatform"]))["link"]}${s["sociallink"]}`,
         }));
     }
 
     if (data["hasEduBackground"] === "on") {
-        submitData["educational_bg"] = await Promise.all(Object.values(data['edu'] || {}).map(async (e) => ({
+        result["educational_bg"] = await Promise.all(Object.values(data['edu'] || {}).map(async (e) => ({
             "edu_id": e["level"],
             "level": educationLevels.length != 0 ? (educationLevels.find(edu => edu["edu_id"] === Number(e["level"])) ? educationLevels.find(edu => edu["edu_id"] === Number(e["level"]))["edu_name"] : "") : "",
             "school_name": e["schoolname"],
@@ -1154,7 +1149,7 @@ async function formatData(data) {
     }
 
     if (data["hasWorkExp"] === "on") {
-        submitData["work_exp"] = Object.values(data['workExp'] || {}).map(w => ({
+        result["work_exp"] = Object.values(data['workExp'] || {}).map(w => ({
             "company_name": w["company"],
             "position": w["jobtitle"],
             "start": formatDate(w["workstartperiod"]),
@@ -1165,7 +1160,7 @@ async function formatData(data) {
     }
 
     if (data["hasTraining"] === "on") {
-        submitData["training"] = await Promise.all(Object.values(data["training"] || {}).map(async (t) => ({
+        result["training"] = await Promise.all(Object.values(data["training"] || {}).map(async (t) => ({
             "institute": t["institute"],
             "scope": t["scope"],
             "description": t["trainingdesc"],
@@ -1178,28 +1173,26 @@ async function formatData(data) {
     }
 
     if (data["hasHealth"] === "on") {
-        submitData["health"] = Object.values(data["health"] || {}).map(h => ({
+        result["health"] = Object.values(data["health"] || {}).map(h => ({
             "sickness": h["sick"],
             "description": h["healthdescription"],
         }));
     }
 
+    Object.assign(submitData, result);
+
     submitForm();
 }
 
-async function submitForm() {
+function submitForm() {
     const formSubmit = new FormData();
     for (var key in submitData) {
-        if (typeof submitData[key] === "object") {
-            formSubmit.append(key, JSON.stringify(submitData[key]));
-            continue;
-        }
-        formSubmit.append(key, submitData[key]);
+        formSubmit.append(key, typeof submitData[key] === 'object' ? JSON.stringify(submitData[key]) : submitData[key]);
     }
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<div class="loading-icon" style="width:30px;height:30px;border-width:3px"></div>';
     notificationHandler("Submitting your application...");
     submitApplication(formSubmit).then((res) => {
-        console.log(res, JSON.parse(res)["message"]);
-    
         document.getElementsByClassName('page')[0].classList.add('complete');
         document.getElementById('success-panel').style.display = 'block';
         document.getElementById('topbar').style.display = 'none';
@@ -1207,10 +1200,10 @@ async function submitForm() {
         document.getElementById('applicationForm').style.display = 'none';
 
         localStorage.clear();
-    }).catch((e) => {
-        console.log(e);
-        notificationHandler("We were not able to submit your application, please try again later.", "error");
-    });
+    }).catch(() => {
+        submitBtn.innerHTML = "Submit";
+        submitBtn.disabled = false;
+    })
 }
 
 function addTableRow(tableId, tableRow, button) {
@@ -1274,8 +1267,9 @@ function addTableRow(tableId, tableRow, button) {
     })
 
     // clearing input values
-    newRow.querySelectorAll('input, textarea').forEach(i => {
+    newRow.querySelectorAll('select, input, textarea').forEach(i => {
         i.value = '';
+        if (i.tagName === 'SELECT' && i.id.split('-')[0] === 'socialplatform') i.onchange();
 
         // special logic for custom input file reset
         if (i.parentElement.classList.contains('file-input-wrapper')) {
@@ -1283,10 +1277,6 @@ function addTableRow(tableId, tableRow, button) {
             button.innerHTML = "<img src='assets/icons/upload-icon.svg' alt='x'>";
         }
     });
-
-    newRow.querySelectorAll('input').forEach(i => {
-        i.selectedIndex = '';
-    })
 
     newRow.querySelectorAll('span').forEach(i => {
         if (i.classList.contains('file-name')) {
@@ -1311,6 +1301,8 @@ function addTableRow(tableId, tableRow, button) {
 function removeTableRow(tableId, obj) {
     const table = document.getElementById(tableId).lastElementChild;
     const selectedRow = obj.parentNode.parentNode;
+    console.log(selectedRow);
+    const toggleableInputs = selectedRow.parentNode.querySelector('tr[id*="-1"]').querySelectorAll('select[id*="level"], input[id*="workstartperiod"]');
     const mobileRow = document.getElementById(selectedRow.id.replace('row', 'mobile'));
     const rowIdHeader = table.firstElementChild.id.replace('-1', '');
     const rows = table.querySelectorAll(`[id*="${rowIdHeader}"]`);
@@ -1318,7 +1310,6 @@ function removeTableRow(tableId, obj) {
     const selectedRowId = selectedRow.id.split('-')[2];
 
     if (rows.length <= 1) {
-        console.log(tableId);
         const checkboxSection = document.getElementById(tableId).parentElement.parentElement.parentElement.querySelector('[id*=has]');
         const sectionContent = document.getElementById(tableId).parentElement.parentElement.id;
         const tableIdSection = tableId;
@@ -1392,16 +1383,15 @@ function removeTableRow(tableId, obj) {
         }
     })
 
+    // update forms with endperiod (except for training section)
+    if (toggleableInputs.length != 0) {
+        toggleableInputs[0].onchange();
+    }
+
     // update next button status
     currentSectionElements = document.getElementById(`section${currentStep}`).querySelectorAll('input, select, textarea');
     updateNextButton();
 }
-
-let isDragging = false;
-let startY, startBottom;
-const bottomSheet = document.getElementById('bottom-sheet');
-const darkenBg = document.getElementById('background');
-var mobileSelectedRow;
 
 // close bottom sheet if switched from mobile to desktop ui
 window.addEventListener("resize", () => {
@@ -1424,13 +1414,14 @@ function toggleBottomSheet(element) {
         mobileSelectedRow = "";
         bottomSheet.classList.remove('active');
         darkenBg.classList.remove('active');
+        sheetBody.innerHTML = '';
     } else {
         darkenBg.classList.add('active');
         mobileSelectedRow = element;
         switch(element.id.split("-")[0]) {
             case "social":
                 sheetBody.innerHTML = `
-                <div class="row">
+                <div class="row bottom-sheet-header">
                     <div class="panel-title">
                         <h2 style="display: block; font-size: 24px;">Social Platform</h2>
                         <p>Choose your social media platform and enter your profile username below.</p>
@@ -1456,7 +1447,7 @@ function toggleBottomSheet(element) {
                 break;
             case "edu":
                 sheetBody.innerHTML = `
-                <div class="row">
+                <div class="row bottom-sheet-header">
                     <div class="panel-title">
                         <h2 style="display: block; font-size: 24px;">Educational Background</h2>
                         <p>Please provide your educational background details accurately.</p>
@@ -1465,7 +1456,7 @@ function toggleBottomSheet(element) {
                 </div>
                 <div class="field">
                     <label for="level-mobile">Education Level</label>
-                    <select id="level-mobile" onfocus="this.classList.remove('missing')" required>
+                    <select id="level-mobile" onchange="toggleFieldEndDate(this)" onfocus="this.classList.remove('missing')" required>
                         <option value="">Choose Level</option>
                     </select>
                 </div>
@@ -1473,7 +1464,7 @@ function toggleBottomSheet(element) {
                     <label for="schoolname-mobile">School Name</label>
                     <input id="schoolname-mobile" type="text" onfocus="this.classList.remove('missing')" placeholder="Input Name">
                 </div>
-                <div class="row">
+                <div class="row" style="padding:0px">
                     <div class="field">
                         <label for="edustartperiod-mobile">Start Periode Study</label>
                         <input id="edustartperiod-mobile" onfocus="this.classList.remove('missing')" type="date">
@@ -1483,11 +1474,13 @@ function toggleBottomSheet(element) {
                         <input id="eduendperiod-mobile" type="date" onfocus="this.classList.remove('missing')">
                     </div>
                 </div>
-                <label for="edustartperiod-mobile">Start Periode Study</label>
-                <div class="row fixed field">
-                    <input id="remark-mobile" type="number" min="0" placeholder="0" onfocus="this.classList.remove('missing')">
-                    from
-                    <input id="totalscore-mobile" type="number" min="0" placeholder="0" onfocus="this.classList.remove('missing')">
+                <div class="field">
+                    <label for="remark-mobile">Grade</label>
+                    <div class="row fixed field" style="padding:0px; border: 1px solid var(--border); border-radius:8px;">
+                        <input style="border:none; text-align:center;" id="remark-mobile" type="number" min="0" placeholder="0" onfocus="this.classList.remove('missing')">
+                        from
+                        <input style="border:none; text-align:center;" id="totalscore-mobile" type="number" min="0" placeholder="0" onfocus="this.classList.remove('missing')">
+                    </div>
                 </div>
                 <div class="field">
                     <label for="edudocument-mobile">Upload Document</label>
@@ -1512,7 +1505,7 @@ function toggleBottomSheet(element) {
                 break;
             case "work":
                 sheetBody.innerHTML = `
-                <div class="row">
+                <div class="row bottom-sheet-header">
                     <div class="panel-title">
                         <h2 style="display: block; font-size: 24px;">Work Experience</h2>
                         <p>Please provide details of your previous work experience.</p>
@@ -1528,9 +1521,9 @@ function toggleBottomSheet(element) {
                     <input id="jobtitle-mobile" type="text" onfocus="this.classList.remove('missing')" placeholder="Input Name">
                 </div>
                 <div class="row">
-                    <div class="field">
+                    <div class="field" style="padding:0px">
                         <label for="workstartperiod-mobile">Start Periode</label>
-                        <input id="workstartperiod-mobile" onfocus="this.classList.remove('missing')" type="date">
+                        <input id="workstartperiod-mobile" onchange="toggleFieldEndDate(this)" onfocus="this.classList.remove('missing')" type="date">
                     </div>
                     <div class="field">
                         <label for="workendperiod-mobile">End Periode</label>
@@ -1556,14 +1549,14 @@ function toggleBottomSheet(element) {
                 break;
             case "training":
                 sheetBody.innerHTML = `
-                <div class="row">
+                <div class="row bottom-sheet-header">
                     <div class="panel-title">
                         <h2 style="display: block; font-size: 24px;">Training</h2>
                         <p>Please provide details of the training or course you have.</p>
                     </div>
                     <button type="button" class="close-btn" onclick="toggleBottomSheet()"><img src="assets/icons/cancel-icon.svg" alt="X"></button>
                 </div>
-                <div class="row">
+                <div class="row" style="padding:0px;">
                     <div class="field">
                         <label for="trainingstartperiod-mobile">Start Periode</label>
                         <input id="trainingstartperiod-mobile" type="date" onfocus="this.classList.remove('missing')">
@@ -1604,7 +1597,7 @@ function toggleBottomSheet(element) {
                 break;
             case "health":
                 sheetBody.innerHTML = `
-                <div class="row">
+                <div class="row bottom-sheet-header">
                     <div class="panel-title">
                         <h2 style="display: block; font-size: 24px;">Health Information</h2>
                         <p>Please provide your health information accurately for record purposes.</p>
@@ -1632,6 +1625,8 @@ function toggleBottomSheet(element) {
                 break;
         }
 
+        const toggleableInputs = sheetBody.querySelectorAll('select[id="level-mobile"], input[id="workstartperiod-mobile"]');
+
         // fill in existing data to bottom sheet form
         [...sheetBody.querySelectorAll('input, select, textarea')].forEach(input => {
             var formInput = tableForm.querySelector(`[id="${input.id.replace('mobile', element.id.split('-')[2])}"]`);
@@ -1647,6 +1642,7 @@ function toggleBottomSheet(element) {
                 input.value = formInput.value;
             }
         })
+        if (toggleableInputs.length != 0) toggleableInputs[0].onchange();
         toggleBottomSheetButton();
         bottomSheet.scrollTop = 0;
         bottomSheet.classList.add('active');
@@ -1659,7 +1655,7 @@ function mobileAddData(element) {
     var hasEmptyFields = false;
 
     [...sheetInputs].forEach(input => {
-        if (input.value === "") {
+        if (input.value === "" && input.required === true) {
             hasEmptyFields = true;
             input.classList.add('missing');
         };
