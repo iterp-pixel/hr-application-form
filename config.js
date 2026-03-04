@@ -1,5 +1,5 @@
 const API_CONFIG = {
-    baseURL: 'http://192.168.1.252:8019',
+    baseURL: 'https://devs.kapitmas.com',
     endpoints: {
         jobsList: '/applicant/jobs_list',
         countryList: '/applicant/res_country',

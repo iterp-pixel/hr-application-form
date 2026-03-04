@@ -11,6 +11,9 @@ async function apiRequest(url, options = {}) {
     try {
         const response = await fetch(url, {
             ...options,
+            headers: {
+                'X-Odoo-Database': 'KAPITMAS_DEMO',
+            }
         });
 
         clearTimeout(timeoutId);
