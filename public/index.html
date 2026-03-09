@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Kapitmas Application Form</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <script src="https://unpkg.com/google-libphonenumber@3.2.27/dist/libphonenumber.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="/favicon.png">
+</head>
+
+<body>
+    <div id="notification" class="notification-holder"></div>
+    <div class="page" style="position: relative; z-index: 1;">
+        <div id="restoreForm" class="restore-form">
+            <div class="panel">
+                <div class="row spaced">
+                    <h2>Restore previous session?</h2>
+                    <button type="button" class="close-btn" onclick="closeRestoreWindow(false)"><img src="./assets/icons/cancel-icon.svg" alt="X"></button>
+                </div>
+                <span>
+                    <p>We've found an application draft. Would you like to restore it to the current form?</p>
+                    <p>(You would need to reupload missing attachments after)</p>
+                </span>
+                <div class="row fixed">
+                    <button type="button" onclick="closeRestoreWindow(true)" class="btn">Yes</button>
+                    <button type="button" onclick="closeRestoreWindow(false)" class="btn-outline">No</button>
+                </div>
+            </div>
+        </div>
+        <div class="layout">
+            <!-- Success Screen -->
+            <div class="panel complete" style="display: none; overflow: hidden;" id="success-panel">
+                <div class="panel-center">
+                    <div style="display: flex; width: 100%; justify-content: center;">
+                        <img src="./assets/icons/form-success-icon.svg" alt="Success">
+                    </div>
+                    <div>
+                        <h2 style="text-align: center;">Success! Your Submission</h2>
+                        <p style="text-align: center;">
+                            Your application has been successfully submitted. Our team will review your information and
+                            contact you if further action is required.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Splash Screen -->
+            <div style="overflow: hidden;" id="splash-screen">
+                <div class="panel-center">
+                    <div style="display: flex; width: 100%; justify-content: center;">
+                        <img src="./assets/icons/splash-screen.svg" width="40%" alt="Splash Screen">
+                    </div>
+                </div>
+            </div>
+
+            <!-- top bar for mobile ui -->
+            <div class="topbar" id="topbar" style="display: none;">
+                <div class="row sticky-title topbar-header">
+                    <div>
+                        <span id="step-progress" class="step-progress"></span>
+                        <div id="step-progress-title"></div>
+                    </div>
+                    <button class="burger" type="button" onclick="toggleTopBar()" aria-label="Toggle form progress">
+                        <img src="./assets/icons/burger-icon.svg" alt="...">
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar">
+                <div id="step1" class="step active">
+                    Job Position
+                    <div class="complete-circle">
+                        <img src="./assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step2" class="step">
+                    Personal Information
+                    <div class="complete-circle">
+                        <img src="./assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step3" class="step">
+                    Social Media
+                    <div class="complete-circle">
+                        <img src="./assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step4" class="step">
+                    Educational Background
+                    <div class="complete-circle">
+                        <img src="./assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step5" class="step">
+                    Work Experience
+                    <div class="complete-circle">
+                        <img src="./assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step6" class="step">
+                    Training
+                    <div class="complete-circle">
+                        <img src="./assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step7" class="step">
+                    Job Expectations
+                    <div class="complete-circle">
+                        <img src="./assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step8" class="step">
+                    Health Information
+                    <div class="complete-circle">
+                        <img src="./assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step9" class="step">
+                    Quick Question
+                    <div class="complete-circle">
+                        <img src="./assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step10" class="step">
+                    Attachment
+                    <div class="complete-circle">
+                        <img src="./assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+                <div id="step11" class="step">
+                    Preview Application
+                    <div class="complete-circle">
+                        <img src="./assets/icons/completed-step.svg" alt="Done">
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main panel -->
+            <form id="applicationForm" style="display: none;">
+                <div class="panel">
+                    <div class="form-section" id="section1">
+                        <!-- Job list -->
+                         <div id="job-list" class="job-section">
+                             <div class="sticky-title row" >
+                                 <div class="panel-title">
+                                     <h2>Job Position</h2>
+                                     <p>
+                                         Please select the job position you wish to apply for. Review the brief description of each role to ensure it aligns with your skills and experience before proceeding.
+                                     </p>
+                                 </div>
+                                 <img class="company-logo" src="./assets/icons/company-icon.svg" alt="logo">
+                             </div>
+                             <div class="panel-body" style="padding: 16px; padding-top: 32px;">
+                                 <button type="button" style="display: none;" onclick="" class="job-entry">
+                                     <h3 class="job-title"></h3>
+                                     <p></p>
+                                 </button type="button">
+                                 <div id="loading-job-display" class="panel-center" style="display:flex">
+                                     <div class="row">
+                                        <div class="loading-icon"></div>
+                                        Loading data...
+                                     </div>
+                                 </div>
+                                 <div id="no-job-display" class="panel-center" style="display:none">
+                                     No Open Job
+                                 </div>
+                             </div>
+                         </div>
+
+                        <!-- Job index -->
+                        <div class="panel-body" id="job-index" style="display: none;">
+                            <div class="row" class="sticky-title">
+                                <div class="row fixed">
+                                    <div class="panel-title">
+                                        <button class="back-btn" type="button" onclick="backToJobList()">
+                                            <div class="row narrow fixed">
+                                                <img src="./assets/icons/back-icon.svg" alt="<">
+                                                <h2 style="display:block">Job Detail Position</h2>
+                                            </div>
+                                            <div class="row narrow fixed">
+                                                <img src="./assets/icons/back-icon.svg" alt="<" style="visibility: hidden;">
+                                                <p class="job-title"></p>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                                <img class="company-logo" src="./assets/icons/company-icon.svg" alt="logo">
+                            </div>
+                            <h3 class="job-title"></h3>
+                            <p id="job-detail-description"></p>
+                        </div>
+                    </div>
+                    <!-- personal information -->
+                    <div class="form-section" id="section2">
+                        <div class="row">
+                            <div class="panel-title">
+                                <h2>Personal Information</h2>
+                                <p>
+                                    Please fill in your personal details accurately. This information
+                                    will be used for your employment record and recruitment process.
+                                </p>
+                            </div>
+                            <img class="company-logo" src="./assets/icons/company-icon.svg" alt="logo">
+                        </div>
+
+                        <div class="panel-body">
+
+                            <div class="row">
+                                <div class="field">
+                                    <label for="name">Full Name</label>
+                                    <input type="text" id="name" name="name" placeholder="Input here..." onfocus="this.classList.remove('missing')" required autocomplete="off">
+                                </div>
+                                <div class="field">
+                                    <label for="name">Gender</label>
+                                    <select name="gender" id="gender" onfocus="this.classList.remove('missing')" required>
+                                        <option value="">Select</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="field">
+                                    <label for="email">Email</label>
+                                    <input type="email" name="email" id="email" placeholder="Input here..." required onfocus="this.classList.remove('missing')" autocomplete="off">
+                                </div>
+                                <div class="field">
+                                    <label for="phone">WhatsApp Number</label>
+                                    <div class="phone hover" onfocus="this.classList.remove('missing')">
+                                        <div id="countryIcon" style="width: 80px; height: 100%; padding-left: 10px; align-items: center; display: flex;"></div>
+                                        <select name="countryCode" id="countryCode" style="width: 100px; border-left: none; border-top: none; border-bottom: none;" required onfocus="this.classList.remove('missing')" onchange="changeCountryIcon()">
+                                            <option value="">#</option>
+                                        </select>
+                                        <input type="tel" id="phone" name="phone" placeholder="Input here..."
+                                            required onfocus="this.classList.remove('missing')" autocomplete="off" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="field">
+                                    <label for="birthPlace">Place Birth</label>
+                                    <input type="text" id="birthPlace" name="birthPlace" placeholder="Input here..."
+                                        required onfocus="this.classList.remove('missing')" />
+                                </div>
+
+                                <div class="field">
+                                    <label for="dob">Date of Birth</label>
+                                    <input type="date" id="dob" name="dob" required onfocus="this.classList.remove('missing')" />
+                                </div>
+                            </div>
+
+                            <div class="row narrow">
+                                <div class="field">
+                                    <label for="nationality">Nationality</label>
+                                    <select name="nationality" id="nationality" required onfocus="this.classList.remove('missing')">
+                                        <option value="">Select your nationality</option>
+                                        <option value="">No nationality found</option>
+                                    </select>
+                                </div>
+                                <div class="field"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Social Media -->
+                    <div class="form-section grouped" id="section3">
+                        <div class="row sticky-title">
+                            <div class="panel-title">
+                                <h2>Social Media</h2>
+                                <p>
+                                    Please provide your social media account details for professional and administrative
+                                    purposes.
+                                </p>
+                            </div>
+                            <img class="company-logo" src="./assets/icons/company-icon.svg" alt="logo">
+                        </div>
+
+
+                        <div class="panel-body">
+                            <div class="row narrow">
+                                <input type="checkbox" name="socialMedia" id="hasSocialMedia" onchange="toggleSection(this, 'socialContent', 'socialTable')" checked>
+                                <div>I have a social media account</div>
+                            </div>
+                            <div class="table-wrapper" id="socialContent">
+                                <div class="table-scroll-x">
+                                    <table id="socialTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Platform</th>
+                                                <th>Username</th>
+                                                <th class="table-action"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr id="social-row-1">
+                                                <td>
+                                                    <select id="socialplatform-1" onchange="updateSocialPlatforms(this); updateMobileTable(this)" onfocus="this.classList.remove('missing')" required>
+                                                        <option value="">Choose Platform</option>
+                                                        <option value="">No Platform</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <span class="link-header">www.link.com/</span>
+                                                    <input style="padding-left: 110px;" id="sociallink-1" type="text" onfocus="this.classList.remove('missing')" onchange="updateMobileTable(this)" required
+                                                        placeholder="Input here..." />
+                                                </td>
+                                                <td class="table-action">
+                                                    <button type="button" onclick="removeTableRow('socialTable', this)"
+                                                        class="table-add-btn delete"><img src="./assets/icons/trash-icon.svg"
+                                                            alt="X"></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <button type="button" id="addSocialRow" class="table-add-btn"
+                                                        onclick="addTableRow('socialTable', 'social-row-1', 'addSocialRow')">
+                                                        <img src="./assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    
+                                    <table id="socialMobileTable" class="mobile">
+                                        <tbody>
+                                            <tr id="social-mobile-1">
+                                                <td>
+                                                    <div class="row fixed">
+                                                        <h2 id="mobile-socialplatform-1">Tap the edit icon</h2>
+                                                        <div class="mobile-button-group">
+                                                            <button type="button" onclick="removeTableRow('socialTable', document.getElementById('socialTable').getElementsByClassName('table-action')[Number(this.parentElement.parentElement.parentElement.parentElement.id.split('-')[2])].firstElementChild)"><img src="./assets/icons/trash-icon.svg" alt=""></button>
+                                                            <img src="./assets/icons/dot-icon.svg" alt="">
+                                                            <button type="button" onclick="toggleBottomSheet(this.parentElement.parentElement.parentElement.parentElement)"><img src="./assets/icons/edit-icon.svg" alt=""></button>
+                                                        </div>
+                                                    </div>
+                                                    <div id="mobile-sociallink-1" class="mobile-row-desc">...</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <button type="button" class="table-add-btn"
+                                                        onclick="addTableRow('socialTable', 'social-row-1', 'addSocialRow')">
+                                                        <img src="./assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- educational background -->
+                    <div class="form-section grouped" id="section4">
+                        <div class="row sticky-title">
+                            <div class="panel-title">
+                                <h2>Educational Background</h2>
+                                <p>
+                                    Please provide details of your educational history, starting from your most recent
+                                    degree or qualification. Include the school name, study period, and any relevant
+                                    notes. (If you are currently in education, please leave the end period of your latest education as blank)
+                                </p>
+                            </div>
+                            <div data-svg-wrapper style="position: relative">
+                                <img class="company-logo" src="./assets/icons/company-icon.svg" alt="logo">
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="row narrow">
+                                <input type="checkbox" name="educationalBackground" id="hasEduBackground" onchange="toggleSection(this, 'eduContent', 'eduTable')" checked>
+                                <div>I have a previous educational background</div>
+                            </div>
+                            <div class="table-wrapper" id="eduContent">
+                                <div class="table-scroll-x">
+                                    <table id="eduTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Level</th>
+                                                <th>School Name</th>
+                                                <th>Study Period</th>
+                                                <th>Grade</th>
+                                                <th>Upload Document</th>
+                                                <th class="table-action"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr id="edu-row-1">
+                                                <td>
+                                                    <select onchange="updateMobileTable(this); toggleFieldEndDate(this)" style="width:250px" id="level-1" onfocus="this.classList.remove('missing')" required>
+                                                        <option value="">Choose level</option>
+                                                        <option value="">No education levels</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input onchange="updateMobileTable(this)" style="width: 250px;" type="text" placeholder="Input name here..."
+                                                        id="schoolname-1" onfocus="this.classList.remove('missing')" required />
+                                                </td>
+                                                <td>
+                                                    <input onchange="updateMobileTable(this)" class="period-input" type="date" name="" id="edustartperiod-1" onfocus="this.classList.remove('missing')" required>
+                                                    <span>-</span>
+                                                    <input onchange="updateMobileTable(this)" class="period-input" type="date" name="" id="eduendperiod-1" onfocus="this.classList.remove('missing')" required>
+                                                </td>
+                                                <td style="width: 200px;">
+                                                    <input onchange="updateMobileTable(this)" type="number" min="0" placeholder="0" id="remark-1" style="width: 80px;" onfocus="this.classList.remove('missing')" required>
+                                                    <span>/</span>
+                                                    <input onchange="updateMobileTable(this)" type="number" min="0" placeholder="0" id="totalscore-1" style="width: 80px;" onfocus="this.classList.remove('missing')" required>
+                                                </td>
+                                                <td>
+                                                    <div class="file-input-wrapper">
+                                                        <span class="file-name" id="edudocument-name-1">No file
+                                                            chosen</span>
+                                                        <button type="button" class="file-btn" id="edudocument-btn-1"
+                                                            onclick="fileUploadHandler(this)">
+                                                            <img src="./assets/icons/upload-icon.svg" alt="Upload">
+                                                        </button>
+                                                        <input type="file" name="edudocument-1" id="edudocument-1"
+                                                            onchange="fileOnChanged(this)" required
+                                                            accept=".pdf">
+                                                    </div>
+                                                </td>
+                                                <td class="table-action">
+                                                    <button type="button" class="table-add-btn delete"
+                                                        onclick="removeTableRow('eduTable', this)">
+                                                        <img src="./assets/icons/trash-icon.svg" alt="X">
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6">
+                                                    <button type="button" id="addEduRow" class="table-add-btn"
+                                                        onclick="addTableRow('eduTable', 'edu-row-1', 'addEduRow')">
+                                                        <img src="./assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table id="eduMobileTable" class="mobile">
+                                        <tbody>
+                                            <tr id="edu-mobile-1">
+                                                <td>
+                                                    <div class="row fixed">
+                                                        <h2 id="mobile-level-1">Tap the edit icon</h2>
+                                                        <div class="mobile-button-group">
+                                                            <button type="button" onclick="removeTableRow('eduTable', document.getElementById('eduTable').getElementsByClassName('table-action')[Number(this.parentElement.parentElement.parentElement.parentElement.id.split('-')[2])].firstElementChild)"><img src="./assets/icons/trash-icon.svg" alt=""></button>
+                                                            <img src="./assets/icons/dot-icon.svg" alt="">
+                                                            <button type="button" onclick="toggleBottomSheet(this.parentElement.parentElement.parentElement.parentElement)"><img src="./assets/icons/edit-icon.svg" alt=""></button>
+                                                        </div>
+                                                    </div>
+                                                    <div id="mobile-schoolname-1" class="mobile-row-desc">...</div>
+                                                    <div class="row fixed narrow mobile-row-desc">
+                                                        <div id="mobile-edustartperiod-1">...</div>-<div id="mobile-eduendperiod-1">...</div>
+                                                    </div>
+                                                    <div class="row fixed narrow mobile-row-desc">
+                                                        <div id="mobile-remark-1">...</div>/<div id="mobile-totalscore-1">...</div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <button type="button" class="table-add-btn"
+                                                        onclick="addTableRow('eduTable', 'edu-row-1', 'addEduRow')">
+                                                        <img src="./assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Work Experience -->
+                    <div class="form-section grouped" id="section5">
+                        <div class="row sticky-title">
+                            <div class="panel-title">
+                                <h2>Work Experience</h2>
+                                <p>
+                                    Please provide details of your previous work experience. Include your job title,
+                                    company name, employment period, take-home pay, and key job responsibilities. (If you are currently working, please leave the end period of your latest work experience as blank)
+                                </p>
+                            </div>
+                            <img class="company-logo" src="./assets/icons/company-icon.svg" alt="logo">
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="row narrow">
+                                <input type="checkbox" name="workExperience" id="hasWorkExp" onchange="toggleSection(this, 'workExpContent', 'workExpTable')" checked>
+                                <div>I have a previous work experience</div>
+                            </div>
+                            <div class="table-wrapper" id="workExpContent">
+                                <div class="table-scroll-x">
+                                    <table id="workExpTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Working Period</th>
+                                                <th>Company Name</th>
+                                                <th>Job Title</th>
+                                                <th>Take Home Pay</th>
+                                                <th>Job Description</th>
+                                                <th class="table-action"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr id="work-row-1">
+                                                <td>
+                                                    <input onchange="updateMobileTable(this); toggleFieldEndDate(this)" class="period-input" type="date" name="" id="workstartperiod-1" placeholder="Start" required onfocus="this.classList.remove('missing')">
+                                                    <span>-</span>
+                                                    <input onchange="updateMobileTable(this)" class="period-input" type="date" name="" id="workendperiod-1" placeholder="Now" required onfocus="this.classList.remove('missing')">
+                                                </td>
+                                                <td>
+                                                    <input onchange="updateMobileTable(this)" style="width: 200px;" id="company-1" type="text" required onfocus="this.classList.remove('missing')"
+                                                        placeholder="Input here..." />
+                                                </td>
+                                                <td>
+                                                    <input onchange="updateMobileTable(this)" style="width: 200px;" id="jobtitle-1" type="text" required onfocus="this.classList.remove('missing')"
+                                                        placeholder="Input here..." />
+                                                </td>
+                                                <td >
+                                                    Rp
+                                                    <input onchange="updateMobileTable(this)" style="width: 200px;" id="takehomepay-1" type="number" required onfocus="this.classList.remove('missing')"
+                                                        min="0" placeholder="Input here..." />
+                                                </td>
+                                                <td>
+                                                    <textarea onchange="updateMobileTable(this)" style="width: 200px;" maxlength="350" id="jobdesc-1" required onfocus="this.classList.remove('missing')" placeholder="Input here..."></textarea>
+                                                </td>
+                                                <td class="table-action">
+                                                    <button type="button" onclick="removeTableRow('workExpTable', this)"
+                                                        class="table-add-btn delete"><img src="./assets/icons/trash-icon.svg"
+                                                            alt="X"></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6">
+                                                    <button type="button" id="addWorkRow" class="table-add-btn"
+                                                        onclick="addTableRow('workExpTable', 'work-row-1', 'addWorkRow')">
+                                                        <img src="./assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table id="workExpMobileTable" class="mobile">
+                                        <tbody>
+                                            <tr id="work-mobile-1">
+                                                <td>
+                                                    <div class="row fixed">
+                                                        <h2 id="mobile-jobtitle-1">Tap the edit icon</h2>
+                                                        <div class="mobile-button-group">
+                                                            <button type="button" onclick="removeTableRow('workExpTable', document.getElementById('workExpTable').getElementsByClassName('table-action')[Number(this.parentElement.parentElement.parentElement.parentElement.id.split('-')[2])].firstElementChild)"><img src="./assets/icons/trash-icon.svg" alt=""></button>
+                                                            <img src="./assets/icons/dot-icon.svg" alt="">
+                                                            <button type="button" onclick="toggleBottomSheet(this.parentElement.parentElement.parentElement.parentElement)"><img src="./assets/icons/edit-icon.svg" alt=""></button>
+                                                        </div>
+                                                    </div>
+                                                    <div id="mobile-company-1" class="mobile-row-desc">...</div>
+                                                    <div class="row fixed narrow mobile-row-desc">
+                                                        <div id="mobile-workstartperiod-1">...</div>-<div id="mobile-workendperiod-1">...</div>
+                                                    </div>
+                                                    <div class="row fixed narrow mobile-row-desc">
+                                                        Rp
+                                                        <div id="mobile-takehomepay-1">...</div>
+                                                    </div>
+                                                    <div id="mobile-jobdesc-1" class="mobile-row-desc"></div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <button type="button" class="table-add-btn"
+                                                        onclick="addTableRow('workExpTable', 'work-row-1', 'addWorkRow')">
+                                                        <img src="./assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Training -->
+                    <div class="form-section grouped" id="section6">
+                        <div class="row sticky-title">
+                            <div class="panel-title">
+                                <h2>Training</h2>
+                                <p>
+                                    Please list any training or certification programs you have attended. Include the
+                                    training period, institution name, training scope, and a short description.
+                                </p>
+                            </div>
+                            <img class="company-logo" src="./assets/icons/company-icon.svg" alt="logo">
+                        </div>
+
+
+                        <div class="panel-body">
+                            <div class="row narrow">
+                                <input type="checkbox" name="training" id="hasTraining" onchange="toggleSection(this, 'trainingContent', 'trainingTable')" checked>
+                                <div>I have a previous training</div>
+                            </div>
+
+                            <div class="table-wrapper" id="trainingContent">
+                                <div class="table-scroll-x">
+                                    <table id="trainingTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Training Period</th>
+                                                <th>Institute Name</th>
+                                                <th>Scope Training</th>
+                                                <th>Description</th>
+                                                <th>Upload Document</th>
+                                                <th class="table-action"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr id="training-row-1">
+                                                <td>
+                                                    <input onchange="updateMobileTable(this)" type="date" name="" id="trainingstartperiod-1"
+                                                        placeholder="Start" class="period-input" required onfocus="this.classList.remove('missing')">
+                                                    <span>-</span>
+                                                    <input onchange="updateMobileTable(this)" type="date" name="" id="trainingendperiod-1"
+                                                        placeholder="Now" class="period-input" required onfocus="this.classList.remove('missing')">
+                                                </td>
+                                                <td>
+                                                    <input onchange="updateMobileTable(this)" style="width: 200px;" id="institute-1" type="text" required onfocus="this.classList.remove('missing')"
+                                                        placeholder="Input here..." />
+                                                </td>
+                                                <td>
+                                                    <input onchange="updateMobileTable(this)" style="width: 200px;" id="scope-1" type="text" required onfocus="this.classList.remove('missing')"
+                                                        placeholder="Input here..." />
+                                                </td>
+                                                <td>
+                                                    <textarea onchange="updateMobileTable(this)" style="width: 200px;" maxlength="350" id="trainingdesc-1" required onfocus="this.classList.remove('missing')"
+                                                        placeholder="Input here..."></textarea>
+                                                </td>
+                                                <td>
+                                                    <div class="file-input-wrapper" onfocus="this.classList.remove('missing')">
+                                                        <span class="file-name" id="trainingdoc-name-1">No file
+                                                            chosen</span>
+                                                        <button type="button" class="file-btn" id="trainingdoc-btn-1"
+                                                            onclick="fileUploadHandler(this)">
+                                                            <img src="./assets/icons/upload-icon.svg" alt="Upload">
+                                                        </button>
+                                                        <input type="file" name="trainingdoc-1" id="trainingdoc-1"
+                                                            onchange="fileOnChanged(this)" required
+                                                            accept="application/pdf" onfocus="this.classList.remove('missing')">
+                                                    </div>
+                                                    <!-- <input id="trainingdoc-1" type="file" required
+                                                        placeholder="Input here..." /> -->
+                                                </td>
+                                                <td class="table-action">
+                                                    <button type="button"
+                                                        onclick="removeTableRow('trainingTable', this)"
+                                                        class="table-add-btn delete"><img src="./assets/icons/trash-icon.svg"
+                                                            alt="X"></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6">
+                                                    <button type="button" id="addTrainingRow" class="table-add-btn"
+                                                        onclick="addTableRow('trainingTable', 'training-row-1', 'addTrainingRow')">
+                                                        <img src="./assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table id="trainingMobileTable" class="mobile">
+                                        <tbody>
+                                            <tr id="training-mobile-1">
+                                                <td>
+                                                    <div class="row fixed">
+                                                        <h2 id="mobile-scope-1">Tap the edit icon</h2>
+                                                        <div class="mobile-button-group">
+                                                            <button type="button" onclick="removeTableRow('trainingTable', document.getElementById('trainingTable').getElementsByClassName('table-action')[Number(this.parentElement.parentElement.parentElement.parentElement.id.split('-')[2])].firstElementChild)"><img src="./assets/icons/trash-icon.svg" alt=""></button>
+                                                            <img src="./assets/icons/dot-icon.svg" alt="">
+                                                            <button type="button" onclick="toggleBottomSheet(this.parentElement.parentElement.parentElement.parentElement)"><img src="./assets/icons/edit-icon.svg" alt=""></button>
+                                                        </div>
+                                                    </div>
+                                                    <div id="mobile-institute-1" class="mobile-row-desc">...</div>
+                                                    <div class="row fixed narrow mobile-row-desc">
+                                                        <div id="mobile-trainingstartperiod-1">...</div>-<div id="mobile-trainingendperiod-1">...</div>
+                                                    </div>
+                                                    <div id="mobile-trainingdesc-1" class="mobile-row-desc"></div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <button type="button" class="table-add-btn"
+                                                        onclick="addTableRow('trainingTable', 'training-row-1', 'addTrainingRow')">
+                                                        <img src="./assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Job Expectations -->
+                    <div class="form-section" id="section7">
+                        <div class="row sticky-title">
+                            <div class="panel-title">
+                                <h2>Job Expectations</h2>
+                                <p>
+                                    Please share your job preferences, including your expected salary, available
+                                    starting date, and willingness to work outside your current location.
+                                </p>
+                            </div>
+                            <img class="company-logo" src="./assets/icons/company-icon.svg" alt="logo">
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="field">
+                                    <label for="expectedSalary">Expected Salary</label>
+                                    <div class="phone hover">
+                                        <div
+                                            style="margin:0px; padding: 10px; border-right: 1px solid #e5e7eb; font-weight: 500;">
+                                            Rp</div>
+                                        <input type="number" id="expectedSalary" name="expectedSalary" min="0"  placeholder="0"
+                                            required onfocus="this.classList.remove('missing')">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label for="availableDate">Available Starting Date</label>
+                                    <input type="date" name="availableDate" id="availableDate" required onfocus="this.classList.remove('missing')">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="field">
+                                    <label for="cityAssignedConsent">Are you willing to be assigned outside of the city?</label>
+                                    <select name="cityAssignedConsent" id="cityAssignedConsent" required onfocus="this.classList.remove('missing')">
+                                        <option value="">Select</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                                <div class="field">
+                                    <label for="countryAssignedConsent">Are you willing to be assigned outside of the
+                                        country?</label>
+                                    <select name="countryAssignedConsent" id="countryAssignedConsent" required onfocus="this.classList.remove('missing')">
+                                        <option value="">Select</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Health Information -->
+                    <div class="form-section grouped" id="section8">
+                        <div class="row sticky-title">
+                            <div class="panel-title">
+                                <h2>Health Information</h2>
+                                <p>
+                                    Please provide information about any illnesses, medical conditions, or health
+                                    history that may affect your work performance.
+                                </p>
+                            </div>
+                            <img class="company-logo" src="./assets/icons/company-icon.svg" alt="logo">
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="row narrow">
+                                <input type="checkbox" name="health" id="hasHealth" onchange="toggleSection(this, 'healthContent', 'healthTable')" checked>
+                                <div>I have a previous health information</div>
+                            </div>
+                            <div class="table-wrapper" id="healthContent">
+                                <div class="table-scroll-x">
+                                    <table id="healthTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Sickness</th>
+                                                <th>Description</th>
+                                                <th class="table-action"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr id="health-row-1">
+                                                <td>
+                                                    <select onchange="updateMobileTable(this)" id="sick-1" required>
+                                                        <option value="">Choose sickness type</option>
+                                                        <option value="">No sickness type found</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <textarea onchange="updateMobileTable(this)" maxlength="350" id="healthdescription-1" required onfocus="this.classList.remove('missing')"
+                                                        placeholder="Input here..." ></textarea>
+                                                </td>
+                                                <td class="table-action">
+                                                    <button type="button" onclick="removeTableRow('healthTable', this)"
+                                                        class="table-add-btn delete"><img src="./assets/icons/trash-icon.svg"
+                                                            alt="X"></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3">
+                                                    <button type="button" id="addHealthRow" class="table-add-btn"
+                                                        onclick="addTableRow('healthTable', 'health-row-1', 'addHealthRow')">
+                                                        <img src="./assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table id="healthMobileTable" class="mobile">
+                                        <tbody>
+                                            <tr id="health-mobile-1">
+                                                <td>
+                                                    <div class="row fixed">
+                                                        <h2 id="mobile-sick-1">Tap the edit icon</h2>
+                                                        <div class="mobile-button-group">
+                                                            <button type="button" onclick="removeTableRow('healthTable', document.getElementById('healthTable').getElementsByClassName('table-action')[Number(this.parentElement.parentElement.parentElement.parentElement.id.split('-')[2])].firstElementChild)"><img src="./assets/icons/trash-icon.svg" alt=""></button>
+                                                            <img src="./assets/icons/dot-icon.svg" alt="">
+                                                            <button type="button" onclick="toggleBottomSheet(this.parentElement.parentElement.parentElement.parentElement)"><img src="./assets/icons/edit-icon.svg" alt=""></button>
+                                                        </div>
+                                                    </div>
+                                                    <div id="mobile-healthdescription-1" class="mobile-row-desc">...</div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <button type="button" class="table-add-btn"
+                                                        onclick="addTableRow('healthTable', 'health-row-1', 'addHealthRow')">
+                                                        <img src="./assets/icons/plus-icon.svg" alt="+">
+                                                        New Item
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Question -->
+                    <div class="form-section" id="section9">
+                        <div class="row sticky-title">
+                            <div class="panel-title">
+                                <h2>Quick Question</h2>
+                                <p>
+                                    Please answer a few short questions to help us better understand your background and
+                                    application history with PT Kapit Mas.
+                                </p>
+                            </div>
+                            <img class="company-logo" src="./assets/icons/company-icon.svg" alt="logo">
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="row narrow">
+                                <div class="field">
+                                    <label for="Qq1">Are you willing to let us contact your previous employer for
+                                        reference?</label>
+                                    <select name="Qq1" id="Qq1" required onfocus="this.classList.remove('missing')">
+                                        <option value="">Choose an option</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row narrow">
+                                <div class="field">
+                                    <label for="Qq2">Have you ever been involved in any legal case?</label>
+                                    <select name="Qq2" id="Qq2" onchange="toggleField(this, 'Qq2details')" required onfocus="this.classList.remove('missing')">
+                                        <option value="">Choose an option</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row narrow" style="display: none">
+                                <div class="field">
+                                    <label for="Qq2details">Please provide details.</label>
+                                    <textarea maxlength="350" name="Qq2details" id="Qq2details" onfocus="this.classList.remove('missing')"></textarea>
+                                </div>
+                            </div>
+                            <div class="row narrow">
+                                <div class="field">
+                                    <label for="Qq3">Have you previously applied to PT Kapit Mas?</label>
+                                    <select name="Qq3" id="Qq3" required onfocus="this.classList.remove('missing')">
+                                        <option value="">Choose an option</option>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row narrow">
+                                <div class="field">
+                                    <label for="Qq4">Where did you first learn about the job vacancy at PT Kapit
+                                        Mas?</label>
+                                    <select name="Qq4" id="Qq4" onchange="toggleField(this, 'Qq4details')" required onfocus="this.classList.remove('missing')">
+                                        <option value="">Choose an option</option>
+                                        <option value="LinkedIn">LinkedIn</option>
+                                        <option value="Job Street">JobStreet</option>
+                                        <option value="Others">Others</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row narrow" style="display: none;">
+                                <div class="field">
+                                    <label for="Qq4details">Please provide details.</label>
+                                    <textarea maxlength="350" name="Qq4details" id="Qq4details" onfocus="this.classList.remove('missing')"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Attachment -->
+                    <div class="form-section" id="section10">
+                        <div class="row sticky-title">
+                            <div class="panel-title">
+                                <h2>Attachment</h2>
+                                <p>
+                                    Upload your required documents to complete your application. Please include your
+                                    latest CV, academic certificates, and any relevant supporting files.
+                                </p>
+                            </div>
+                            <img class="company-logo" src="./assets/icons/company-icon.svg" alt="logo">
+                        </div>
+
+                        <div class="panel-body">
+                            <div class="row narrow">
+                                <div class="field">
+                                    <label for="recentPhoto">Recent Photo</label>
+                                    <div class="file-input-wrapper" onfocus="this.classList.remove('missing')">
+                                        <span class="file-name" id="recentPhoto-name">No file chosen</span>
+                                        <button type="button" class="file-btn" id="recentPhoto-btn"
+                                            onclick="fileUploadHandler(this, 'recentPhoto-name', 'recentPhoto')">
+                                            <img src="./assets/icons/upload-icon.svg" alt="Upload">
+                                        </button>
+                                        <input type="file" name="recentPhoto" id="recentPhoto"
+                                            onchange="fileOnChanged(this, 'recentPhoto-name', 'recentPhoto-btn')"
+                                            required accept="image/jpg, image/png" onfocus="this.classList.remove('missing')">
+                                    </div>
+                                    <p class="text-secondary">Max. Size 1MB with format .JPG / .PNG</p>
+                                </div>
+                            </div>
+                            <div class="row narrow">
+                                <div class="field">
+                                    <label for="resume">Curriculum Vitae (CV) / Resume</label>
+                                    <div class="file-input-wrapper" onfocus="this.classList.remove('missing')">
+                                        <span class="file-name" id="resume-name">No file chosen</span>
+                                        <button type="button" class="file-btn" id="resume-btn"
+                                            onclick="fileUploadHandler(this, 'resume-name', 'resume')">
+                                            <img src="./assets/icons/upload-icon.svg" alt="Upload">
+                                        </button>
+                                        <input type="file" name="resume" id="resume"
+                                            onchange="fileOnChanged(this, 'resume-name', 'resume-btn')" required
+                                            accept=".pdf" onfocus="this.classList.remove('missing')">
+                                    </div>
+                                    <p class="text-secondary">Max. Size 2MB with format .PDF</p>
+                                </div>
+                            </div>
+                            <div class="row narrow">
+                                <div class="field">
+                                    <div class="row fixed narrow">
+                                        <label for="portofolio">Portofolio</label>
+                                        <p class="text-secondary">(Optional)</p>
+                                    </div>
+                                    <input type="text" id="portofolio" placeholder="Input Link Portofolio">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preview Application -->
+                    <div class="form-section" id="section11">
+                        <div class="row sticky-title">
+                            <div class="panel-title">
+                                <h2>Preview Application</h2>
+                                <p>
+                                    Please review all the information you have provided below to ensure its accuracy
+                                    before submitting your application.
+                                </p>
+                            </div>
+                            <img class="company-logo" src="./assets/icons/company-icon.svg" alt="logo">
+                        </div>
+
+                        <div class="panel-body" id="preview-screen">
+                            <div class="section-preview">
+                                <h3>Job Position</h3>
+                                <h3 class="job-title" id="job_idPrev"></h3>
+                            </div>
+                            <div class="section-preview">
+                                <h3>Personal Information</h3>
+                                <div class="row">
+                                    <div class="field">
+                                        <div class="label">Full Name</div>
+                                        <div class="input-readonly" id="namePrev"></div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="label">Gender</div>
+                                        <div class="input-readonly" id="genderPrev"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <div class="label">Email</div>
+                                        <div class="input-readonly" id="emailPrev"></div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="label">WhatsApp Number</div>
+                                        <div class="phone input-readonly">
+                                            <div id="countryIconPrev" style="width: 50px; height: 100%; padding-left: 10px; align-items: center; display: flex;"></div>
+                                            <div style="display: flex; align-items: center; padding-right: 10px; height:inherit; width: 80px; margin:0px; border-right: 1px solid var(--border); text-align: center; justify-content: center;" id="countryCodePrev"></div>
+                                            <div style="padding-left: 20px;" id="phonePrev"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <div class="label">Place Birth</div>
+                                        <div class="input-readonly" id="birthPlacePrev"></div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="label">Date of Birth</div>
+                                        <div class="input-readonly date" id="dobPrev"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <div class="label">Nationality</div>
+                                        <div class="input-readonly" id="nationalityPrev"></div>
+                                    </div>
+                                    <div class="field"></div>
+                                </div>
+                            </div>
+                            <div class="section-preview" id="hasSocialMediaPrev">
+                                <h3>Social Media</h3>
+                                <div class="table-wrapper">
+                                    <div class="table-scroll-x">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Platform</th>
+                                                    <th>Username</th>
+                                                    <th class="table-action"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr id="socialPrev-1">
+                                                    <td>
+                                                        <div id="socialplatform-1Prev"></div>
+                                                    </td>
+                                                    <td>
+                                                        <div id="sociallink-1Prev"></div>
+                                                    </td>
+                                                    <td class="table-action">
+                                                        <button type="button" class="btn-link" onclick="openTab(this.parentElement.parentElement.querySelector('[id*=sociallink]'))">
+                                                            <img src="./assets/icons/new-tab-icon.svg" alt="View">
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <table class="mobile">
+                                            <tr id="socialPrev-mobile-1">
+                                                <td>
+                                                    <h2 id="mobile-socialplatform-1Prev">Platform</h2>
+                                                    <div id="mobile-sociallink-1Prev" class="mobile-row-desc">...</div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-preview" id="hasEduBackgroundPrev">
+                                <h3>Educational Background</h3>
+                                <div class="table-wrapper">
+                                    <div class="table-scroll-x">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Level</th>
+                                                    <th>School Name</th>
+                                                    <th>Study Period</th>
+                                                    <th>Remarks</th>
+                                                    <th>Document</th>
+                                                    <th class="table-action"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr id="eduPrev-1">
+                                                    <td>
+                                                        <div id="level-1Prev"></div>
+                                                    </td>
+                                                    <td>
+                                                        <div id="schoolname-1Prev"></div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cell-row">
+                                                            <div class="date" id="edustartperiod-1Prev"></div>
+                                                            <span>-</span>
+                                                            <div class="date" id="eduendperiod-1Prev"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cell-row">
+                                                            <div class="numeral" id="remark-1Prev"></div>
+                                                            <span>/</span>
+                                                            <div class="numeral" id="totalscore-1Prev"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div id="edudocument-1Prev"></div>
+                                                    </td>
+                                                    <td class="table-action">
+                                                        <button type="button" class="btn-link" onclick="openTab(formData[`edu`][Number(this.parentElement.parentElement.id.split('-')[1])]['edudocument']['file'])">
+                                                            <img src="./assets/icons/new-tab-icon.svg" alt="View">
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <table class="mobile">
+                                        <tbody>
+                                            <tr id="eduPrev-mobile-1">
+                                                <td>
+                                                    <h2 id="mobile-level-1Prev">Education Level</h2>
+                                                    <div id="mobile-schoolname-1Prev" class="mobile-row-desc">...</div>
+                                                    <div class="row fixed narrow mobile-row-desc">
+                                                        <div id="mobile-edustartperiod-1Prev">...</div>-<div id="mobile-eduendperiod-1Prev">...</div>
+                                                    </div>
+                                                    <div class="row fixed narrow mobile-row-desc">
+                                                        <div id="mobile-remark-1Prev">...</div>/<div id="mobile-totalscore-1Prev">...</div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-preview" id="hasWorkExpPrev">
+                                <h3>Work Experience</h3>
+                                <div class="table-wrapper">
+                                    <div class="table-scroll-x">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Working Period</th>
+                                                    <th>Company Name</th>
+                                                    <th>Job Title</th>
+                                                    <th>Take Home Pay</th>
+                                                    <th>Job Description</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr id="workExpPrev-1">
+                                                    <td>
+                                                        <div class="cell-row">
+                                                            <div class="date" id="workstartperiod-1Prev"></div>
+                                                            <span>-</span>
+                                                            <div class="date" id="workendperiod-1Prev"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div id="company-1Prev"></div>
+                                                    </td>
+                                                    <td>
+                                                        <div id="jobtitle-1Prev"></div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cell-row">
+                                                            Rp
+                                                            <div class="numeral" id="takehomepay-1Prev"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td style="max-width:200px;">
+                                                        <div id="jobdesc-1Prev"></div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <table class="mobile">
+                                            <tbody>
+                                                <tr id="workExpPrev-mobile-1">
+                                                    <td>
+                                                        <h2 id="mobile-jobtitle-1Prev">Work Experience</h2>
+                                                        <div id="mobile-company-1Prev" class="mobile-row-desc">...</div>
+                                                        <div class="row fixed narrow mobile-row-desc">
+                                                            <div id="mobile-workstartperiod-1Prev">...</div>-<div id="mobile-workendperiod-1Prev">...</div>
+                                                        </div>
+                                                        <div class="row fixed narrow mobile-row-desc">
+                                                            Rp
+                                                            <div id="mobile-takehomepay-1Prev">...</div>
+                                                        </div>
+                                                        <div id="mobile-jobdesc-1Prev" class="mobile-row-desc"></div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-preview" id="hasTrainingPrev">
+                                <h3>Training</h3>
+                                <div class="table-wrapper">
+                                    <div class="table-scroll-x">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Training Period</th>
+                                                    <th>Institute Name</th>
+                                                    <th>Scope Training</th>
+                                                    <th>Description</th>
+                                                    <th>Document</th>
+                                                    <th class="table-action"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr id="trainingPrev-1">
+                                                    <td style="width: 300px;"><div class="cell-row"><div class="date" id="trainingstartperiod-1Prev"></div> - <div class="date" id="trainingendperiod-1Prev"></div></div></td>
+                                                    <td style="width: 200px;"><div id="institute-1Prev"></div></td>
+                                                    <td style="width: 200px;"><div id="scope-1Prev"></div></td>
+                                                    <td style="width: 400px;"><div id="trainingdesc-1Prev"></div></td>
+                                                    <td style="width: 100px;"><div id="trainingdoc-1Prev"></div></td>
+                                                    <td class="table-action">
+                                                        <button type="button" class="btn-link" onclick="openTab(formData[`training`][Number(this.parentElement.parentElement.id.split('-')[1])]['trainingdoc']['file'])">
+                                                            <img src="./assets/icons/new-tab-icon.svg" alt="View">
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <table class="mobile">
+                                            <tbody>
+                                                <tr id="trainingPrev-mobile-1">
+                                                    <td>
+                                                        <h2 id="mobile-scope-1Prev">Training</h2>
+                                                        <div id="mobile-institute-1Prev" class="mobile-row-desc">...</div>
+                                                        <div class="row fixed narrow mobile-row-desc">
+                                                            <div id="mobile-trainingstartperiod-1Prev">...</div>-<div id="mobile-trainingendperiod-1Prev">...</div>
+                                                        </div>
+                                                        <div id="mobile-trainingdesc-1Prev" class="mobile-row-desc"></div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-preview" id="jobExpectationPrev">
+                                <h3>Job Expectations</h3>
+                                <div class="row">
+                                    <div class="field">
+                                        <div class="label">Expected Salary</div>
+                                        <div class="phone input-readonly">
+                                            <div style="display: flex; align-items: center; padding-right: 10px; height:inherit; width: 70px; margin:0px; border-right: 1px solid var(--border); text-align: center; justify-content: center;">Rp</div>
+                                            <div style="padding-left: 20px;" class="numeral" id="expectedSalaryPrev"></div>
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="label">Available Starting Date</div>
+                                        <div class="input-readonly date" id="availableDatePrev"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <div class="label">Are you willing to be assigned outside the city?</div>
+                                        <div class="input-readonly" id="cityAssignedConsentPrev"></div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="label">Are you willing to be assigned outside the country?</div>
+                                        <div class="input-readonly" id="countryAssignedConsentPrev"></div>                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-preview" id="hasHealthPrev">
+                                <h3>Health Information</h3>
+                                <div class="table-wrapper">
+                                    <div class="table-scroll-x">
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Sick</th>
+                                                    <th>Description</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr id="healthPrev-1">
+                                                    <td><div id="sick-1Prev"></div></td>
+                                                    <td style="max-width:500px;"><div id="healthdescription-1Prev"></div></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                        <table class="mobile">
+                                            <tbody>
+                                                <tr id="healthPrev-mobile-1">
+                                                    <td>
+                                                        <h2 id="mobile-sick-1Prev">Health</h2>
+                                                        <div id="mobile-healthdescription-1Prev" class="mobile-row-desc">...</div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-preview" id="quickQuestionPrev">
+                                <h3>Quick Question</h3>
+                                <div class="row">
+                                    <div class="field">
+                                        <div class="label">Are you willing to let us contact your previous employer for reference?</div>
+                                        <div class="input-readonly" id="Qq1Prev"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <div class="label">Have you ever been involved in any legal case?</div>
+                                        <div class="input-readonly" id="Qq2Prev"></div>
+                                    </div>
+                                </div>
+                                <div class="row" style="display: none;">
+                                    <div class="field">
+                                        <div class="label">Please provide details.</div>
+                                        <div class="input-readonly" id="Qq2detailsPrev" style="height: 100px; text-wrap-mode: wrap; overflow-x: hidden; overflow-y: scroll;"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <div class="label">Have you previously applied to PT Kapit Mas?</div>
+                                        <div class="input-readonly" id="Qq3Prev"></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="field">
+                                        <div class="label">Where did you first learn about the job vacancy at PT Kapit Mas?</div>
+                                        <div class="input-readonly" id="Qq4Prev"></div>
+                                    </div>
+                                </div>
+                                <div class="row" style="display:none;">
+                                    <div class="field">
+                                        <div class="label">Please provide details.</div>
+                                        <div class="input-readonly" style="height: 100px; text-wrap-mode: wrap; overflow-x: hidden; overflow-y: scroll;" id="Qq4detailsPrev"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-preview" id="attachmentsPrev">
+                                <h3>Attachments</h3>
+                                <div class="row fixed">
+                                    <div class="field">
+                                        <div class="label">Recent Photo</div>
+                                        <div class="input-readonly clip row fixed">
+                                            <div id="recentPhotoPrev"></div>
+                                            <button type="button" class="btn-link" onclick="openTab(formData['recentPhoto']['file'])">
+                                                <img src="./assets/icons/new-tab-icon.svg" alt="View">
+                                            </button>
+                                        </div>
+                                        <p class="text-secondary">Max. Size 1MB with format .JPG / .PNG</p>
+                                    </div>
+                                </div>
+                                <div class="row fixed">
+                                    <div class="field">
+                                        <div class="label">Curriculum Vitae (CV) / Resume</div>
+                                        <div class="input-readonly clip row fixed">
+                                            <div id="resumePrev"></div>
+                                            <button type="button" class="btn-link" onclick="openTab(formData['resume']['file'])">
+                                                <img src="./assets/icons/new-tab-icon.svg" alt="View">
+                                            </button>
+                                        </div>
+                                        <p class="text-secondary">Max. Size 2MB with format .PDF</p>
+                                    </div>
+                                </div>
+                                <div class="row fixed">
+                                    <div class="field">
+                                        <div class="row fixed narrow">
+                                            <div class="label">Portofolio</div>
+                                            <p class="text-secondary">(Optional)</p>
+                                        </div>
+                                        <div class="input-readonly clip row fixed">
+                                            <div id="portofolioPrev"></div>
+                                            <button type="button" class="btn-link" onclick="openTab(formData['portofolio'])">
+                                                <img src="./assets/icons/new-tab-icon.svg" alt="View">
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="presubmit-confirmation">
+                                <h3>Confirmation</h3>
+                                <p>I hereby declare and certify that all information and documents submitted in this form are true, complete, and accurate to the best of my knowledge. I understand that any misrepresentation, falsification, or omission of information may result in disqualification from the recruitment process or termination of employment. I voluntarily consent to the collection, processing, and use of my personal data for recruitment and employment purposes under PT. Kapit Mas in accordance with applicable laws and regulations.</p>
+                                <div class="row fixed">
+                                    <input type="checkbox" name="confirmation-agreement" id="confirmation-agreement" />
+                                    <p>By checking the consent box provided, I confirm that I have read, understood, and agreed to all the statements above without any coercion from any party.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- buttons -->
+                    <div class="row" id="buttonGroup">
+                        <button class="btn" type="button" id="applyBtn" style="display: none;" onclick="selectJobPosition(selectedJob)">Apply</button>
+                        <button class="btn-outline" type="button" id="prevBtn" onclick="changeStep(-1)"
+                            style="display: none;" aria-label="Go to previous step">Previous</button>
+                        <button class="btn" type="button" id="nextBtn" style="display: none;" onclick="changeStep(1)" aria-label="Go to next step" disabled>Next</button>
+                        <button class="btn" type="button" style="display: none;" onclick="checkForm(this.parentElement.parentElement)" id="submitBtn" aria-label="Submit application" disabled>Submit</button>
+                    </div>
+                </div>
+
+            </form>
+            
+        </div>
+    </div>
+
+    <button onclick="toggleBottomSheet()" id="background" class="background"></button>
+    
+    <!-- bottom sheet -->
+    <div id="bottom-sheet" class="bottom-sheet">
+        <div class="sheet-grabber">
+            <img src="./assets/icons/grabber-icon.svg" alt="-">
+        </div>
+        <div class="sheet-body"></div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="api-utils.js"></script>
+    <script src="form-loader.js"></script>
+
+</body>
+
+</html>
