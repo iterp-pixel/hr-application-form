@@ -56,9 +56,16 @@ document.getElementById("splash-screen").addEventListener("animationend", () => 
     document.getElementById('sidebar').classList.add('active');
     document.getElementById('applicationForm').style.display = 'block';
 
-    if (localStorage.getItem("formData")) {
-        document.getElementById('restoreForm').style.display = 'block';
-        document.querySelector('.layout').style.display = 'none';
+    if (localStorage.getItem("formData") && localStorage.getItem("timestamp")) {
+        var timestamp = localStorage.getItem("timestamp");
+        var mark = new Date().setDate(new Date(Date.now()).getDate() - 30);
+        if (Date.parse(timestamp) < mark) {
+            localStorage.clear();
+            fetchData();
+        } else {
+            document.getElementById('restoreForm').style.display = 'block';
+            document.querySelector('.layout').style.display = 'none';
+        }
     } else {
         fetchData();
     }
@@ -678,6 +685,7 @@ function saveFormData() {
     // saving to localStorage everytime user clicks next
     var formCatalyst = cleanDataStructure(formData);
     localStorage.setItem('formData', JSON.stringify(formCatalyst));
+    localStorage.setItem('timestamp', new Date().toISOString());
 }
 
 // clearing attachment input before putting in localStorage
@@ -1186,16 +1194,18 @@ function submitForm() {
     submitBtn.innerHTML = '<div class="loading-icon" style="width:30px;height:30px;border-width:3px"></div>';
     notificationHandler("Submitting your application...");
     submitApplication(formSubmit).then((res) => {
-        // document.getElementsByClassName('page')[0].classList.add('complete');
-        // document.getElementById('success-panel').style.display = 'block';
-        // document.getElementById('topbar').style.display = 'none';
-        // document.getElementById('sidebar').style.display = 'none';
-        // document.getElementById('applicationForm').style.display = 'none';
+        if (res[0] != null && res[0].state == "reject") throw new Error(JSON.stringify(res));
+        document.getElementsByClassName('page')[0].classList.add('complete');
+        document.getElementById('success-panel').style.display = 'block';
+        document.getElementById('topbar').style.display = 'none';
+        document.getElementById('sidebar').style.display = 'none';
+        document.getElementById('applicationForm').style.display = 'none';
         submitBtn.innerHTML = "Submit";
         submitBtn.disabled = false;
 
-        // localStorage.clear();
-    }).catch(() => {
+        localStorage.clear();
+    }).catch((e) => {
+        if (e.message.includes("reject")) notificationHandler(e.message.split('"')[3], "error");
         submitBtn.innerHTML = "Submit";
         submitBtn.disabled = false;
     })

@@ -11,9 +11,6 @@ async function apiRequest(url, options = {}) {
     try {
         const response = await fetch(url, {
             ...options,
-            // headers: {
-            //     'X-Odoo-Database': 'KAPITMAS_DEMO',
-            // }
         });
 
         clearTimeout(timeoutId);
@@ -101,7 +98,7 @@ async function checkApplicant(formCheck, jobId) {
     formCheck.set("job_id", jobId);
     formCheck.set("name", document.getElementById('name').value);
     formCheck.set("email", document.getElementById('email').value);
-    formCheck.set("phone", `(${document.getElementById('countryCode').value}) ${document.getElementById('phone').value}`);
+    formCheck.set("phone", `(+${document.getElementById('countryCode').value}) ${document.getElementById('phone').value}`);
     try {
         const response = await apiRequest('/check', {
             method: 'POST',
@@ -161,7 +158,12 @@ async function submitApplication(formData) {
         
         return response;
     } catch(error) {
-        notificationHandler(`Submission failed: ${error.message.includes('429') ? 'Too many attempts, please try again later' : error.message}`, 'error');
+        let errorMessage = "Please try again later";
+        if (error.message.includes('429')) errorMessage = "Too many attempts, please try again later";
+
+        console.log(error);
+
+        notificationHandler(`Submission failed: ${errorMessage}`, 'error');
         throw error;
     }
 }

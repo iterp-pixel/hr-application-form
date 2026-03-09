@@ -2,12 +2,24 @@ const express = require('express');
 const { check, validationResult } = require('express-validator');
 const multer = require('multer');
 const isBase64 = require('is-base64');
-const rateLimit = require('express-rate-limit');
+const cors = require('cors');
+
+const helmet = require('helmet');
+const { rateLimit } = require('express-rate-limit');
 
 const phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
-const upload = multer({ limits: { fieldSize: 2 * 1024 * 1024, fileSize: 2 * 1024 * 1024 }});
+const upload = multer({
+    limits: { fieldSize: 2 * 1024 * 1024, fileSize: 2 * 1024 * 1024 },
+    fileFilter: (req, file, cb) => {
+        const allowed = ['image/jpeg', 'image/png', 'application/pdf'];
+        if (!allowed.includes(file.mimetype)) {
+            return cb(new Error('Invalid file type'));
+        }
+        cb(null, true);
+    }
+    });
 const app = express();
-const port = 80;
+const port = 8000;
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // attempts
@@ -16,11 +28,28 @@ const limiter = rateLimit({
 
 process.loadEnvFile('.env');
 
-app.use(express.json());
+app.set('trust proxy', '127.0.0.1');
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "https://unpkg.com"],
+            scriptSrcAttr: ["'self'", "'unsafe-inline'"],
+            connectSrc: ["'self'"],
+            imgSrc: ["'self'", "https:", "data:"],
+        }
+    }
+}));
+app.use(cors({
+    origin: [`${process.env.ORIGIN}`],
+    method: ["GET", "POST"]
+}));
+app.use(express.json({ limit: "1mb" }));
 app.use(upload.array());
 app.use('/api/', limiter);
 app.use('/check', limiter);
 app.use('/apply', limiter);
+app.use(limiter);
 
 app.use(express.static('public'))
 
@@ -75,23 +104,38 @@ app.post('/check', [
     check('job_id', 'Invalid job position').isNumeric().trim().escape(),
     check('name', 'Name must be less than 200 characters').isLength({max: 200}).trim().escape(),
     check('email', 'Email is not valid').isEmail().normalizeEmail(),
-    check('phone', 'Phone number is not valid').isString().trim().escape(),
+    check('phone').custom((value) => {
+        let valid;
+        try {
+            const number = phoneUtil.parse(value);
+            valid = phoneUtil.isValidNumber(number);
+        } catch (error) {
+            console.log(error);
+            throw new Error("Error when parsing phone number, please re-check");
+        }
+        if (!valid) throw new Error("Phone number is not valid");
+        return true;
+    }).trim().escape(),
 ], async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        var errorList = errors["errors"];
-        return res.json({ errors:  errorList.map((e) => [e["value"], e["msg"]])});
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            var errorList = errors["errors"];
+            return res.json({ errors:  errorList.map((e) => [e["value"], e["msg"]])});
+        }
+        const request = req.body;
+        const formData = new FormData;
+    
+        Object.entries(request).forEach((e) => {
+            formData.set(e[0], e[1]);
+        })
+    
+        const result = await checkApplicant(formData);
+    
+        res.send(result);
+    } catch {
+        res.status(500).json({error: "Internal server error"});
     }
-    const request = req.body;
-    const formData = new FormData;
-
-    Object.entries(request).forEach((e) => {
-        formData.set(e[0], e[1]);
-    })
-
-    const result = await checkApplicant(formData);
-
-    res.send(result);
 })
 
 // form submission
@@ -102,8 +146,8 @@ app.post('/apply', [
     check('phone').custom((value) => {
         let valid;
         try {
-            console.log(value);
-            valid = phoneUtil.parse(value).values_[2];
+            const number = phoneUtil.parse(value);
+            valid = phoneUtil.isValidNumber(number);
         } catch {
             throw new Error("Error when parsing phone number, please re-check");
         }
@@ -172,7 +216,7 @@ app.post('/apply', [
             }
             if (!Number.isFinite(Number.parseFloat(e.remark)) || !Number.isFinite(Number.parseFloat(e.max_remark))) throw new Error("Invalid grade");
             if (Number.parseFloat(e.remark) > Number.parseFloat(e.max_remark)) throw new Error("Grade cannot be bigger than max grade");
-            if (e.document === "" || !isBase64(e.document) || typeof e.mime_type != "string" || typeof e.file_name != "string" || e.mime_type == "" || e.file_name == "") throw new Error("Invalid education document");
+            if (e.document === "" || Buffer.byteLength(e.document, 'base64') > 2 * 1024 * 1024 || !isBase64(e.document) || typeof e.mime_type != "string" || typeof e.file_name != "string" || e.mime_type == "" || e.file_name == "") throw new Error("Invalid education document");
         })
 
         return true;
@@ -255,7 +299,7 @@ app.post('/apply', [
             if (!/^\d{4}\/\d{2}\/\d{2}$/.test(e.start)) throw new Error("Invalid training start date");
             if (!/^\d{4}\/\d{2}\/\d{2}$/.test(e.end)) throw new Error("Invalid training end date");
             if (Date.parse(e.start) > Date.parse(e.end)) throw new Error("Training start date cannot be bigger than end date");
-            if (e.document === "" || !isBase64(e.document) || typeof e.mime_type != "string" || typeof e.file_name != "string" || e.mime_type == "" || e.file_name == "") throw new Error("Invalid education document");
+            if (e.document === "" || Buffer.byteLength(e.document, 'base64') > 2 * 1024 * 1024 || !isBase64(e.document) || typeof e.mime_type != "string" || typeof e.file_name != "string" || e.mime_type == "" || e.file_name == "") throw new Error("Invalid education document");
         })
 
         return true;
@@ -317,7 +361,7 @@ app.post('/apply', [
             throw new Error("Invalid resume");
         }
         // console.log(data);
-        if (!isBase64(data.document)) throw new Error("Invalid resume document");
+        if (Buffer.byteLength(data.document, 'base64') > 2 * 1024 * 1024 || !isBase64(data.document)) throw new Error("Invalid resume document");
         if (typeof data.mime_type != "string") throw new Error("Invalid resume mime type");
         if (typeof data.file_name != "string") throw new Error("Invalid resume file name");
 
@@ -335,40 +379,43 @@ app.post('/apply', [
     }),
     check('portofolio', 'Portofolio is not valid').isString().trim().escape(),
 ], async (req, res) => {
-    let response;
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        var errorList = errors["errors"];
-        return res.json({ errors:  errorList.map((e) => [e["value"], e["msg"]])});
+    try {
+        let response;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            var errorList = errors["errors"];
+            return res.json({ errors:  errorList.map((e) => [e["value"], e["msg"]])});
+        }
+        const request = req.body;
+        const formData = new FormData;
+        const applicantData = new FormData;
+        applicantData.append('job_id', request.job_id);
+        applicantData.append('name', request.name);
+        applicantData.append('email', request.email);
+        applicantData.append('phone', request.phone);
+    
+        Object.entries(request).forEach((e) => {
+            formData.set(e[0], e[1]);
+        })
+    
+        // recheck applicant before applying
+        const check = await checkApplicant(applicantData);
+    
+        if (check != null && Array.isArray(check) && check[0].state == "allow") {
+            response = await fetch(`${process.env.SERVER_BASE}/applicant/apply`, {
+                method: 'POST',
+                body: formData,
+            });
+        } else if (Array.isArray(check)) {
+            return res.send(check);
+        }
+    
+        const result = await response.json();
+    
+        res.send(result);
+    } catch {
+        res.status(500).json({error: "Internal server error"});
     }
-    const request = req.body;
-    const formData = new FormData;
-    const applicantData = new FormData;
-    applicantData.append('job_id', request.job_id);
-    applicantData.append('name', request.name);
-    applicantData.append('email', request.email);
-    applicantData.append('phone', request.phone);
-
-    Object.entries(request).forEach((e) => {
-        formData.set(e[0], e[1]);
-    })
-
-    // recheck applicant before applying
-    console.log(applicantData);
-    const check = await checkApplicant(applicantData);
-
-    if (check != null && Array.isArray(check) && check[0].state == "allow") {
-        response = await fetch(`${process.env.SERVER_BASE}/applicant/apply`, {
-            method: 'POST',
-            body: formData,
-        });
-    } else {
-        throw new Error(check[0].message);
-    }
-
-    const result = await response.json();
-
-    res.send(result);
 })
 
 app.listen(port, '0.0.0.0', () => {
