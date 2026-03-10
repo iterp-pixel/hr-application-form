@@ -72,32 +72,26 @@ async function checkApplicant(formData) {
     return await response.json();
 }
 
+async function fetchApi(url, res) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error();
+        res.send(await response.text());
+    } catch {
+        res.status(500).json({error: "Internal Server Error"});
+    }
+}
+
 // api fetch calls
-app.get('/api/countries', async (req, res) => {
-    const response = await fetch(`${process.env.SERVER_BASE}/applicant/res_country`);
-    res.send(await response.text());
-})
+app.post('/api/countries', async (req, res) => fetchApi(`${process.env.SERVER_BASE}/applicant/res_country`, res))
 
-app.get('/api/jobs', async (req, res) => {
-    const response = await fetch(`${process.env.SERVER_BASE}/applicant/jobs_list`);
-    res.send(await response.text());
-})
+app.post('/api/jobs', async (req, res) => fetchApi(`${process.env.SERVER_BASE}/applicant/jobs_list`, res))
 
-app.get('/api/socials', async (req, res) => {
-    const response = await fetch(`${process.env.SERVER_BASE}/applicant/utm_list`);
-    res.send(await response.text());
-})
+app.post('/api/socials', async (req, res) => fetchApi(`${process.env.SERVER_BASE}/applicant/utm_list`, res))
 
-app.get('/api/educations', async (req, res) => {
-    const response = await fetch(`${process.env.SERVER_BASE}/applicant/education_level`);
-    res.send(await response.text());
-})
+app.post('/api/educations', async (req, res) => fetchApi(`${process.env.SERVER_BASE}/applicant/education_level`, res))
 
-app.get('/api/medicals', async (req, res) => {
-    const response = await fetch(`${process.env.SERVER_BASE}/applicant/medical_list`);
-    res.send(await response.text());
-})
-
+app.post('/api/medicals', async (req, res) => fetchApi(`${process.env.SERVER_BASE}/applicant/medical_list`, res))
 
 // check applicant
 app.post('/check', [
@@ -417,6 +411,9 @@ app.post('/apply', [
         res.status(500).json({error: "Internal server error"});
     }
 })
+
+// redirecto if invalid route given
+app.use((req, res) => res.redirect('/'));
 
 app.listen(port, '0.0.0.0', () => {
     console.log(`Listening in port ${port}`);
