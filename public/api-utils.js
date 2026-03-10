@@ -43,7 +43,7 @@ async function apiRequest(url, options = {}) {
 async function fetchJobList() {
     try {
         return await apiRequest('/api/jobs', {
-            method: 'GET',
+            method: 'POST',
         });
     } catch(e) {
         notificationHandler(`Failed to load job listings${e.message.includes('429') ? ', too many request attempts' : ''}. Please try again later.`, 'error');
@@ -53,7 +53,7 @@ async function fetchJobList() {
 async function fetchCountryCode() {
     try {
         return await apiRequest('/api/countries', {
-            method: 'GET',
+            method: 'POST',
         });
     } catch(e) {
         notificationHandler(`Failed to load country list${e.message.includes('429') ? ', too many request attempts' : ''}. Please try again later.`, 'error');
@@ -63,7 +63,7 @@ async function fetchCountryCode() {
 async function fetchEducationLevel() {
     try {
         return await apiRequest('/api/educations', {
-            method: 'GET',
+            method: 'POST',
         });
     } catch(e) {
         notificationHandler(`Failed to load education levels${e.message.includes('429') ? ', too many request attempts' : ''}. Please try again later.`, 'error');
@@ -73,7 +73,7 @@ async function fetchEducationLevel() {
 async function fetchSocialPlatform() {
     try {
         return await apiRequest('/api/socials', {
-            method: 'GET',
+            method: 'POST',
         });
     } catch(e) {
         notificationHandler(`Failed to load social media platforms${e.message.includes('429') ? ', too many request attempts' : ''}. Please try again later.`, 'error');
@@ -83,7 +83,7 @@ async function fetchSocialPlatform() {
 async function fetchMedicalList() {
     try {
         return await apiRequest('/api/medicals', {
-            method: 'GET',
+            method: 'POST',
         });
     } catch(e) {
         notificationHandler(`Failed to load medical condition list${e.message.includes('429') ? ', too many request attempts' : ''}. Please try again later.`, 'error');
