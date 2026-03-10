@@ -1074,6 +1074,10 @@ h3 {
   display: none;
 }
 
+svg {
+  overflow: clip;
+}
+
 @keyframes slideUp {
   from {
     transform: translateY(500px);
@@ -1141,6 +1145,7 @@ h3 {
   .mobile-button-group {
     display: flex;
     flex-direction: row;
+    align-items: center;
   }
 
   tr {    
