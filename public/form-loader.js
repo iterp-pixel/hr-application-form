@@ -213,8 +213,8 @@ function changeCountryIcon() {
     const country = countryList.find(c => c['country_code'] === selectedCode);
     const flag = country?.['country_flag'] ?? '';
 
-    countryIcon.innerHTML = `<img width="100%" src="${flag}" alt='' />`;
-    countryIconPrev.innerHTML = `<img width="100%" src="${flag}" alt='' />`;
+    countryIcon.innerHTML = `<img width="100%" src="data:image/png;base64,${flag}" alt='' />`;
+    countryIconPrev.innerHTML = `<img width="100%" src="data:image/png;base64,${flag}" alt='' />`;
 }
 
 // section checkboxes
