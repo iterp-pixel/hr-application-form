@@ -1,2 +1,5 @@
 debug.js
 debug.html
+*.env
+node_modules
+country_list.json

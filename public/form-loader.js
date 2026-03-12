@@ -56,9 +56,16 @@ document.getElementById("splash-screen").addEventListener("animationend", () => 
     document.getElementById('sidebar').classList.add('active');
     document.getElementById('applicationForm').style.display = 'block';
 
-    if (localStorage.getItem("formData")) {
-        document.getElementById('restoreForm').style.display = 'block';
-        document.querySelector('.layout').style.display = 'none';
+    if (localStorage.getItem("formData") && localStorage.getItem("timestamp")) {
+        var timestamp = localStorage.getItem("timestamp");
+        var mark = new Date().setDate(new Date(Date.now()).getDate() - 30);
+        if (Date.parse(timestamp) < mark) {
+            localStorage.clear();
+            fetchData();
+        } else {
+            document.getElementById('restoreForm').style.display = 'block';
+            document.querySelector('.layout').style.display = 'none';
+        }
     } else {
         fetchData();
     }
@@ -91,9 +98,7 @@ function fetchData() {
                 nationalityList.value = formData["countryCode"];
             };
         }
-    }).catch(() => {
-        notificationHandler(`Country; Could not fetch data`, "error");
-    });
+    }).catch(() => {});
 
     fetchJobList().then((response) => {
         const data = JSON.parse(response)['open_jobs'];
@@ -121,7 +126,6 @@ function fetchData() {
     }).catch(() => {
         document.getElementById('loading-job-display').style.display = 'none';
         document.getElementById('no-job-display').style.display = 'flex';
-        notificationHandler(`Jobs; Could not fetch data`, "error");
     });
 
     fetchEducationLevel().then((response) => {
@@ -149,9 +153,7 @@ function fetchData() {
             
             toggleFieldEndDate(document.getElementById('level-1'));
         };
-    }).catch(() => {
-        notificationHandler(`Education; Could not fetch data`, "error");
-    })
+    }).catch(() => {})
 
     fetchSocialPlatform().then((response) => {
         const data = JSON.parse(response)["utm_list"];    
@@ -177,9 +179,7 @@ function fetchData() {
                 updateMobileTable(socialElement);
             })
         };
-    }).catch(() => {
-        notificationHandler(`Platforms; Could not fetch data`, "error");
-    })
+    }).catch(() => {})
 
     fetchMedicalList().then((response) => {
         const data = JSON.parse(response)["medical_type"];
@@ -204,9 +204,7 @@ function fetchData() {
                 updateMobileTable(healthElement);
             })
         };
-    }).catch(() => {
-        notificationHandler(`Medical; Could not fetch data`, "error");
-    })
+    }).catch(() => {})
 }
 
 // on phone country code change function to change the ui flag icon
@@ -215,8 +213,8 @@ function changeCountryIcon() {
     const country = countryList.find(c => c['country_code'] === selectedCode);
     const flag = country?.['country_flag'] ?? '';
 
-    countryIcon.innerHTML = `<img width="100%" src="${flag}" alt='' />`;
-    countryIconPrev.innerHTML = `<img width="100%" src="${flag}" alt='' />`;
+    countryIcon.innerHTML = `<img width="100%" src="data:image/png;base64,${flag}" alt='' />`;
+    countryIconPrev.innerHTML = `<img width="100%" src="data:image/png;base64,${flag}" alt='' />`;
 }
 
 // section checkboxes
@@ -478,10 +476,12 @@ async function sectionValidator(step) {
             }    
 
             nextBtn.innerHTML = '<div class="loading-icon" style="width:30px;height:30px;border-width:3px"></div>';
+            nextBtn.disabled = true;
             
             // check applicant if previously applied
             hasInvalidField = checkApplicant(formCheck, formData['job_id']).then((response) => {
                 nextBtn.innerHTML = 'Next';
+                nextBtn.disabled = false;
                 if (response["state"] === "allow") {
                     notificationHandler(response["message"], "info");
                     return false;
@@ -685,6 +685,7 @@ function saveFormData() {
     // saving to localStorage everytime user clicks next
     var formCatalyst = cleanDataStructure(formData);
     localStorage.setItem('formData', JSON.stringify(formCatalyst));
+    localStorage.setItem('timestamp', new Date().toISOString());
 }
 
 // clearing attachment input before putting in localStorage
@@ -1193,14 +1194,18 @@ function submitForm() {
     submitBtn.innerHTML = '<div class="loading-icon" style="width:30px;height:30px;border-width:3px"></div>';
     notificationHandler("Submitting your application...");
     submitApplication(formSubmit).then((res) => {
+        if (res[0] != null && res[0].state == "reject") throw new Error(JSON.stringify(res));
         document.getElementsByClassName('page')[0].classList.add('complete');
         document.getElementById('success-panel').style.display = 'block';
         document.getElementById('topbar').style.display = 'none';
         document.getElementById('sidebar').style.display = 'none';
         document.getElementById('applicationForm').style.display = 'none';
+        submitBtn.innerHTML = "Submit";
+        submitBtn.disabled = false;
 
         localStorage.clear();
-    }).catch(() => {
+    }).catch((e) => {
+        if (e.message.includes("reject")) notificationHandler(e.message.split('"')[3], "error");
         submitBtn.innerHTML = "Submit";
         submitBtn.disabled = false;
     })

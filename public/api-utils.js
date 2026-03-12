@@ -11,17 +11,14 @@ async function apiRequest(url, options = {}) {
     try {
         const response = await fetch(url, {
             ...options,
-            headers: {
-                'X-Odoo-Database': 'KAPITMAS_DEMO',
-            }
         });
 
         clearTimeout(timeoutId);
-
+        
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-
+        
         const contentType = response.headers.get('content-type');
         if (contentType && contentType.includes('application/json')) {
             return await response.json();
@@ -45,51 +42,51 @@ async function apiRequest(url, options = {}) {
 
 async function fetchJobList() {
     try {
-        return await apiRequest(getApiUrl('jobsList'), {
-            method: 'GET',
+        return await apiRequest('/api/jobs', {
+            method: 'POST',
         });
-    } catch {
-        notificationHandler('Failed to load job listings. Please refresh the page.', 'error');
+    } catch(e) {
+        notificationHandler(`Failed to load job listings${e.message.includes('429') ? ', too many request attempts' : ''}. Please try again later.`, 'error');
     }
 }
 
 async function fetchCountryCode() {
     try {
-        return await apiRequest(getApiUrl('countryList'), {
-            method: 'GET',
+        return await apiRequest('/api/countries', {
+            method: 'POST',
         });
-    } catch {
-        notificationHandler('Failed to load country list. Please refresh the page.', 'error');
+    } catch(e) {
+        notificationHandler(`Failed to load country list${e.message.includes('429') ? ', too many request attempts' : ''}. Please try again later.`, 'error');
     }
 }
 
 async function fetchEducationLevel() {
     try {
-        return await apiRequest(getApiUrl('educationLevel'), {
-            method: 'GET',
+        return await apiRequest('/api/educations', {
+            method: 'POST',
         });
-    } catch {
-        notificationHandler('Failed to load education levels. Please refresh the page.', 'error');
+    } catch(e) {
+        notificationHandler(`Failed to load education levels${e.message.includes('429') ? ', too many request attempts' : ''}. Please try again later.`, 'error');
     }
 }
 
 async function fetchSocialPlatform() {
     try {
-        return await apiRequest(getApiUrl('utmList'), {
-            method: 'GET',
+        return await apiRequest('/api/socials', {
+            method: 'POST',
         });
-    } catch {
-        notificationHandler('Failed to load social media platforms. Please refresh the page.', 'error');
+    } catch(e) {
+        notificationHandler(`Failed to load social media platforms${e.message.includes('429') ? ', too many request attempts' : ''}. Please try again later.`, 'error');
     }
 }
 
 async function fetchMedicalList() {
     try {
-        return await apiRequest(getApiUrl('medicalList'), {
-            method: 'GET',
+        return await apiRequest('/api/medicals', {
+            method: 'POST',
         });
-    } catch {
-        notificationHandler('Failed to load medical conditions list. Please refresh the page.', 'error');
+    } catch(e) {
+        notificationHandler(`Failed to load medical condition list${e.message.includes('429') ? ', too many request attempts' : ''}. Please try again later.`, 'error');
     }
 }
 
@@ -101,17 +98,34 @@ async function checkApplicant(formCheck, jobId) {
     formCheck.set("job_id", jobId);
     formCheck.set("name", document.getElementById('name').value);
     formCheck.set("email", document.getElementById('email').value);
-    formCheck.set("phone", `(${document.getElementById('countryCode').value}) ${document.getElementById('phone').value}`);
+    formCheck.set("phone", `(+${document.getElementById('countryCode').value}) ${document.getElementById('phone').value}`);
     try {
-        const response = await apiRequest(getApiUrl('checkApplicant'), {
+        const response = await apiRequest('/check', {
             method: 'POST',
             body: formCheck,
-        });        
+        }); 
 
-        return JSON.parse(response)[0];
-    } catch {
+        if (Object.keys(response).includes("errors")) {
+            const elements = document.getElementById('section2').querySelectorAll('input');
+            response["errors"].forEach((e) => {
+                var compareVal = e[0];
+                if (e[1].includes('Phone')) compareVal = compareVal.split(') ')[1];
+                if (Object.values(elements).map((i => i.value)).includes(compareVal)) {
+                    Object.values(elements).find(i => i.value === compareVal).classList.add('missing');
+                };
+                notificationHandler(e[1], "error");
+            });
+
+            return {
+                message: `Invalid inputs`,
+                status: "reject",
+            };
+        }
+
+        return response[0];
+    } catch(e) {
         return {
-            message: `An error has occurred, please try again later.`,
+            message: `${e.message.includes('429') ? 'Too many request attempts, please try again later' : 'An error has occurred, please try again later.'}`,
             status: "reject"
         };
     }
@@ -123,14 +137,33 @@ async function checkApplicant(formCheck, jobId) {
  */
 async function submitApplication(formData) {
     try {
-        const response = await apiRequest(getApiUrl('submitApplication'), {
+        const response = await apiRequest('/apply', {
             method: 'POST',
             body: formData,
         });
+
+        if (Object.keys(response).includes("errors")) {
+            const elements = document.getElementById('section2').querySelectorAll('input');
+            response["errors"].forEach((e) => {
+                var compareVal = e[0];
+                if (e[1].includes('Phone')) compareVal = compareVal.split(') ')[1];
+                if (Object.values(elements).map((i => i.value)).includes(compareVal)) {
+                    Object.values(elements).find(i => i.value === compareVal).classList.add('missing');
+                };
+                notificationHandler(e[1], "error");
+            });
+
+            throw new Error("You have invalid inputs");
+        }
         
         return response;
     } catch(error) {
-        notificationHandler(`Submission failed: ${error.message}`, 'error');
+        let errorMessage = "Please try again later";
+        if (error.message.includes('429')) errorMessage = "Too many attempts, please try again later";
+
+        console.log(error);
+
+        notificationHandler(`Submission failed: ${errorMessage}`, 'error');
         throw error;
     }
 }

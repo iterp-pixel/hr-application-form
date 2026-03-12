@@ -193,7 +193,7 @@ div#splash-screen {
   height: inherit;
   background: transparent;
   border: none;
-  animation: splashScreen 3s ease;
+  animation: splashScreen 1.5s ease;
 }
 
 .layout.splash {

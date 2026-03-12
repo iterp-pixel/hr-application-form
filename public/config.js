@@ -1,14 +1,4 @@
 const API_CONFIG = {
-    baseURL: 'https://devs.kapitmas.com',
-    endpoints: {
-        jobsList: '/applicant/jobs_list',
-        countryList: '/applicant/res_country',
-        educationLevel: '/applicant/education_level',
-        utmList: '/applicant/utm_list',
-        medicalList: '/applicant/medical_list',
-        checkApplicant: '/applicant/check',
-        submitApplication: '/applicant/apply'
-    },
     timeout: 10000,
     fileUpload: {
         photo: {
@@ -37,10 +27,6 @@ const linkList = [
 ];
 
 const phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
-
-function getApiUrl(endpoint) {
-    return `${API_CONFIG.baseURL}${API_CONFIG.endpoints[endpoint] || endpoint}`;
-}
 
 function validateFile(file, type) {
     const config = API_CONFIG.fileUpload[type];
@@ -85,8 +71,9 @@ function validateDateRange(periodStarts, periodEnds) {
 
 function validatePhoneNumber(number) {
     try {
-        const parsed = phoneUtil.parse(number);
-        return phoneUtil.isValidNumber(parsed);
+        // const parsed = phoneUtil.parse(number);
+        // return phoneUtil.isValidNumber(parsed);
+        return true;
     } catch {
         return false;
     }
