@@ -200,7 +200,7 @@ app.post('/apply', [
         if (!Array.isArray(data)) throw new Error("Invalid social media inputs");
 
         data.forEach((e) => {
-            if (!Number.isInteger(e.platform)) throw new Error("Invalid social platform selected");
+            if (!Number.isInteger(Number(e.platform))) throw new Error("Invalid social platform selected");
             if (typeof e.link != "string" || e.link.length > 200) throw new Error("Username must be less than 200 characters");
         })
 
