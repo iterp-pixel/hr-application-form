@@ -3,6 +3,8 @@ const { check, validationResult } = require('express-validator');
 const multer = require('multer');
 const isBase64 = require('is-base64');
 const cors = require('cors');
+const path = require('path');
+const fs = require('fs');
 
 const helmet = require('helmet');
 const { rateLimit } = require('express-rate-limit');
@@ -51,7 +53,7 @@ app.use('/check', limiter);
 app.use('/apply', limiter);
 app.use(limiter);
 
-app.use(express.static('public'))
+app.use(express.static(path.join(__dirname, 'public')));
 
 // staging environment headers
 // app.use((req, res, next) => {
@@ -83,7 +85,37 @@ async function fetchApi(url, res) {
 }
 
 // api fetch calls
-app.post('/api/countries', async (req, res) => fetchApi(`${process.env.SERVER_BASE}/applicant/res_country`, res))
+let countryList;
+async function fetchCountryList() {
+    console.log('fetching country list...');
+    if (fs.existsSync('country_list.json')) {
+        fs.readFile('country_list.json', (err, data) => {
+            if (!err && data) {
+                countryList = data.toString();
+            }
+        })
+    } else {
+        try {
+            const response = await fetch(`${process.env.SERVER_BASE}/applicant/res_country`);
+            if (!response.ok) throw new Error();
+            const result = await response.text();
+            countryList = result;
+            console.log("creating country_list.json");
+            fs.writeFile('country_list.json', countryList, 'utf-8', (err) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                console.log('written into country_list.json');
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    console.log('done');
+}
+
+app.post('/api/countries', async (req, res) => res.send(countryList))
 
 app.post('/api/jobs', async (req, res) => fetchApi(`${process.env.SERVER_BASE}/applicant/jobs_list`, res))
 
@@ -415,8 +447,10 @@ app.post('/apply', [
 // redirecto if invalid route given
 app.use((req, res) => res.redirect('/'));
 
-app.listen(port, '0.0.0.0', () => {
-    console.log(`Listening in port ${port}`);
-    console.log(`environment: ${process.env.SERVER_BASE}`);
+fetchCountryList().then(() => {
+    app.listen(port, '0.0.0.0', () => {
+        console.log(`Listening in port ${port}`);
+        console.log(`environment: ${process.env.SERVER_BASE}`);
+    })
 })
 
